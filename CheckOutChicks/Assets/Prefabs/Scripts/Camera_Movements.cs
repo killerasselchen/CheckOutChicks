@@ -8,64 +8,47 @@ using System.Collections;
 
 public class Camera_Movements : MonoBehaviour {
 
+
     private float smooth = 4f;
 
     private Transform player;
-    private Vector3 relCameraPos;
-    private float relCameraPosMag;
-    private Vector3 newPos;
-    private Transform camAxis;
     public string playerNr;
-    public string CameraNr;
+
+    private Transform camAxis;
     public string camAxisNr;
 
-    private GameObject GameCamera;
+    public string CameraNr;
 
-    void Awake()
-    {
-        //TagNameFinder();
-
-        //Camera_1 = GameObject.FindGameObjectWithTag(CameraNr);
-        //ViewPortSelection();
-        
-        //player = GameObject.FindGameObjectWithTag(playerNr).transform;
-        //camAxis = GameObject.FindGameObjectWithTag(camAxisNr).transform;
-        //relCameraPos = transform.position - player.position;
-        //relCameraPosMag = relCameraPos.magnitude - 0.5f;
-
-    }
+    private Vector3 relCameraPos;
+    private float relCameraPosMag;
+    private Vector3 tempPos;
 
     void Start()
     {
         TagNameFinder();
 
-        GameCamera = GameObject.FindGameObjectWithTag(CameraNr);
-        ViewPortSelection();
-
         player = GameObject.FindGameObjectWithTag(playerNr).transform;
         camAxis = GameObject.FindGameObjectWithTag(camAxisNr).transform;
+
+        ViewPortSelection();
+
         transform.position = camAxis.position;
         relCameraPos = transform.position - player.position;
-        relCameraPosMag = relCameraPos.magnitude;
-        //Camera.main.GetComponent<Camera_Movements>().enabled = false;
-
-
+        relCameraPosMag = relCameraPos.magnitude - 1.0f;
     }
 	
 	void FixedUpdate() 
     {
-        //player = GameObject.FindGameObjectWithTag("Player").transform;
-
         Vector3 standardPos = camAxis.position;
-        Vector3 abovePos = player.position;
-        Vector3[] checkPoints = new Vector3[5];
+        Vector3 nearestPos = player.position;
+        Vector3[] checkPoints = new Vector3[6];
         
         checkPoints[0] = standardPos;
-
-        checkPoints[1] = Vector3.Lerp(standardPos, abovePos, 0.25f);
-        checkPoints[2] = Vector3.Lerp(standardPos, abovePos, 0.5f);
-        checkPoints[3] = Vector3.Lerp(standardPos, abovePos, 0.75f);
-        checkPoints[4] = abovePos;
+        checkPoints[1] = Vector3.Lerp(standardPos, nearestPos, 0.2f);
+        checkPoints[2] = Vector3.Lerp(standardPos, nearestPos, 0.4f);
+        checkPoints[3] = Vector3.Lerp(standardPos, nearestPos, 0.6f);
+        checkPoints[4] = Vector3.Lerp(standardPos, nearestPos, 0.8f);
+        checkPoints[5] = nearestPos;
 
         for (int i = 0; i < checkPoints.Length; i++)
         {
@@ -73,34 +56,32 @@ public class Camera_Movements : MonoBehaviour {
                 break;
         }
 
-        transform.position = Vector3.Lerp(transform.position, newPos, smooth * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, tempPos, smooth * Time.deltaTime);
 
-        SmoothLookAt();
+        LookAtPlayer();
 	}
 
-    bool ViewingPosCheck (Vector3 checkPos)
+    bool ViewingPosCheck (Vector3 checkPoint)
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(checkPos, player.position - checkPos, out hit, relCameraPosMag))
+        if (Physics.Raycast(checkPoint, player.position - checkPoint, out hit, relCameraPosMag))
         {
             if (hit.transform != player)
             {
                 return false;
             }
-
         }
 
-        newPos = checkPos;
+        tempPos = checkPoint;
         return true;
     }
 
-    void SmoothLookAt()
+    //Rotate smoothly the Camera behind the Players-Rotation
+    void LookAtPlayer()
     {
         Vector3 relPlayerPosition = player.position - transform.position;
-
         Quaternion lookAtRotation = Quaternion.LookRotation(relPlayerPosition, Vector3.up);
-
         transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * Time.deltaTime);
     }
 
@@ -164,10 +145,11 @@ public class Camera_Movements : MonoBehaviour {
                 x = 0.5f;
             }
         }
-        GameCamera.GetComponent<Camera>().rect = new Rect(x, y, width, height);
+        this.GetComponent<Camera>().rect = new Rect(x, y, width, height);
     }
 
     //"Spieler zuweisung" oder ähnlich müßte es heißen. Name finden!!
+    //Use the Tag for set the right Tag-Information for Player- and CameraPosition-References.
     void TagNameFinder()
     {
         CameraNr = this.gameObject.tag;

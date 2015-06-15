@@ -151,8 +151,8 @@ public class GameManager : MonoBehaviour {
     //Activate the Cameras GameObjects. If Game Paused, i can controll what the Players see in this time (5.6.2015)
     void ActivateCameras()
     {
-        //if (Paused == false)
-        //{
+        if (Paused == false)
+        {
             //DeActivateCameras();
 
             if (SetToSinglePlayer)
@@ -179,15 +179,15 @@ public class GameManager : MonoBehaviour {
             }
 
             mainCamera.SetActive(false);
-        //}
+        }
 
-        //else if (Paused)
-        //{
-        //    Camera_1.SetActive(false);
-        //    Camera_2.SetActive(false);
-        //    Camera_3.SetActive(false);
-        //    Camera_4.SetActive(false);
-        //}
+        else if (Paused)
+        {
+            camera_1.SetActive(false);
+            camera_2.SetActive(false);
+            camera_3.SetActive(false);
+            camera_4.SetActive(false);
+        }
     }
 
     void DeActivatePlayers()
@@ -215,7 +215,7 @@ public class GameManager : MonoBehaviour {
             DeActivateCameras();
             mainCamera.SetActive(true);
         }
-        else
+        else if(Input.GetKey(KeyCode.Escape) && Paused)
         {
             Paused = false;
             Time.timeScale = 1;
