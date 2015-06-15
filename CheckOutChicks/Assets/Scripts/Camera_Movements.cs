@@ -17,7 +17,7 @@ public class Camera_Movements : MonoBehaviour {
     private Transform cam_Origin;
     private string cam_Origin_Tag;
     private Transform cam_Target;
-    private string cam_Target_Tag;
+    public string cam_Target_Tag;
 
     private string cam_Tag;
 
@@ -31,6 +31,7 @@ public class Camera_Movements : MonoBehaviour {
 
         player_Position = GameObject.FindGameObjectWithTag(playerNr).transform;
         cam_Origin = GameObject.FindGameObjectWithTag(cam_Origin_Tag).transform;
+        cam_Target = GameObject.FindGameObjectWithTag(cam_Target_Tag).transform;
         
 
         ViewPortSelection();
@@ -68,9 +69,9 @@ public class Camera_Movements : MonoBehaviour {
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(checkPoint, player_Position.position - checkPoint, out hit, relCameraPosMag))
+        if (Physics.Raycast(checkPoint, cam_Target.position - checkPoint, out hit, relCameraPosMag))
         {
-            if (hit.transform != player_Position)
+            if (hit.transform != cam_Target)
             {
                 return false;
             }
@@ -83,7 +84,7 @@ public class Camera_Movements : MonoBehaviour {
     //Rotate smoothly the Camera behind the Players-Rotation
     void LookAtPlayer()
     {
-        Vector3 relPlayerPosition = player_Position.position - transform.position;
+        Vector3 relPlayerPosition = cam_Target.position - transform.position;
         Quaternion lookAtRotation = Quaternion.LookRotation(relPlayerPosition, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * Time.deltaTime);
     }
@@ -161,21 +162,26 @@ public class Camera_Movements : MonoBehaviour {
         {
             playerNr = "P_1";
             cam_Origin_Tag = "Cam_Pos_1";
+            cam_Target_Tag = "Cam_Target_1";
         }
         else if (cam_Tag == "Camera_2")
         {
             playerNr = "P_2";
             cam_Origin_Tag = "Cam_Pos_2";
+            cam_Target_Tag = "Cam_Target_2";
+
         }
         else if (cam_Tag == "Camera_3")
         {
             playerNr = "P_3";
             cam_Origin_Tag = "Cam_Pos_3";
+            cam_Target_Tag = "Cam_Target_3";
         }
         else if (cam_Tag == "Camera_4")
         {
             playerNr = "P_4";
             cam_Origin_Tag = "Cam_Pos_4";
+            cam_Target_Tag = "Cam_Target_4";
         }
     }
 }
