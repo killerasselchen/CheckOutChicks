@@ -11,13 +11,15 @@ public class Camera_Movements : MonoBehaviour {
 
     private float smooth = 4f;
 
-    private Transform player;
-    public string playerNr;
+    private Transform player_Position;
+    private string playerNr;
 
-    private Transform camAxis;
-    public string camAxisNr;
+    private Transform cam_Origin;
+    private string cam_Origin_Tag;
+    private Transform cam_Target;
+    private string cam_Target_Tag;
 
-    public string CameraNr;
+    private string cam_Tag;
 
     private Vector3 relCameraPos;
     private float relCameraPosMag;
@@ -27,20 +29,21 @@ public class Camera_Movements : MonoBehaviour {
     {
         TagNameFinder();
 
-        player = GameObject.FindGameObjectWithTag(playerNr).transform;
-        camAxis = GameObject.FindGameObjectWithTag(camAxisNr).transform;
+        player_Position = GameObject.FindGameObjectWithTag(playerNr).transform;
+        cam_Origin = GameObject.FindGameObjectWithTag(cam_Origin_Tag).transform;
+        
 
         ViewPortSelection();
 
-        transform.position = camAxis.position;
-        relCameraPos = transform.position - player.position;
+        transform.position = cam_Origin.position;
+        relCameraPos = transform.position - player_Position.position;
         relCameraPosMag = relCameraPos.magnitude - 1.0f;
     }
 	
 	void FixedUpdate() 
     {
-        Vector3 standardPos = camAxis.position;
-        Vector3 nearestPos = player.position;
+        Vector3 standardPos = cam_Origin.position;
+        Vector3 nearestPos = player_Position.position;
         Vector3[] checkPoints = new Vector3[6];
         
         checkPoints[0] = standardPos;
@@ -65,9 +68,9 @@ public class Camera_Movements : MonoBehaviour {
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(checkPoint, player.position - checkPoint, out hit, relCameraPosMag))
+        if (Physics.Raycast(checkPoint, player_Position.position - checkPoint, out hit, relCameraPosMag))
         {
-            if (hit.transform != player)
+            if (hit.transform != player_Position)
             {
                 return false;
             }
@@ -80,7 +83,7 @@ public class Camera_Movements : MonoBehaviour {
     //Rotate smoothly the Camera behind the Players-Rotation
     void LookAtPlayer()
     {
-        Vector3 relPlayerPosition = player.position - transform.position;
+        Vector3 relPlayerPosition = player_Position.position - transform.position;
         Quaternion lookAtRotation = Quaternion.LookRotation(relPlayerPosition, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * Time.deltaTime);
     }
@@ -152,27 +155,27 @@ public class Camera_Movements : MonoBehaviour {
     //Use the Tag for set the right Tag-Information for Player- and CameraPosition-References.
     void TagNameFinder()
     {
-        CameraNr = this.gameObject.tag;
+        cam_Tag = this.gameObject.tag;
 
-        if(CameraNr == "Camera_1")
+        if(cam_Tag == "Camera_1")
         {
             playerNr = "P_1";
-            camAxisNr = "Cam_Pos_1";
+            cam_Origin_Tag = "Cam_Pos_1";
         }
-        else if (CameraNr == "Camera_2")
+        else if (cam_Tag == "Camera_2")
         {
             playerNr = "P_2";
-            camAxisNr = "Cam_Pos_2";
+            cam_Origin_Tag = "Cam_Pos_2";
         }
-        else if (CameraNr == "Camera_3")
+        else if (cam_Tag == "Camera_3")
         {
             playerNr = "P_3";
-            camAxisNr = "Cam_Pos_3";
+            cam_Origin_Tag = "Cam_Pos_3";
         }
-        else if (CameraNr == "Camera_4")
+        else if (cam_Tag == "Camera_4")
         {
             playerNr = "P_4";
-            camAxisNr = "Cam_Pos_4";
+            cam_Origin_Tag = "Cam_Pos_4";
         }
     }
 }
