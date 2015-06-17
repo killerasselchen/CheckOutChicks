@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 19a71dd6e0dad604790e4e1791da76b9
-timeCreated: 1434103742
+guid: ff61d4473502cc3409789f20b22b92f5
+timeCreated: 1434531183
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: pCube3
+    4300000: Wand_Fuellstueck
   materials:
     importMaterials: 1
     materialName: 0

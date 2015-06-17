@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 37d8a7a3ca6ab104ba6fbfa8e850c362
+guid: 6a0bb4975e461ec4ba3b8d176098e02d
 timeCreated: 1433941691
 licenseType: Free
 ModelImporter:
@@ -12,7 +12,9 @@ ModelImporter:
     400002: kasse
     400004: pCube16
     2300000: kasse
+    2300002: //RootNode
     3300000: kasse
+    3300002: //RootNode
     4300000: kasse
   materials:
     importMaterials: 1
