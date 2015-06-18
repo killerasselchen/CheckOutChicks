@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour {
     //dont destroy on load
     //ich muß die gefundenen GameObjects aktivieren!!!!!
 
+
+    //*** int oder enum
     public static bool SetToSinglePlayer;
     public static bool SetToTwoPlayers;
     public static bool SetToThreePlayers;
@@ -35,17 +37,9 @@ public class GameManager : MonoBehaviour {
         FindPlayers();
         FindCameras();
     }
-
-	// Use this for initialization
-	void Start () 
-    {
-
-	}
 	
-	// Update is called once per frame
 	void Update () 
     {
-        //if "anyKey works like i hope, i must test when the Class works. (4.6.2015)
         if (Input.anyKeyDown)
         {
             Pause();
@@ -95,13 +89,12 @@ public class GameManager : MonoBehaviour {
     //Find over Tags the Player GameObjects after the PlayerQuantity is selected. (5.6.2015)
     void FindPlayers()
     {
-        
         player_1 = GameObject.FindGameObjectWithTag("P_1");
         player_2 = GameObject.FindGameObjectWithTag("P_2");
         player_3 = GameObject.FindGameObjectWithTag("P_3");
         player_4 = GameObject.FindGameObjectWithTag("P_4");
 
-            DeActivatePlayers();
+        DeActivatePlayers();
         //}
     }
 
@@ -109,21 +102,18 @@ public class GameManager : MonoBehaviour {
     //Only active Objects will be find over Tag. I look for a work around, but yet i search all GameObjects and deactivate them.
     void FindCameras()
     {
-
         mainCamera = GameObject.FindGameObjectWithTag("Main_Camera");
         camera_1 = GameObject.FindGameObjectWithTag("Camera_1");
         camera_2 = GameObject.FindGameObjectWithTag("Camera_2");
         camera_3 = GameObject.FindGameObjectWithTag("Camera_3");
         camera_4 = GameObject.FindGameObjectWithTag("Camera_4");
 
-            DeActivateCameras();
+        DeActivateCameras();
     }
 
     //Activate the Player GameObjects. This way i can check over an nother bool if a Controller ist conected (5.6.2015)
     void ActivatePlayers()
     {
-        //DeActivatePlayers();
-
         if (SetToSinglePlayer)
         {
             player_1.SetActive(true);
@@ -153,8 +143,6 @@ public class GameManager : MonoBehaviour {
     {
         if (Paused == false)
         {
-            //DeActivateCameras();
-
             if (SetToSinglePlayer)
             {
                 camera_1.SetActive(true);

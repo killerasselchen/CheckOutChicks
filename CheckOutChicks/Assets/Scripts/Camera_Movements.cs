@@ -28,8 +28,9 @@ public class Camera_Movements : MonoBehaviour {
     void Start()
     {
         TagNameFinder();
-
+        //****
         player_Position = GameObject.FindGameObjectWithTag(playerNr).transform;
+
         cam_Origin = GameObject.FindGameObjectWithTag(cam_Origin_Tag).transform;
         cam_Target = GameObject.FindGameObjectWithTag(cam_Target_Tag).transform;
         
@@ -46,7 +47,7 @@ public class Camera_Movements : MonoBehaviour {
         Vector3 standardPos = cam_Origin.position;
         Vector3 nearestPos = player_Position.position;
         Vector3[] checkPoints = new Vector3[6];
-        
+        //über for lösen
         checkPoints[0] = standardPos;
         checkPoints[1] = Vector3.Lerp(standardPos, nearestPos, 0.2f);
         checkPoints[2] = Vector3.Lerp(standardPos, nearestPos, 0.4f);
@@ -154,10 +155,12 @@ public class Camera_Movements : MonoBehaviour {
 
     //"Spieler zuweisung" oder ähnlich müßte es heißen. Name finden!!
     //Use the Tag for set the right Tag-Information for Player- and CameraPosition-References.
+    //***
     void TagNameFinder()
     {
         cam_Tag = this.gameObject.tag;
 
+        //***
         if(cam_Tag == "Camera_1")
         {
             playerNr = "P_1";
