@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ec6c7c32415d15147bd60e65aba31587
+guid: 2c3ee9edb602891488d8e3afe1dc1044
 timeCreated: 1434011252
 licenseType: Free
 ModelImporter:
@@ -13,10 +13,13 @@ ModelImporter:
     400004: pCylinder16
     2300000: pCube3
     2300002: pCylinder16
+    2300004: //RootNode
     3300000: pCube3
     3300002: pCylinder16
+    3300004: //RootNode
     4300000: pCube3
     4300002: pCylinder16
+    4300004: Kuehltruhe
   materials:
     importMaterials: 1
     materialName: 0

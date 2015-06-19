@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: be0f85ea79954b242b6b267506b5f0da
+guid: 7ac5c3cffa3b51c4aae7f4199f4a8cc6
 timeCreated: 1434022586
 licenseType: Free
 ModelImporter:
@@ -26,8 +26,11 @@ ModelImporter:
     400016: transform3
     400018: transform4
     2300000: pCylinder6
+    2300002: //RootNode
     3300000: pCylinder6
+    3300002: //RootNode
     4300000: pCylinder6
+    4300002: hocker1
   materials:
     importMaterials: 1
     materialName: 0

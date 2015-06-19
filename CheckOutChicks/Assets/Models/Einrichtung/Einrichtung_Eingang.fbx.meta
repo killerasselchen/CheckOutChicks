@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5f4eed6de229a5a4bbf32415e16bd0d6
+guid: f8f61bd84f07de34a91376290db0c22d
 timeCreated: 1433504974
 licenseType: Free
 ModelImporter:
@@ -20,6 +20,8 @@ ModelImporter:
     100024: transform2
     100026: transform3
     100028: transform4
+    100030: eingang
+    100032: polySurface5
     400000: //RootNode
     400002: group
     400004: pasted__pCube1
@@ -35,9 +37,17 @@ ModelImporter:
     400024: transform2
     400026: transform3
     400028: transform4
+    400030: eingang
+    400032: polySurface5
     2300000: pasted__pCylinder2
+    2300002: eingang
+    2300004: polySurface5
     3300000: pasted__pCylinder2
+    3300002: eingang
+    3300004: polySurface5
     4300000: pasted__pCylinder2
+    4300002: polySurface5
+    4300004: eingang
   materials:
     importMaterials: 1
     materialName: 0
