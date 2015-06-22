@@ -8,15 +8,37 @@ ModelImporter:
     100000: //RootNode
     100002: pCube28
     100004: polySurface39
+    100006: polySurface42
+    100008: polySurface43
+    100010: rollie
+    100012: rollie_boden
+    100014: rolly
     400000: //RootNode
     400002: pCube28
     400004: polySurface39
+    400006: polySurface42
+    400008: polySurface43
+    400010: rollie
+    400012: rollie_boden
+    400014: rolly
     2300000: pCube28
     2300002: polySurface39
+    2300004: polySurface42
+    2300006: polySurface43
+    2300008: rollie_boden
+    2300010: rolly
     3300000: pCube28
     3300002: polySurface39
+    3300004: polySurface42
+    3300006: polySurface43
+    3300008: rollie_boden
+    3300010: rolly
     4300000: pCube28
     4300002: polySurface39
+    4300004: rollie_boden
+    4300006: polySurface42
+    4300008: polySurface43
+    4300010: rolly
   materials:
     importMaterials: 1
     materialName: 0
