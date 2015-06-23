@@ -5,19 +5,19 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
     //dont destroy on load
     //ich muß die gefundenen GameObjects aktivieren!!!!!
-
+    //To set the Playerquantity
     public static bool SetToSinglePlayer;
     public static bool SetToTwoPlayers;
     public static bool SetToThreePlayers;
     public static bool SetToFourPlayers;
 
-    //later Privat. Only for Tests public!
-    public bool Paused = false;
+    private bool paused = false;
 
     private GameObject camera_1;
     private GameObject camera_2;
@@ -29,20 +29,15 @@ public class GameManager : MonoBehaviour {
     private GameObject player_2;
     private GameObject player_3;
     private GameObject player_4;
+
+    private List<Vector3> powerUpSpawnPoints;
     
     void Awake ()
     {
         FindPlayers();
         FindCameras();
     }
-
-	// Use this for initialization
-	void Start () 
-    {
-
-	}
 	
-	// Update is called once per frame
 	void Update () 
     {
         //if "anyKey works like i hope, i must test when the Class works. (4.6.2015)
@@ -95,35 +90,30 @@ public class GameManager : MonoBehaviour {
     //Find over Tags the Player GameObjects after the PlayerQuantity is selected. (5.6.2015)
     void FindPlayers()
     {
-        
         player_1 = GameObject.FindGameObjectWithTag("P_1");
         player_2 = GameObject.FindGameObjectWithTag("P_2");
         player_3 = GameObject.FindGameObjectWithTag("P_3");
         player_4 = GameObject.FindGameObjectWithTag("P_4");
 
-            DeActivatePlayers();
-        //}
+        DeActivatePlayers();
     }
 
     //Find over Tags the Camera GameObjects. It is outside the "FindPlayer()", because i wana use it later for more Cameras an nother funktions. (5.6.2015)
     //Only active Objects will be find over Tag. I look for a work around, but yet i search all GameObjects and deactivate them.
     void FindCameras()
     {
-
         mainCamera = GameObject.FindGameObjectWithTag("Main_Camera");
         camera_1 = GameObject.FindGameObjectWithTag("Camera_1");
         camera_2 = GameObject.FindGameObjectWithTag("Camera_2");
         camera_3 = GameObject.FindGameObjectWithTag("Camera_3");
         camera_4 = GameObject.FindGameObjectWithTag("Camera_4");
 
-            DeActivateCameras();
+        DeActivateCameras();
     }
 
     //Activate the Player GameObjects. This way i can check over an nother bool if a Controller ist conected (5.6.2015)
     void ActivatePlayers()
     {
-        //DeActivatePlayers();
-
         if (SetToSinglePlayer)
         {
             player_1.SetActive(true);
@@ -151,10 +141,8 @@ public class GameManager : MonoBehaviour {
     //Activate the Cameras GameObjects. If Game Paused, i can controll what the Players see in this time (5.6.2015)
     void ActivateCameras()
     {
-        if (Paused == false)
+        if (paused == false)
         {
-            //DeActivateCameras();
-
             if (SetToSinglePlayer)
             {
                 camera_1.SetActive(true);
@@ -181,7 +169,7 @@ public class GameManager : MonoBehaviour {
             mainCamera.SetActive(false);
         }
 
-        else if (Paused)
+        else if (paused)
         {
             camera_1.SetActive(false);
             camera_2.SetActive(false);
@@ -208,20 +196,30 @@ public class GameManager : MonoBehaviour {
 
     void Pause()
     {
-        if(Input.GetKey(KeyCode.Escape) && !Paused)
+        if(Input.GetKey(KeyCode.Escape) && !paused)
         {
-            Paused = true;
+            paused = true;
             Time.timeScale = 0;
             DeActivateCameras();
             mainCamera.SetActive(true);
         }
-        else if(Input.GetKey(KeyCode.Escape) && Paused)
+        else if(Input.GetKey(KeyCode.Escape) && paused)
         {
-            Paused = false;
+            paused = false;
             Time.timeScale = 1;
             ActivateCameras();
             mainCamera.SetActive(false);
         }
+    }
+
+    void FindPowerUpSpawnPoints()
+    {
+        
+    }
+
+    void SetPowerUps()
+    {
+
     }
 }
 
