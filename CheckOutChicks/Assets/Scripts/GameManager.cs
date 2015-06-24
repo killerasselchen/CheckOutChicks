@@ -36,14 +36,15 @@ public class GameManager : MonoBehaviour {
     //public static List<GameObject> playerList;
 
     //public GameObject powerUp;
-    public int maxPowerUps = 6;
-    public static int currentNrOfPowerUps;
-    private int randomPowerUpSelection;
+    public int maxMapPowerUps = 6;
+    public static int currentMapPowerUps;
+    private int nextPowerUp;
     private float spawnTimer;
     private float minSpawnDelay = 1;
     private float maxSpawnDelay = 4;
     GameObject[] powerUps;
     private bool nextPowerUpCheckOut;
+    
     
     void Awake ()
     {
@@ -235,11 +236,10 @@ public class GameManager : MonoBehaviour {
             powerUps[i].SetActive(false);
         }
     }
-        
 
     void SetPowerUps()
     {
-        if(currentNrOfPowerUps <= maxPowerUps)
+        if(currentMapPowerUps <= maxMapPowerUps)
         {
             if(spawnTimer <= 0)
             {
@@ -248,13 +248,13 @@ public class GameManager : MonoBehaviour {
                 while (nextPowerUpCheckOut == true)
                 {
                     Debug.Log("in while");
-                    randomPowerUpSelection = Random.Range(0, powerUps.Length);
+                    nextPowerUp = Random.Range(0, powerUps.Length);
 
-                    if (!powerUps[randomPowerUpSelection].activeInHierarchy)
+                    if (!powerUps[nextPowerUp].activeInHierarchy)
                     {
-                        powerUps[randomPowerUpSelection].SetActive(true);
+                        powerUps[nextPowerUp].SetActive(true);
                         nextPowerUpCheckOut = false;
-                        currentNrOfPowerUps++;
+                        currentMapPowerUps++;
                     }
                     spawnTimer = Random.Range(minSpawnDelay, maxSpawnDelay);
                 }
@@ -262,5 +262,7 @@ public class GameManager : MonoBehaviour {
             spawnTimer -= 1 * Time.deltaTime;
         }
     }
+
+    
 }
 

@@ -21,8 +21,13 @@ public class Power_Up : MonoBehaviour {
             if (other.tag == "P_" + (i + 1))
             {
                 this.gameObject.SetActive(false);
-                GameManager.currentNrOfPowerUps--;
+                GameManager.currentMapPowerUps--;
             }
         }
+    }
+
+    void ChoseItem()
+    {
+
     }
 }
