@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
     public static bool setToThreePlayers;
     public static bool setToFourPlayers;
 
-    private bool paused = false;
+    public bool paused = true;
 
     public static GameObject camera_1;
     public static GameObject camera_2;
@@ -34,44 +34,35 @@ public class GameManager : MonoBehaviour {
     public static GameObject player_4;
     //public static List<GameObject> playerList;
 
-    public GameObject powerUp;
+    //public GameObject powerUp;
     public int maxPowerUps = 6;
     private int currentNrOfPowerUps;
-    private List<Vector3> powerUpSpawnPoints;
-    private Vector3 lastSpawnPoint;
-    private Vector3 nextSpawnPoint;
-    private int spawnTimer;
-    private int minSpawnDelay;
-    private int maxSpawnDelay;
-    
+    private int randomPowerUpSelection;
+    private float spawnTimer;
+    private float minSpawnDelay = 3;
+    private float maxSpawnDelay = 4;
+    GameObject[] powerUps;
+    private bool powerUpActiv;
     
     void Awake ()
     {
         FindPlayers();
         FindCameras();
+        FindPowerUps();
+
         //When Load Level
-        FindPowerUpSpawnPoints();
+        //powerUps = new GameObject[GameObject.FindGameObjectsWithTag("Power_up").Length];
     }
 	
 	void Update () 
     {
-        //if "anyKey works like i hope, i must test when the Class works. (4.6.2015)
-        if (Input.anyKeyDown)
-        {
-            Pause();
-            PlayerQuantitySelection();
-            Debug.Log("KeyHitInUpdate");
-        }
+        PlayerQuantitySelection();
         SetPowerUps();
 	}
 
     void FixedUpdate()
     {
-        if (Input.anyKeyDown)
-        {
-            Pause();
-            Debug.Log("KeyHitInFixedUpdate");
-        }
+        Pause();
     }
 
     void LateUpdate()
@@ -162,8 +153,6 @@ public class GameManager : MonoBehaviour {
     //Activate the Cameras GameObjects. If Game Paused, i can controll what the Players see in this time (5.6.2015)
     void ActivateCameras()
     {
-        if (paused == false)
-        {
             if (setToSinglePlayer)
             {
                 camera_1.SetActive(true);
@@ -188,15 +177,6 @@ public class GameManager : MonoBehaviour {
             }
 
             mainCamera.SetActive(false);
-        }
-
-        else if (paused)
-        {
-            camera_1.SetActive(false);
-            camera_2.SetActive(false);
-            camera_3.SetActive(false);
-            camera_4.SetActive(false);
-        }
     }
 
     void DeActivatePlayers()
@@ -233,28 +213,35 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void FindPowerUpSpawnPoints()
+    void FindPowerUps()
     {
-        foreach (var SpawnPoints in GameObject.FindGameObjectsWithTag("Power_Up_Spawn_Point"))
+        powerUps = GameObject.FindGameObjectsWithTag("Power_Up");
+
+        for (int i = 0; i < powerUps.Length; i++)
         {
-            powerUpSpawnPoints.Add(SpawnPoints.transform.position);
+            powerUps[i].SetActive(false);
         }
     }
+        
 
     void SetPowerUps()
     {
         if(spawnTimer <= 0)
         {
-            lastSpawnPoint = nextSpawnPoint;
-
-            if (currentNrOfPowerUps <= maxPowerUps && nextSpawnPoint != lastSpawnPoint)
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Max PowerUps fehlen!!
+            while (powerUpActiv)
             {
-                GameObject PowerUp = Instantiate(powerUp, nextSpawnPoint, Quaternion.identity) as GameObject;
-                nextSpawnPoint = powerUpSpawnPoints[Random.Range(0, powerUpSpawnPoints.Count)];
-                spawnTimer = Random.Range(minSpawnDelay, maxSpawnDelay);
+                randomPowerUpSelection = Random.Range(0, powerUps.Length);
+
+                if (!powerUps[randomPowerUpSelection].activeInHierarchy)
+                {
+                    powerUps[randomPowerUpSelection].SetActive(true);
+                    powerUpActiv = false;
+                    currentNrOfPowerUps++;
+                }
             }
         }
-        spawnTimer--;
+        spawnTimer -= 1 * Time.deltaTime;
     }
 
     
