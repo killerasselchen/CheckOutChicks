@@ -96,7 +96,7 @@ public class Camera_Movements : MonoBehaviour {
         float width = 1;
         float height = 1;
        
-        if (GameManager.SetToTwoPlayers)
+        if (GameManager.setToTwoPlayers)
         {
             height = 0.5f;
             
@@ -104,7 +104,7 @@ public class Camera_Movements : MonoBehaviour {
                 y = 0.5f; ;
         }
 
-        else if (GameManager.SetToThreePlayers)
+        else if (GameManager.setToThreePlayers)
         {
             width = 0.5f;
             height = 0.5f;
@@ -125,7 +125,7 @@ public class Camera_Movements : MonoBehaviour {
             }
         }
 
-        else if (GameManager.SetToFourPlayers)
+        else if (GameManager.setToFourPlayers)
         {
             width = 0.5f;
             height = 0.5f;

@@ -48,7 +48,7 @@ public class Alt_Cam_Move : MonoBehaviour
         float width = 1;
         float height = 1;
 
-        if (GameManager.SetToTwoPlayers)
+        if (GameManager.setToTwoPlayers)
         {
             height = 0.5f;
 
@@ -56,7 +56,7 @@ public class Alt_Cam_Move : MonoBehaviour
                 y = 0.5f; ;
         }
 
-        else if (GameManager.SetToThreePlayers)
+        else if (GameManager.setToThreePlayers)
         {
             width = 0.5f;
             height = 0.5f;
@@ -77,7 +77,7 @@ public class Alt_Cam_Move : MonoBehaviour
             }
         }
 
-        else if (GameManager.SetToFourPlayers)
+        else if (GameManager.setToFourPlayers)
         {
             width = 0.5f;
             height = 0.5f;

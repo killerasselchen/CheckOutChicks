@@ -10,32 +10,47 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour {
 
     //dont destroy on load
+    //OnLevelWasLoaded
+
+
     //ich muß die gefundenen GameObjects aktivieren!!!!!
     //To set the Playerquantity
-    public static bool SetToSinglePlayer;
-    public static bool SetToTwoPlayers;
-    public static bool SetToThreePlayers;
-    public static bool SetToFourPlayers;
+    public static bool setToSinglePlayer;
+    public static bool setToTwoPlayers;
+    public static bool setToThreePlayers;
+    public static bool setToFourPlayers;
 
     private bool paused = false;
 
-    private GameObject camera_1;
-    private GameObject camera_2;
-    private GameObject camera_3;
-    private GameObject camera_4;
+    public static GameObject camera_1;
+    public static GameObject camera_2;
+    public static GameObject camera_3;
+    public static GameObject camera_4;
     private GameObject mainCamera;
 
-    private GameObject player_1;
-    private GameObject player_2;
-    private GameObject player_3;
-    private GameObject player_4;
+    public static GameObject player_1;
+    public static GameObject player_2;
+    public static GameObject player_3;
+    public static GameObject player_4;
+    //public static List<GameObject> playerList;
 
+    public GameObject powerUp;
+    public int maxPowerUps = 6;
+    private int currentNrOfPowerUps;
     private List<Vector3> powerUpSpawnPoints;
+    private Vector3 lastSpawnPoint;
+    private Vector3 nextSpawnPoint;
+    private int spawnTimer;
+    private int minSpawnDelay;
+    private int maxSpawnDelay;
+    
     
     void Awake ()
     {
         FindPlayers();
         FindCameras();
+        //When Load Level
+        FindPowerUpSpawnPoints();
     }
 	
 	void Update () 
@@ -47,6 +62,7 @@ public class GameManager : MonoBehaviour {
             PlayerQuantitySelection();
             Debug.Log("KeyHitInUpdate");
         }
+        SetPowerUps();
 	}
 
     void FixedUpdate()
@@ -58,30 +74,35 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    void LateUpdate()
+    {
+
+    }
+
     //Little Function to test the PlayerQuantitySelection and the Activation of Players and Cameras. (4.6.2015)
     void PlayerQuantitySelection()
     {
         if (Input.GetKey(KeyCode.F1))
         {
-            SetToSinglePlayer = true;
+            setToSinglePlayer = true;
             ActivatePlayers();
             ActivateCameras();
         }
         else if (Input.GetKey(KeyCode.F2))
         {
-            SetToTwoPlayers = true;
+            setToTwoPlayers = true;
             ActivatePlayers();
             ActivateCameras();
         }
         else if (Input.GetKey(KeyCode.F3))
         {
-            SetToThreePlayers = true;
+            setToThreePlayers = true;
             ActivatePlayers();
             ActivateCameras();
         }
         else if (Input.GetKey(KeyCode.F4))
         {
-            SetToFourPlayers = true;
+            setToFourPlayers = true;
             ActivatePlayers();
             ActivateCameras();
         }
@@ -114,22 +135,22 @@ public class GameManager : MonoBehaviour {
     //Activate the Player GameObjects. This way i can check over an nother bool if a Controller ist conected (5.6.2015)
     void ActivatePlayers()
     {
-        if (SetToSinglePlayer)
+        if (setToSinglePlayer)
         {
             player_1.SetActive(true);
         }
-        else if (SetToTwoPlayers)
+        else if (setToTwoPlayers)
         {
             player_1.SetActive(true);
             player_2.SetActive(true);
         }
-        else if (SetToThreePlayers)
+        else if (setToThreePlayers)
         {
             player_1.SetActive(true);
             player_2.SetActive(true);
             player_3.SetActive(true);
         }
-        else if (SetToFourPlayers)
+        else if (setToFourPlayers)
         {
             player_1.SetActive(true);
             player_2.SetActive(true);
@@ -143,22 +164,22 @@ public class GameManager : MonoBehaviour {
     {
         if (paused == false)
         {
-            if (SetToSinglePlayer)
+            if (setToSinglePlayer)
             {
                 camera_1.SetActive(true);
             }
-            else if (SetToTwoPlayers)
+            else if (setToTwoPlayers)
             {
                 camera_1.SetActive(true);
                 camera_2.SetActive(true);
             }
-            else if (SetToThreePlayers)
+            else if (setToThreePlayers)
             {
                 camera_1.SetActive(true);
                 camera_2.SetActive(true);
                 camera_3.SetActive(true);
             }
-            else if (SetToFourPlayers)
+            else if (setToFourPlayers)
             {
                 camera_1.SetActive(true);
                 camera_2.SetActive(true);
@@ -214,12 +235,28 @@ public class GameManager : MonoBehaviour {
 
     void FindPowerUpSpawnPoints()
     {
-        
+        foreach (var SpawnPoints in GameObject.FindGameObjectsWithTag("Power_Up_Spawn_Point"))
+        {
+            powerUpSpawnPoints.Add(SpawnPoints.transform.position);
+        }
     }
 
     void SetPowerUps()
     {
+        if(spawnTimer <= 0)
+        {
+            lastSpawnPoint = nextSpawnPoint;
 
+            if (currentNrOfPowerUps <= maxPowerUps && nextSpawnPoint != lastSpawnPoint)
+            {
+                GameObject PowerUp = Instantiate(powerUp, nextSpawnPoint, Quaternion.identity) as GameObject;
+                nextSpawnPoint = powerUpSpawnPoints[Random.Range(0, powerUpSpawnPoints.Count)];
+                spawnTimer = Random.Range(minSpawnDelay, maxSpawnDelay);
+            }
+        }
+        spawnTimer--;
     }
+
+    
 }
 
