@@ -19,8 +19,9 @@ public class GameManager : MonoBehaviour {
     public static bool setToTwoPlayers;
     public static bool setToThreePlayers;
     public static bool setToFourPlayers;
+    public static int playerQuantity;
 
-    public bool paused = true;
+    private bool paused = true;
 
     public static GameObject camera_1;
     public static GameObject camera_2;
@@ -36,19 +37,20 @@ public class GameManager : MonoBehaviour {
 
     //public GameObject powerUp;
     public int maxPowerUps = 6;
-    private int currentNrOfPowerUps;
+    public static int currentNrOfPowerUps;
     private int randomPowerUpSelection;
     private float spawnTimer;
-    private float minSpawnDelay = 3;
+    private float minSpawnDelay = 1;
     private float maxSpawnDelay = 4;
     GameObject[] powerUps;
-    private bool powerUpActiv;
+    private bool nextPowerUpCheckOut;
     
     void Awake ()
     {
         FindPlayers();
         FindCameras();
         FindPowerUps();
+        Time.timeScale = 0;
 
         //When Load Level
         //powerUps = new GameObject[GameObject.FindGameObjectsWithTag("Power_up").Length];
@@ -78,25 +80,35 @@ public class GameManager : MonoBehaviour {
             setToSinglePlayer = true;
             ActivatePlayers();
             ActivateCameras();
+            paused = false;
+            Time.timeScale = 1;
         }
         else if (Input.GetKey(KeyCode.F2))
         {
             setToTwoPlayers = true;
             ActivatePlayers();
             ActivateCameras();
+            paused = false;
+            Time.timeScale = 1;
         }
         else if (Input.GetKey(KeyCode.F3))
         {
             setToThreePlayers = true;
             ActivatePlayers();
             ActivateCameras();
+            paused = false;
+            Time.timeScale = 1;
         }
         else if (Input.GetKey(KeyCode.F4))
         {
             setToFourPlayers = true;
             ActivatePlayers();
             ActivateCameras();
+            paused = false;
+            Time.timeScale = 1;
         }
+        playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
+
     }
 
     //Find over Tags the Player GameObjects after the PlayerQuantity is selected. (5.6.2015)
@@ -177,6 +189,7 @@ public class GameManager : MonoBehaviour {
             }
 
             mainCamera.SetActive(false);
+            
     }
 
     void DeActivatePlayers()
@@ -226,24 +239,28 @@ public class GameManager : MonoBehaviour {
 
     void SetPowerUps()
     {
-        if(spawnTimer <= 0)
+        if(currentNrOfPowerUps <= maxPowerUps)
         {
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Max PowerUps fehlen!!
-            while (powerUpActiv)
+            if(spawnTimer <= 0)
             {
-                randomPowerUpSelection = Random.Range(0, powerUps.Length);
-
-                if (!powerUps[randomPowerUpSelection].activeInHierarchy)
+                Debug.Log("before while");
+                nextPowerUpCheckOut = true;
+                while (nextPowerUpCheckOut == true)
                 {
-                    powerUps[randomPowerUpSelection].SetActive(true);
-                    powerUpActiv = false;
-                    currentNrOfPowerUps++;
+                    Debug.Log("in while");
+                    randomPowerUpSelection = Random.Range(0, powerUps.Length);
+
+                    if (!powerUps[randomPowerUpSelection].activeInHierarchy)
+                    {
+                        powerUps[randomPowerUpSelection].SetActive(true);
+                        nextPowerUpCheckOut = false;
+                        currentNrOfPowerUps++;
+                    }
+                    spawnTimer = Random.Range(minSpawnDelay, maxSpawnDelay);
                 }
             }
+            spawnTimer -= 1 * Time.deltaTime;
         }
-        spawnTimer -= 1 * Time.deltaTime;
     }
-
-    
 }
 
