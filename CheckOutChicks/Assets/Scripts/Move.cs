@@ -10,9 +10,9 @@ public class Move : MonoBehaviour {
 
     public Rigidbody Wagon_RB;
 
-    public float forwardForceMultiplier;
-    public float sideStepMultiplier;
-    public float rotationMultiplier;
+    private float forwardForceMultiplier = 16;
+    private float sideStepMultiplier = 2;
+    private float rotationMultiplier = 2;
 
     private string playerNr;
 

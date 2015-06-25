@@ -9,7 +9,7 @@ using System.Collections;
 public class Camera_Movements : MonoBehaviour {
 
 
-    private float smooth = 4f;
+    private float smooth = 3f;
 
     private Transform player_Position;
     private string playerNr;
@@ -32,7 +32,6 @@ public class Camera_Movements : MonoBehaviour {
         player_Position = GameObject.FindGameObjectWithTag(playerNr).transform;
         cam_Origin = GameObject.FindGameObjectWithTag(cam_Origin_Tag).transform;
         cam_Target = GameObject.FindGameObjectWithTag(cam_Target_Tag).transform;
-        
 
         ViewPortSelection();
 
@@ -158,30 +157,9 @@ public class Camera_Movements : MonoBehaviour {
     {
         cam_Tag = this.gameObject.tag;
 
-        if(cam_Tag == "Camera_1")
-        {
-            playerNr = "P_1";
-            cam_Origin_Tag = "Cam_Pos_1";
-            cam_Target_Tag = "Cam_Target_1";
-        }
-        else if (cam_Tag == "Camera_2")
-        {
-            playerNr = "P_2";
-            cam_Origin_Tag = "Cam_Pos_2";
-            cam_Target_Tag = "Cam_Target_2";
-
-        }
-        else if (cam_Tag == "Camera_3")
-        {
-            playerNr = "P_3";
-            cam_Origin_Tag = "Cam_Pos_3";
-            cam_Target_Tag = "Cam_Target_3";
-        }
-        else if (cam_Tag == "Camera_4")
-        {
-            playerNr = "P_4";
-            cam_Origin_Tag = "Cam_Pos_4";
-            cam_Target_Tag = "Cam_Target_4";
-        }
+        playerNr = "P_" + cam_Tag.Split('_')[1];
+        cam_Origin_Tag = "Cam_Pos_" + cam_Tag.Split('_')[1];
+        cam_Target_Tag = "Cam_Target_" + cam_Tag.Split('_')[1];
+        
     }
 }

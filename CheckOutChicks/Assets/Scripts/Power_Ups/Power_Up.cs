@@ -5,7 +5,6 @@ public class Power_Up : MonoBehaviour {
 
 	void Start () 
     {
-
 	}
 	
 	void Update () 
@@ -26,8 +25,5 @@ public class Power_Up : MonoBehaviour {
         }
     }
 
-    void ChoseItem()
-    {
-
-    }
+   
 }

@@ -23,12 +23,14 @@ public class GameManager : MonoBehaviour {
 
     private bool paused = true;
 
+    public static GameObject[] cameras;
     public static GameObject camera_1;
     public static GameObject camera_2;
     public static GameObject camera_3;
     public static GameObject camera_4;
     private GameObject mainCamera;
 
+    public static GameObject[] activePlayers;
     public static GameObject player_1;
     public static GameObject player_2;
     public static GameObject player_3;
@@ -42,15 +44,17 @@ public class GameManager : MonoBehaviour {
     private float spawnTimer;
     private float minSpawnDelay = 1;
     private float maxSpawnDelay = 4;
-    GameObject[] powerUps;
-    private bool nextPowerUpCheckOut;
+    private GameObject[] powerUpSpawnPoints;
+    private bool nextSpawnPointCheck;
+    public static GameObject[] powerUps;
     
     
     void Awake ()
     {
         FindPlayers();
         FindCameras();
-        FindPowerUps();
+        FindPowerUpSpawnPoints();
+        FindAvadeblePowerUps();
         Time.timeScale = 0;
 
         //When Load Level
@@ -59,8 +63,9 @@ public class GameManager : MonoBehaviour {
 	
 	void Update () 
     {
+        KeyControl();
         PlayerQuantitySelection();
-        SetPowerUps();
+        SpawnPowerUp();
 	}
 
     void FixedUpdate()
@@ -72,41 +77,60 @@ public class GameManager : MonoBehaviour {
     {
 
     }
-
-    //Little Function to test the PlayerQuantitySelection and the Activation of Players and Cameras. (4.6.2015)
-    void PlayerQuantitySelection()
+    void KeyControl()
     {
         if (Input.GetKey(KeyCode.F1))
         {
             setToSinglePlayer = true;
-            ActivatePlayers();
-            ActivateCameras();
-            paused = false;
-            Time.timeScale = 1;
         }
         else if (Input.GetKey(KeyCode.F2))
         {
             setToTwoPlayers = true;
-            ActivatePlayers();
-            ActivateCameras();
-            paused = false;
-            Time.timeScale = 1;
         }
         else if (Input.GetKey(KeyCode.F3))
         {
             setToThreePlayers = true;
-            ActivatePlayers();
-            ActivateCameras();
-            paused = false;
-            Time.timeScale = 1;
         }
         else if (Input.GetKey(KeyCode.F4))
         {
             setToFourPlayers = true;
-            ActivatePlayers();
-            ActivateCameras();
-            paused = false;
-            Time.timeScale = 1;
+        }
+    }
+
+    //Little Function to test the PlayerQuantitySelection and the Activation of Players and Cameras. (4.6.2015)
+    void PlayerQuantitySelection()
+    {
+        if (setToSinglePlayer == true)
+        {
+            StartGame();
+            //ActivatePlayers();
+            //ActivateCameras();
+            //paused = false;
+            //Time.timeScale = 1;
+        }
+        else if (setToTwoPlayers == true)
+        {
+            StartGame();
+            //ActivatePlayers();
+            //ActivateCameras();
+            //paused = false;
+            //Time.timeScale = 1;
+        }
+        else if (setToThreePlayers == true)
+        {
+            StartGame();
+            //ActivatePlayers();
+            //ActivateCameras();
+            //paused = false;
+            //Time.timeScale = 1;
+        }
+        else if (setToFourPlayers = true)
+        {
+            StartGame();
+            //ActivatePlayers();
+            //ActivateCameras();
+            //paused = false;
+            //Time.timeScale = 1;
         }
         playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
 
@@ -227,33 +251,31 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void FindPowerUps()
+    void FindPowerUpSpawnPoints()
     {
-        powerUps = GameObject.FindGameObjectsWithTag("Power_Up");
+        powerUpSpawnPoints = GameObject.FindGameObjectsWithTag("Power_Up"); //_Spawn_Point for later
 
-        for (int i = 0; i < powerUps.Length; i++)
+        for (int i = 0; i < powerUpSpawnPoints.Length; i++)
         {
-            powerUps[i].SetActive(false);
+            powerUpSpawnPoints[i].SetActive(false);
         }
     }
 
-    void SetPowerUps()
+    void SpawnPowerUp()
     {
         if(currentMapPowerUps <= maxMapPowerUps)
         {
             if(spawnTimer <= 0)
             {
-                Debug.Log("before while");
-                nextPowerUpCheckOut = true;
-                while (nextPowerUpCheckOut == true)
+                nextSpawnPointCheck = true;
+                while (nextSpawnPointCheck == true)
                 {
-                    Debug.Log("in while");
-                    nextPowerUp = Random.Range(0, powerUps.Length);
+                    nextPowerUp = Random.Range(0, powerUpSpawnPoints.Length);
 
-                    if (!powerUps[nextPowerUp].activeInHierarchy)
+                    if (!powerUpSpawnPoints[nextPowerUp].activeInHierarchy)
                     {
-                        powerUps[nextPowerUp].SetActive(true);
-                        nextPowerUpCheckOut = false;
+                        powerUpSpawnPoints[nextPowerUp].SetActive(true);
+                        nextSpawnPointCheck = false;
                         currentMapPowerUps++;
                     }
                     spawnTimer = Random.Range(minSpawnDelay, maxSpawnDelay);
@@ -263,6 +285,42 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    
+    void FindAvadeblePowerUps()
+    {
+        powerUps = GameObject.FindGameObjectsWithTag("PU"); //"Power_Up" later
+
+        //for (int i = 0; i < powerUps.Length; i++)
+        //{
+        //    powerUps[i].SetActive(false);
+        //}
+    }
+
+    void SetActivePlayerList()
+    {
+        int playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
+
+        for (int i = 0; i < playerQuantity; i++)
+			{
+                activePlayers[i] = GameObject.FindGameObjectWithTag("P_" + i);
+			}
+    }
+
+    void SetActiveCameraList()
+    {
+        for (int i = 0; i < playerQuantity; i++)
+        {
+            cameras[i] = GameObject.FindGameObjectWithTag("Camera_" + i);
+        }
+    }
+
+    void StartGame()
+    {
+        ActivatePlayers();
+        ActivateCameras();
+        paused = false;
+        Time.timeScale = 1;
+        SetActivePlayerList();
+        SetActiveCameraList();
+    }
 }
 
