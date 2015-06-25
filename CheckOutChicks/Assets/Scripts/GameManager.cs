@@ -64,36 +64,44 @@ public class GameManager : MonoBehaviour {
 	void Update () 
     {
         KeyControl();
-        PlayerQuantitySelection();
         SpawnPowerUp();
 	}
 
     void FixedUpdate()
     {
-        Pause();
+
     }
 
     void LateUpdate()
     {
 
     }
+
     void KeyControl()
     {
-        if (Input.GetKey(KeyCode.F1))
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Pause();
+        }
+        else if (Input.GetKeyDown(KeyCode.F1) && paused)
         {
             setToSinglePlayer = true;
         }
-        else if (Input.GetKey(KeyCode.F2))
+        else if (Input.GetKeyDown(KeyCode.F2) && paused)
         {
             setToTwoPlayers = true;
         }
-        else if (Input.GetKey(KeyCode.F3))
+        else if (Input.GetKeyDown(KeyCode.F3) && paused)
         {
             setToThreePlayers = true;
         }
-        else if (Input.GetKey(KeyCode.F4))
+        else if (Input.GetKeyDown(KeyCode.F4) && paused)
         {
             setToFourPlayers = true;
+        }
+        if(paused)
+        {
+            PlayerQuantitySelection();
         }
     }
 
@@ -102,38 +110,23 @@ public class GameManager : MonoBehaviour {
     {
         if (setToSinglePlayer == true)
         {
+            Debug.Log("single");
             StartGame();
-            //ActivatePlayers();
-            //ActivateCameras();
-            //paused = false;
-            //Time.timeScale = 1;
         }
         else if (setToTwoPlayers == true)
         {
             StartGame();
-            //ActivatePlayers();
-            //ActivateCameras();
-            //paused = false;
-            //Time.timeScale = 1;
         }
         else if (setToThreePlayers == true)
         {
             StartGame();
-            //ActivatePlayers();
-            //ActivateCameras();
-            //paused = false;
-            //Time.timeScale = 1;
         }
-        else if (setToFourPlayers = true)
+        else if (setToFourPlayers == true)
         {
             StartGame();
-            //ActivatePlayers();
-            //ActivateCameras();
-            //paused = false;
-            //Time.timeScale = 1;
         }
-        playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
 
+        playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
     }
 
     //Find over Tags the Player GameObjects after the PlayerQuantity is selected. (5.6.2015)
@@ -214,7 +207,6 @@ public class GameManager : MonoBehaviour {
             }
 
             mainCamera.SetActive(false);
-            
     }
 
     void DeActivatePlayers()
@@ -235,14 +227,14 @@ public class GameManager : MonoBehaviour {
 
     void Pause()
     {
-        if(Input.GetKey(KeyCode.Escape) && !paused)
+        if(!paused)
         {
             paused = true;
             Time.timeScale = 0;
             DeActivateCameras();
             mainCamera.SetActive(true);
         }
-        else if(Input.GetKey(KeyCode.Escape) && paused)
+        else if(paused)
         {
             paused = false;
             Time.timeScale = 1;
@@ -299,7 +291,7 @@ public class GameManager : MonoBehaviour {
     {
         int playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
 
-        for (int i = 0; i < playerQuantity; i++)
+        for (int i = 1; i < playerQuantity; i++)
 			{
                 activePlayers[i] = GameObject.FindGameObjectWithTag("P_" + i);
 			}
@@ -307,7 +299,7 @@ public class GameManager : MonoBehaviour {
 
     void SetActiveCameraList()
     {
-        for (int i = 0; i < playerQuantity; i++)
+        for (int i = 1; i < playerQuantity; i++)
         {
             cameras[i] = GameObject.FindGameObjectWithTag("Camera_" + i);
         }
@@ -315,6 +307,8 @@ public class GameManager : MonoBehaviour {
 
     void StartGame()
     {
+        Debug.Log("startgame");
+
         ActivatePlayers();
         ActivateCameras();
         paused = false;
