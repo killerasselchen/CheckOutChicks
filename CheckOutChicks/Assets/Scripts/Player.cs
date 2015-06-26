@@ -12,14 +12,10 @@ public class Player : MonoBehaviour {
     public static bool collectItem = false;
     private int maxPlayerPowerUps = 2;
     private int currentPowerUps = 0;
-    private GameObject leftPowerUp = new GameObject();
+    private GameObject leftPowerUp ;
     private GameObject rightPowerUp;
 
-
-    private List<bool> itemList = new List<bool>();
     private int random;
-
-
 
 	// Use this for initialization
 	void Awake () 
@@ -27,6 +23,8 @@ public class Player : MonoBehaviour {
         playerTag = gameObject.tag;
         string temp = playerTag.Split('_')[1];
         playerNr = int.Parse(temp) - 1;
+        leftPowerUp = new GameObject();
+        rightPowerUp = new GameObject();
 	}
 	
 	// Update is called once per frame
@@ -34,46 +32,34 @@ public class Player : MonoBehaviour {
     {
         ShowPowerUps();
         
-	    if(Input.GetKey("Fire_Left_" + playerTag))
-        {
-
-        }
-        if (Input.GetKey("Fire_Right_" + playerTag))
-        {
-
-        }
+        
 	}
 
     public void ChoseItem()
     {
-        if(currentPowerUps == 0)
+        if (currentPowerUps == 0)
         {
             Debug.Log("Erstellt!! Left");
-            random = Random.Range(0, itemList.Capacity);
+            random = Random.Range(0, GameManager.powerUps.Length);
             leftPowerUp = GameObject.Instantiate(GameManager.powerUps[random]) as GameObject;
+            leftPowerUp.name = "leftPowerUp_" + playerNr;
+            currentPowerUps++;
         }
-        else if(currentPowerUps == 1)
+        else if (currentPowerUps == 1)
         {
-            random = Random.Range(0, itemList.Capacity);
+            random = Random.Range(0, GameManager.powerUps.Length);
             rightPowerUp = GameObject.Instantiate(GameManager.powerUps[random]) as GameObject;
+            rightPowerUp.name = "rightPowerUp_" + playerNr;
+            currentPowerUps++;
         }
     }
 
     void ShowPowerUps()
     {
-        // HIER...............nicht gesetzt!???
-
-        Vector3 temp = GameManager.cameras[playerNr].transform.position;
-        Quaternion temp2 = GameManager.cameras[playerNr].transform.localRotation;
-        //leftPowerUp.transform.position = GameManager.cameras[playerNr].transform.position;
-        leftPowerUp.transform.position = new Vector3(temp.x + 1, temp.y + 1, temp.z - 1);
-        leftPowerUp.transform.localRotation = temp2;
-
-        rightPowerUp.transform.position = new Vector3(temp.x + 1, temp.y + 1, temp.z - 1);
-        rightPowerUp.transform.localRotation = temp2;
+        
     }
 
-    void OnCollisionEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Power_Up") //Later "Power_Up"
         {
@@ -83,11 +69,18 @@ public class Player : MonoBehaviour {
             GameManager.currentMapPowerUps--;
         }
     }
+
+    void UsePowerUp()
+    {
+        //if(Input.)
+        if (Input.GetKey("Fire_Left_" + playerTag))
+        {
+
+        }
+        if (Input.GetKey("Fire_Right_" + playerTag))
+        {
+
+        }
+    }
 }
- //if(other.gameObject.tag == "Power_Up") //Later "Power_Up"
- //       {
- //           Debug.Log("Fuck Up??");
- //           ChoseItem();
- //           other.gameObject.SetActive(false);
- //           GameManager.currentMapPowerUps--;
- //       }
+ 
