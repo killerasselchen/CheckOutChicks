@@ -17,12 +17,16 @@ public class Player : MonoBehaviour {
 
     private int random;
 
+    //Stats for PowerUps
+    public static bool confuse = false;
+    
+
 	// Use this for initialization
 	void Awake () 
     {
         playerTag = gameObject.tag;
         string temp = playerTag.Split('_')[1];
-        playerNr = int.Parse(temp) - 1;
+        playerNr = int.Parse(temp);
         leftPowerUp = new GameObject();
         rightPowerUp = new GameObject();
 	}
@@ -39,9 +43,10 @@ public class Player : MonoBehaviour {
     {
         if (currentPowerUps == 0)
         {
-            Debug.Log("Erstellt!! Left");
+            //Random selection of an PowerUp and instantion of this
             random = Random.Range(0, GameManager.powerUps.Length);
             leftPowerUp = GameObject.Instantiate(GameManager.powerUps[random]) as GameObject;
+            //Rename the Object and give him on this way the PlayerNr.
             leftPowerUp.name = "leftPowerUp_" + playerNr;
             currentPowerUps++;
         }
@@ -75,7 +80,8 @@ public class Player : MonoBehaviour {
         //if(Input.)
         if (Input.GetKey("Fire_Left_" + playerTag))
         {
-
+            lef
+            Confuse_Other.isUsing = true;
         }
         if (Input.GetKey("Fire_Right_" + playerTag))
         {

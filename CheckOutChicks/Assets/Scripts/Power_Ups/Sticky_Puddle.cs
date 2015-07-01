@@ -5,19 +5,24 @@ public class Sticky_Puddle : MonoBehaviour {
 
     private string powerUpName;
     private int playerNr;
+    public static bool isUsing = false;
 
     // Use this for initialization
     void Awake()
     {
         powerUpName = gameObject.name;
-        string temp = powerUpName.Split('_')[1];
-        playerNr = int.Parse(temp) - 1;
+        string temp = powerUpName.Split('_','(')[1];
+        playerNr = int.Parse(temp);
     }
 
     // Update is called once per frame
     void Update()
     {
         MovePowerUp();
+        if(isUsing)
+        {
+
+        }
     }
 
     void MovePowerUp()
@@ -30,5 +35,12 @@ public class Sticky_Puddle : MonoBehaviour {
             this.transform.position = GameManager.camera_3.transform.position;
         else if (playerNr == 4)
             this.transform.position = GameManager.camera_4.transform.position;
+    }
+
+    //Can use "Vererbung"?!!
+    void ThrowStickyPuddle()
+    {
+
+        GameObject.Destroy(this);
     }
 }
