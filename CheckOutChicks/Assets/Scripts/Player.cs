@@ -11,18 +11,8 @@ public class Player : MonoBehaviour {
     private float speed;
     private Vector3 lastPosition;
 
-    private GameManager GM;
-
-    public static bool collectItem = false;
-    private int maxPlayerPowerUps = 2;
-    private int currentPowerUps = 0;
-
+    private Power_Up[] powerUps = new Power_Up[2];
     private int random;
-
-    //Stats for PowerUps
-
-    public static bool confuse = false;
-    
 
 	// Use this for initialization
 	void Awake () 
@@ -30,7 +20,7 @@ public class Player : MonoBehaviour {
         playerTag = gameObject.tag;
         string temp = playerTag.Split('_')[1];
         playerNr = int.Parse(temp);
-        GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        //GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         lastPosition = this.transform.position;
 	}
 	
@@ -40,23 +30,26 @@ public class Player : MonoBehaviour {
         tacho();
 	}
 
-    public void ChoseItem()
+    void ChoseItem()
     {
-        if (currentPowerUps == 0)
+        int tempSelection = Random.Range(0, GameManager.availablePowerUps.Count);
+
+    }
+
+    void SetPowerUp(Power_Up PowerUp)
+    {
+        for (int i = 0; i < powerUps.Length; i++)
         {
-            
-            currentPowerUps++;
-        }
-        else if (currentPowerUps == 1)
-        {
-            
-            currentPowerUps++;
+            if(powerUps[i] == null)
+            {
+                powerUps[i] = GameManager.availablePowerUps[Random.Range(0, GameManager.availablePowerUps.Count)];
+            }
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Power_Up") //Later "Power_Up"
+        if(other.tag == "Power_Up")
         {
             ChoseItem();
             other.gameObject.SetActive(false);
@@ -68,31 +61,24 @@ public class Player : MonoBehaviour {
     {
         if (Input.GetKey("Fire_Left_" + playerTag))
         {
-           
+           if(powerUps[0] != null)
+           {
+               powerUps[0].Use(this);
+               powerUps[0] = null;
+           }
         }
         if (Input.GetKey("Fire_Right_" + playerTag))
         {
-
+            powerUps[1].Use(this);
+            powerUps[1] = null;
         }
     }
-
-    //void Confuse()
-    //{
-    //    for (int i = 1; i < GM.activePlayers.Count; i++)
-    //    {
-    //        if(i != playerNr)
-    //        {
-    //            Move temp = GameObject.FindGameObjectWithTag("P_" + i).GetComponent<Move>();
-    //            temp.confuse = true;
-    //        }
-    //    }
-    //}
 
     void tacho()
     {
         Debug.Log("@TachoStart");
 
-        for (int i = 0; i < GM.activeCameras.Count; i++)
+        for (int i = 0; i < GameManager.activeCameras.Count; i++)
         {
             Debug.Log("@time");
             speed = (this.transform.position - lastPosition).magnitude / Time.deltaTime;
@@ -101,7 +87,7 @@ public class Player : MonoBehaviour {
             {
                 Debug.Log("@TextMesh");
 
-                GM.activeCameras[i].GetComponentInChildren<TextMesh>().text = speed.ToString("0.");
+                GameManager.activeCameras[i].GetComponentInChildren<TextMesh>().text = speed.ToString("0.");
                 lastPosition = this.transform.position;
             }
         }

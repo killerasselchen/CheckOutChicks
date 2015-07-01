@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour {
     //dont destroy on load
     //OnLevelWasLoaded
 
-
-    //ich muß die gefundenen GameObjects aktivieren!!!!!
     //To set the Playerquantity
     public static bool setToSinglePlayer;
     public static bool setToTwoPlayers;
@@ -23,14 +21,14 @@ public class GameManager : MonoBehaviour {
 
     private bool paused = true;
 
-    public List<GameObject> activeCameras;
+    public static List<GameObject> activeCameras;
     public static GameObject camera_1;
     public static GameObject camera_2;
     public static GameObject camera_3;
     public static GameObject camera_4;
     private GameObject mainCamera;
 
-    public List<GameObject> activePlayers;
+    public static List<GameObject> activePlayers;
     public static GameObject player_1;
     public static GameObject player_2;
     public static GameObject player_3;
@@ -46,7 +44,9 @@ public class GameManager : MonoBehaviour {
     private float maxSpawnDelay = 4;
     private GameObject[] powerUpSpawnPoints;
     private bool nextSpawnPointCheck;
-    public static GameObject[] powerUps;
+    public static List<Power_Up> availablePowerUps;
+
+    public static GameObject stickyPuddlePrefab;
     
     
     void Awake ()
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour {
         FindPlayers();
         FindCameras();
         FindPowerUpSpawnPoints();
-        //FindAvailablePowerUps();
+        SetAvailablePowerUps();
         Time.timeScale = 0;
 
         //When Load Level
@@ -68,11 +68,6 @@ public class GameManager : MonoBehaviour {
 	}
 
     void FixedUpdate()
-    {
-
-    }
-
-    void LateUpdate()
     {
 
     }
@@ -110,7 +105,6 @@ public class GameManager : MonoBehaviour {
     {
         if (setToSinglePlayer == true)
         {
-            Debug.Log("single");
             StartGame();
         }
         else if (setToTwoPlayers == true)
@@ -277,15 +271,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    //void FindAvailablePowerUps()
-    //{
-    //    powerUps = GameObject.FindGameObjectsWithTag("PU"); //"Power_Up" later
-
-    //    //for (int i = 0; i < powerUps.Length; i++)
-    //    //{
-    //    //    powerUps[i].SetActive(false);
-    //    //}
-    //}
+    void SetAvailablePowerUps()
+    {
+        //This tim HardCoding !! Must fix
+        availablePowerUps.Add(new Confuse_Other());
+        availablePowerUps.Add(new Sticky_Puddle());
+        //powerUps.Add
+    }
 
     void SetActivePlayerList()
     {
@@ -319,6 +311,13 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1;
         SetActivePlayerList();
         SetActiveCameraList();
+    }
+
+
+    //PowerUp Managment
+    void LayStickyPuddle()
+    {
+
     }
 }
 

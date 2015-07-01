@@ -10,15 +10,17 @@ public class Move : MonoBehaviour {
 
     public Rigidbody Wagon_RB;
 
-    private float forwardForceMultiplier = 23;
-    private float sideStepMultiplier = 2;
-    private float rotationMultiplier = 2;
+    public bool confuse = false;
+    public bool inStickyPuddle = false;
+
+    private float forwardForcePower = 23;
+    private float forwarPowerUpMultiplier = 1;
+    private float sideStepPower = 2;
+    private float sidePowerUpMultiplier = 1;
+    private float rotationPower = 2;
+    private float rotationPowerUpMultiplier = 1;
 
     private string playerNr;
-
-    public bool confuse = false;
-    public static float confuseFloat = 1;
-
 
 	void Awake () 
     {
@@ -34,24 +36,41 @@ public class Move : MonoBehaviour {
 
     void Movement()
     {
-        float sideStepForce = Input.GetAxis("SideStep_" + playerNr) * confuseFloat;
-        float forwardForce = Input.GetAxis("Vertical_" + playerNr);
-        float rotationPower = Input.GetAxis("Horizontal_" + playerNr) * confuseFloat;
-        Vector3 MoveWagon = new Vector3(sideStepForce * sideStepMultiplier, 0, forwardForce * forwardForceMultiplier);
+        float sideStepForce = Input.GetAxis("SideStep_" + playerNr) * sidePowerUpMultiplier;
+        float forwardForce = Input.GetAxis("Vertical_" + playerNr) * forwarPowerUpMultiplier;
+        float rotationPower = Input.GetAxis("Horizontal_" + playerNr) * rotationPowerUpMultiplier;
+        Vector3 MoveWagon = new Vector3(sideStepForce * sideStepPower, 0, forwardForce * forwardForcePower);
         //Vector3 MoveWagon = new Vector3(0, 0, forwardForce * forwardForceMultiplier);
 
         //When i drive Backward i need a invert Input
-        Wagon_RB.transform.Rotate(0, rotationPower * rotationMultiplier, 0);
+        Wagon_RB.transform.Rotate(0, rotationPower * rotationPower, 0);
 
         Wagon_RB.AddRelativeForce(MoveWagon);
     }
 
     void isConfuse()
     {
-        if (confuse == true)
-            confuseFloat = -1;
-        else if (confuse == false)
-            confuseFloat = 1;
+        if (confuse)
+        {
+            sidePowerUpMultiplier = -1;
+            rotationPowerUpMultiplier = -1;
+        }
+        else if (!confuse)
+        {
+            sidePowerUpMultiplier = 1;
+            rotationPowerUpMultiplier = 1;
+        }
     }
 
+    void inSticky()
+    {
+        if (inStickyPuddle)
+        {
+            forwarPowerUpMultiplier = 0.3f;
+        }
+        else if(!inStickyPuddle)
+        {
+            forwarPowerUpMultiplier = 1.0f;
+        }
+    }
 }
