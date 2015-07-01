@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour {
         FindPlayers();
         FindCameras();
         FindPowerUpSpawnPoints();
-        FindAvailablePowerUps();
+        //FindAvailablePowerUps();
         Time.timeScale = 0;
 
         //When Load Level
@@ -277,15 +277,15 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void FindAvailablePowerUps()
-    {
-        powerUps = GameObject.FindGameObjectsWithTag("PU"); //"Power_Up" later
+    //void FindAvailablePowerUps()
+    //{
+    //    powerUps = GameObject.FindGameObjectsWithTag("PU"); //"Power_Up" later
 
-        //for (int i = 0; i < powerUps.Length; i++)
-        //{
-        //    powerUps[i].SetActive(false);
-        //}
-    }
+    //    //for (int i = 0; i < powerUps.Length; i++)
+    //    //{
+    //    //    powerUps[i].SetActive(false);
+    //    //}
+    //}
 
     void SetActivePlayerList()
     {
@@ -316,5 +316,7 @@ public class GameManager : MonoBehaviour {
         SetActivePlayerList();
         SetActiveCameraList();
     }
+
+    
 }
 

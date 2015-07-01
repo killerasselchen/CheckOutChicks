@@ -9,16 +9,17 @@ public class Player : MonoBehaviour {
     private int playerNr;
     private string myCam;
 
+    //private GameManager GM;
+
     public static bool collectItem = false;
     private int maxPlayerPowerUps = 2;
     private int currentPowerUps = 0;
-    private GameObject leftPowerUp ;
-    private GameObject rightPowerUp;
 
     private int random;
 
     //Stats for PowerUps
     public static bool confuse = false;
+    public static float confuseFloat = 1;
     
 
 	// Use this for initialization
@@ -27,15 +28,14 @@ public class Player : MonoBehaviour {
         playerTag = gameObject.tag;
         string temp = playerTag.Split('_')[1];
         playerNr = int.Parse(temp);
-        leftPowerUp = new GameObject();
-        rightPowerUp = new GameObject();
+        //GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-        ShowPowerUps();
-        
+        tacho();
         
 	}
 
@@ -43,25 +43,14 @@ public class Player : MonoBehaviour {
     {
         if (currentPowerUps == 0)
         {
-            //Random selection of an PowerUp and instantion of this
-            random = Random.Range(0, GameManager.powerUps.Length);
-            leftPowerUp = GameObject.Instantiate(GameManager.powerUps[random]) as GameObject;
-            //Rename the Object and give him on this way the PlayerNr.
-            leftPowerUp.name = "leftPowerUp_" + playerNr;
+            
             currentPowerUps++;
         }
         else if (currentPowerUps == 1)
         {
-            random = Random.Range(0, GameManager.powerUps.Length);
-            rightPowerUp = GameObject.Instantiate(GameManager.powerUps[random]) as GameObject;
-            rightPowerUp.name = "rightPowerUp_" + playerNr;
+            
             currentPowerUps++;
         }
-    }
-
-    void ShowPowerUps()
-    {
-        
     }
 
     void OnTriggerEnter(Collider other)
@@ -80,13 +69,31 @@ public class Player : MonoBehaviour {
         //if(Input.)
         if (Input.GetKey("Fire_Left_" + playerTag))
         {
-            lef
-            Confuse_Other.isUsing = true;
+           
         }
         if (Input.GetKey("Fire_Right_" + playerTag))
         {
 
         }
+    }
+
+    void Confuse(bool leftPowerUp)
+    {
+        for (int i = 1; i < GameManager.activePlayers.Length; i++)
+			{
+                if(i != playerNr)
+                {
+                    Move temp = GameObject.FindGameObjectWithTag("P_" + i).GetComponent<Move>();
+                    temp.confuse = true;
+                    
+                }
+			    
+			}
+    }
+
+    void tacho()
+    {
+        GameManager.camera_1.GetComponentInChildren<TextMesh>().text = "dudel";
     }
 }
  
