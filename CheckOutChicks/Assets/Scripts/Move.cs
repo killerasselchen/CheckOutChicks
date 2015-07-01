@@ -14,42 +14,44 @@ public class Move : MonoBehaviour {
     private float sideStepMultiplier = 2;
     private float rotationMultiplier = 2;
 
-    private float speed;
-    private Vector3 lastPosition;
-
     private string playerNr;
 
     public bool confuse = false;
+    public static float confuseFloat = 1;
+
 
 	void Awake () 
     {
         Wagon_RB = GetComponent<Rigidbody>();
         playerNr = gameObject.tag;
-        lastPosition = this.transform.position;
 	}
 	
 	void FixedUpdate () 
     {
-        float sideStepForce = Input.GetAxis("SideStep_" + playerNr) * Player.confuseFloat;
-        float forwardForce = Input.GetAxis("Vertical_" + playerNr);
-        float rotationPower = Input.GetAxis("Horizontal_" + playerNr) * Player.confuseFloat;
+        isConfuse();
+        Movement();
+	}
 
+    void Movement()
+    {
+        float sideStepForce = Input.GetAxis("SideStep_" + playerNr) * confuseFloat;
+        float forwardForce = Input.GetAxis("Vertical_" + playerNr);
+        float rotationPower = Input.GetAxis("Horizontal_" + playerNr) * confuseFloat;
         Vector3 MoveWagon = new Vector3(sideStepForce * sideStepMultiplier, 0, forwardForce * forwardForceMultiplier);
         //Vector3 MoveWagon = new Vector3(0, 0, forwardForce * forwardForceMultiplier);
 
-
         //When i drive Backward i need a invert Input
         Wagon_RB.transform.Rotate(0, rotationPower * rotationMultiplier, 0);
-        
+
         Wagon_RB.AddRelativeForce(MoveWagon);
+    }
 
-        
-	}
+    void isConfuse()
+    {
+        if (confuse == true)
+            confuseFloat = -1;
+        else if (confuse == false)
+            confuseFloat = 1;
+    }
 
-    //void SpeedCheck()
-    //{
-    //    speed = (transform.position - lastPosition).magnitude / Time.deltaTime;
-
-    //    GameObject.FindGameObjectWithTag("Speed_" playerNr).
-    //}
 }

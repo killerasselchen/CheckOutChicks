@@ -19,18 +19,18 @@ public class GameManager : MonoBehaviour {
     public static bool setToTwoPlayers;
     public static bool setToThreePlayers;
     public static bool setToFourPlayers;
-    public static int playerQuantity;
+    private int playerQuantity;
 
     private bool paused = true;
 
-    public static GameObject[] cameras;
+    public List<GameObject> activeCameras;
     public static GameObject camera_1;
     public static GameObject camera_2;
     public static GameObject camera_3;
     public static GameObject camera_4;
     private GameObject mainCamera;
 
-    public static GameObject[] activePlayers;
+    public List<GameObject> activePlayers;
     public static GameObject player_1;
     public static GameObject player_2;
     public static GameObject player_3;
@@ -289,19 +289,23 @@ public class GameManager : MonoBehaviour {
 
     void SetActivePlayerList()
     {
-        int playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
+        playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
 
-        for (int i = 1; i < playerQuantity; i++)
+        for (int i = 1; i < playerQuantity +1; i++)
         {
-            activePlayers[i] = GameObject.FindGameObjectWithTag("P_" + i);
+            Debug.Log("set Playerlist");
+            activePlayers.Add(GameObject.FindGameObjectWithTag("P_" + i));
+            //activePlayers[i] = GameObject.FindGameObjectWithTag("P_" + i);
         }
     }
 
     void SetActiveCameraList()
     {
-        for (int i = 1; i < playerQuantity; i++)
+        for (int i = 1; i < playerQuantity + 1; i++)
         {
-            cameras[i] = GameObject.FindGameObjectWithTag("Camera_" + i);
+            Debug.Log("file in Cam " + i);
+            //activeCameras[i] = GameObject.FindGameObjectWithTag("Camera_" + i);
+            activeCameras.Add(GameObject.FindGameObjectWithTag("Camera_" + i));
         }
     }
 
@@ -316,7 +320,5 @@ public class GameManager : MonoBehaviour {
         SetActivePlayerList();
         SetActiveCameraList();
     }
-
-    
 }
 

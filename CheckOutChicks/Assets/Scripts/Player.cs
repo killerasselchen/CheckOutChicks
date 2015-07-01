@@ -8,8 +8,10 @@ public class Player : MonoBehaviour {
     private string playerTag;
     private int playerNr;
     private string myCam;
+    private float speed;
+    private Vector3 lastPosition;
 
-    //private GameManager GM;
+    private GameManager GM;
 
     public static bool collectItem = false;
     private int maxPlayerPowerUps = 2;
@@ -18,8 +20,8 @@ public class Player : MonoBehaviour {
     private int random;
 
     //Stats for PowerUps
+
     public static bool confuse = false;
-    public static float confuseFloat = 1;
     
 
 	// Use this for initialization
@@ -28,15 +30,14 @@ public class Player : MonoBehaviour {
         playerTag = gameObject.tag;
         string temp = playerTag.Split('_')[1];
         playerNr = int.Parse(temp);
-        //GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-
+        GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        lastPosition = this.transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
         tacho();
-        
 	}
 
     public void ChoseItem()
@@ -57,7 +58,6 @@ public class Player : MonoBehaviour {
     {
         if(other.tag == "Power_Up") //Later "Power_Up"
         {
-            Debug.Log("Fuck Up??");
             ChoseItem();
             other.gameObject.SetActive(false);
             GameManager.currentMapPowerUps--;
@@ -66,7 +66,6 @@ public class Player : MonoBehaviour {
 
     void UsePowerUp()
     {
-        //if(Input.)
         if (Input.GetKey("Fire_Left_" + playerTag))
         {
            
@@ -77,23 +76,35 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void Confuse(bool leftPowerUp)
-    {
-        for (int i = 1; i < GameManager.activePlayers.Length; i++)
-			{
-                if(i != playerNr)
-                {
-                    Move temp = GameObject.FindGameObjectWithTag("P_" + i).GetComponent<Move>();
-                    temp.confuse = true;
-                    
-                }
-			    
-			}
-    }
+    //void Confuse()
+    //{
+    //    for (int i = 1; i < GM.activePlayers.Count; i++)
+    //    {
+    //        if(i != playerNr)
+    //        {
+    //            Move temp = GameObject.FindGameObjectWithTag("P_" + i).GetComponent<Move>();
+    //            temp.confuse = true;
+    //        }
+    //    }
+    //}
 
     void tacho()
     {
-        GameManager.camera_1.GetComponentInChildren<TextMesh>().text = "dudel";
+        Debug.Log("@TachoStart");
+
+        for (int i = 0; i < GM.activeCameras.Count; i++)
+        {
+            Debug.Log("@time");
+            speed = (this.transform.position - lastPosition).magnitude / Time.deltaTime;
+
+            if (i+1 == playerNr)
+            {
+                Debug.Log("@TextMesh");
+
+                GM.activeCameras[i].GetComponentInChildren<TextMesh>().text = speed.ToString("0.");
+                lastPosition = this.transform.position;
+            }
+        }
     }
 }
  
