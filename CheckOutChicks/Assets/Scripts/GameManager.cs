@@ -39,26 +39,78 @@ public class GameManager : MonoBehaviour {
     public int maxMapPowerUps = 6;
     public static int currentMapPowerUps;
     private int nextPowerUp;
-    private float spawnTimer = 5;
+    private float Power_Up_Spawn_Timer = 5;
     private float minSpawnDelay = 1;
     private float maxSpawnDelay = 4;
     private GameObject[] powerUpSpawnPoints;
     private bool nextSpawnPointCheck;
-    public static List<Power_Up> availablePowerUps;
-
+    //public static List<Power_Up> availablePowerUps;
+    public static Power_Up[] availablePowerUps = new Power_Up[2];
     public static GameObject stickyPuddlePrefab;
     
+    //Buyable Items
+    //private GameObject[] itemSpawnPoints;
+    private List<GameObject> itemSpawnPoints;
+    //private float Item_Spawn_Timer = 5;
+    private int nextItem;
+
     
+    void FindItemSpawnPoints()
+    {
+        for (int i = 0; i < GameObject.FindGameObjectsWithTag("Product").Length; i++)
+		{
+            itemSpawnPoints.Add(GameObject.FindGameObjectsWithTag("Product")[i]);
+		}
+
+        for (int i = 0; i < itemSpawnPoints.Count; i++)
+        {
+            itemSpawnPoints[i].SetActive(false);
+        }
+    }
+
     void Awake ()
     {
         FindPlayers();
         FindCameras();
         FindPowerUpSpawnPoints();
         SetAvailablePowerUps();
+        FindItemSpawnPoints();
         Time.timeScale = 0;
 
         //When Load Level
         //powerUps = new GameObject[GameObject.FindGameObjectsWithTag("Power_up").Length];
+    }
+
+    void SpawnItems()
+    {
+        //if (currentMapPowerUps <= maxMapPowerUps)
+        //{
+        //    if (Item_Spawn_Timer <= 0)
+        //    {
+        //        nextSpawnPointCheck = true;
+        //        while (nextSpawnPointCheck == true)
+        //        {
+        //            nextPowerUp = Random.Range(0, powerUpSpawnPoints.Length);
+
+        //            if (!powerUpSpawnPoints[nextPowerUp].activeInHierarchy)
+        //            {
+        //                powerUpSpawnPoints[nextPowerUp].SetActive(true);
+        //                nextSpawnPointCheck = false;
+        //                currentMapPowerUps++;
+        //            }
+        //            Item_Spawn_Timer = Random.Range(minSpawnDelay, maxSpawnDelay);
+        //        }
+        //    }
+        //    Item_Spawn_Timer -= 1 * Time.deltaTime;
+        //}
+    }
+
+    void SelectNextItem()
+    {
+        nextItem = Random.Range(0, itemSpawnPoints.Count);
+
+
+        //if()
     }
 	
 	void Update () 
@@ -251,7 +303,7 @@ public class GameManager : MonoBehaviour {
     {
         if(currentMapPowerUps <= maxMapPowerUps)
         {
-            if(spawnTimer <= 0)
+            if(Power_Up_Spawn_Timer <= 0)
             {
                 nextSpawnPointCheck = true;
                 while (nextSpawnPointCheck == true)
@@ -264,30 +316,30 @@ public class GameManager : MonoBehaviour {
                         nextSpawnPointCheck = false;
                         currentMapPowerUps++;
                     }
-                    spawnTimer = Random.Range(minSpawnDelay, maxSpawnDelay);
+                    Power_Up_Spawn_Timer = Random.Range(minSpawnDelay, maxSpawnDelay);
                 }
             }
-            spawnTimer -= 1 * Time.deltaTime;
+            Power_Up_Spawn_Timer -= 1 * Time.deltaTime;
         }
     }
 
     void SetAvailablePowerUps()
     {
         //This tim HardCoding !! Must fix
-        availablePowerUps.Add(new Confuse_Other());
-        availablePowerUps.Add(new Sticky_Puddle());
+        //availablePowerUps.Add(new Confuse_Other());
+        //availablePowerUps.Add(new Sticky_Puddle());
         //powerUps.Add
+        availablePowerUps[0] = new Confuse_Other();
+        availablePowerUps[1] = new Sticky_Puddle();
     }
 
     void SetActivePlayerList()
     {
         playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
 
-        for (int i = 1; i < playerQuantity +1; i++)
+        for (int i = 1; i < playerQuantity + 1; i++)
         {
-            Debug.Log("set Playerlist");
             activePlayers.Add(GameObject.FindGameObjectWithTag("P_" + i));
-            //activePlayers[i] = GameObject.FindGameObjectWithTag("P_" + i);
         }
     }
 
@@ -295,8 +347,6 @@ public class GameManager : MonoBehaviour {
     {
         for (int i = 1; i < playerQuantity + 1; i++)
         {
-            Debug.Log("file in Cam " + i);
-            //activeCameras[i] = GameObject.FindGameObjectWithTag("Camera_" + i);
             activeCameras.Add(GameObject.FindGameObjectWithTag("Camera_" + i));
         }
     }

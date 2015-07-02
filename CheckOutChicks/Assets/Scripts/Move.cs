@@ -15,12 +15,14 @@ public class Move : MonoBehaviour {
 
     private float forwardForcePower = 23;
     private float forwarPowerUpMultiplier = 1;
-    private float sideStepPower = 2;
+    private float sideStepPower = 1.0f;
     private float sidePowerUpMultiplier = 1;
     private float rotationPower = 2;
     private float rotationPowerUpMultiplier = 1;
 
     private string playerNr;
+
+    public float sideStepForceInput;
 
 	void Awake () 
     {
@@ -31,20 +33,20 @@ public class Move : MonoBehaviour {
 	void FixedUpdate () 
     {
         isConfuse();
+        inSticky();
         Movement();
 	}
 
     void Movement()
     {
-        float sideStepForce = Input.GetAxis("SideStep_" + playerNr) * sidePowerUpMultiplier;
-        float forwardForce = Input.GetAxis("Vertical_" + playerNr) * forwarPowerUpMultiplier;
-        float rotationPower = Input.GetAxis("Horizontal_" + playerNr) * rotationPowerUpMultiplier;
-        Vector3 MoveWagon = new Vector3(sideStepForce * sideStepPower, 0, forwardForce * forwardForcePower);
-        //Vector3 MoveWagon = new Vector3(0, 0, forwardForce * forwardForceMultiplier);
+        sideStepForceInput = Input.GetAxis("SideStep_P_1");
+        float forwardForceInput = Input.GetAxis("Vertical_" + playerNr);
+        float rotationInput = Input.GetAxis("Horizontal_" + playerNr);
+        Vector3 MoveWagon = new Vector3(sideStepForceInput , 0, forwardForceInput * forwardForcePower);
 
         //When i drive Backward i need a invert Input
-        Wagon_RB.transform.Rotate(0, rotationPower * rotationPower, 0);
-
+        Wagon_RB.transform.Rotate(0, rotationInput * rotationPower * rotationPowerUpMultiplier, 0);
+        //Wagon_RB.transform.Translate(new Vector3(sideStepForceInput * sideStepPower, 0, 0));
         Wagon_RB.AddRelativeForce(MoveWagon);
     }
 

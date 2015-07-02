@@ -7,8 +7,10 @@ class Confuse_Other : Power_Up
     {
         for (int i = 0; i < GameManager.activePlayers.Count; i++)
         {
-            if (GameManager.activePlayers[i] == player) continue;
+            if (GameManager.activePlayers[i] != player)
+            {
                 GameManager.activePlayers[i].GetComponent<Move>().confuse = true;
+            }
         }
     }
 }

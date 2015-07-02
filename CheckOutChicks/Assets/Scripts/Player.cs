@@ -27,70 +27,74 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-        tacho();
+        //tacho();
+        if (Input.anyKeyDown)
+            UsePowerUp();
 	}
 
     void ChoseItem()
     {
-        int tempSelection = Random.Range(0, GameManager.availablePowerUps.Count);
+        int tempSelection = Random.Range(0, GameManager.availablePowerUps.Length);
 
     }
 
-    void SetPowerUp(Power_Up PowerUp)
+    void SetPowerUp(Power_Up powerUp)
     {
         for (int i = 0; i < powerUps.Length; i++)
         {
             if(powerUps[i] == null)
             {
-                powerUps[i] = GameManager.availablePowerUps[Random.Range(0, GameManager.availablePowerUps.Count)];
+                powerUps[i] = powerUp;
+                Debug.Log("" + powerUps[i]);
+                return;
             }
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Power_Up")
-        {
-            ChoseItem();
-            other.gameObject.SetActive(false);
-            GameManager.currentMapPowerUps--;
         }
     }
 
     void UsePowerUp()
     {
-        if (Input.GetKey("Fire_Left_" + playerTag))
+        if (Input.GetKey(KeyCode.Q))
         {
+            Debug.Log("leftFire");
            if(powerUps[0] != null)
            {
                powerUps[0].Use(this);
                powerUps[0] = null;
            }
         }
-        if (Input.GetKey("Fire_Right_" + playerTag))
+        if (Input.GetKey(KeyCode.E))
         {
             powerUps[1].Use(this);
             powerUps[1] = null;
         }
     }
 
-    void tacho()
+    //void tacho()
+    //{
+    //    for (int i = 0; i < GameManager.activeCameras.Count; i++)
+    //    {
+    //        Debug.Log("@time");
+    //        speed = (this.transform.position - lastPosition).magnitude / Time.deltaTime;
+
+    //        if (i+1 == playerNr)
+    //        {
+    //            Debug.Log("@TextMesh");
+
+    //            GameManager.activeCameras[i].GetComponentInChildren<TextMesh>().text = speed.ToString("0.");
+    //            lastPosition = this.transform.position;
+    //        }
+    //    }
+    //}
+
+    void OnTriggerEnter(Collider other)
     {
-        Debug.Log("@TachoStart");
-
-        for (int i = 0; i < GameManager.activeCameras.Count; i++)
+        if (other.tag == "Power_Up")
         {
-            Debug.Log("@time");
-            speed = (this.transform.position - lastPosition).magnitude / Time.deltaTime;
-
-            if (i+1 == playerNr)
-            {
-                Debug.Log("@TextMesh");
-
-                GameManager.activeCameras[i].GetComponentInChildren<TextMesh>().text = speed.ToString("0.");
-                lastPosition = this.transform.position;
-            }
+            SetPowerUp(GameManager.availablePowerUps[Random.Range(0, GameManager.availablePowerUps.Length)]);
+            other.gameObject.SetActive(false);
+            GameManager.currentMapPowerUps--;
         }
     }
+
 }
  
