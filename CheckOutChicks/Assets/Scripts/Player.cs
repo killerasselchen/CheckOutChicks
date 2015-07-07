@@ -23,7 +23,7 @@ public class Player : MonoBehaviour {
     private UI_Power_Up ui_Power_Up;
     private Shopping_Manager shopping_Manager;
 
-    private List<string> meineEinkaeufe;
+    private List<string> meineEinkaeufe = new List<string>();
 
 	// Use this for initialization
 	void Awake () 
@@ -115,10 +115,13 @@ public class Player : MonoBehaviour {
         else if(other.tag == "Product")
         {
             meineEinkaeufe.Add(other.gameObject.name);
-            other.gameObject.SetActive(false);
             shopping_Manager.Products.Remove(other.gameObject);
             //shopping_Manager.Products.Remove(shopping_Manager.Products[shopping_Manager.NextItem]);
-            shopping_Manager.CurrentItem--;
+            Debug.Log(shopping_Manager.CurrentItem);
+            shopping_Manager.CurrentItem = shopping_Manager.CurrentItem - 1;
+            Debug.Log(shopping_Manager.CurrentItem);
+
+            other.gameObject.SetActive(false);
         }
     }
 

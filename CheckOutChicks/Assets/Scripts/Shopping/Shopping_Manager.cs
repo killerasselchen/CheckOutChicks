@@ -21,28 +21,22 @@ public class Shopping_Manager : MonoBehaviour
         SpawnNextItem();
     }
 
-    //public int NextItem
-    //{
-    //    get { return nextItem; }
-    //    set { value = nextItem; }
-    //}
-
     public List<GameObject> Products
     {
         get { return products;}
-        set { value = products;}
+        set { products = value;}
     }
 
     public int CurrentItem
     {
         get { return currentItems;}
-        set { value = currentItems; }
+        set {  currentItems = value; }
     }
 
     public int MaxItems
     {
         get { return maxItems;}
-        set { value = maxItems; }
+        set { maxItems = value; }
     }
 
     void FindAvailableProducts()
@@ -74,8 +68,9 @@ public class Shopping_Manager : MonoBehaviour
             {
                 nextItem = Random.Range(0, products.Count);
                 products[nextItem].SetActive(true);
-
-                CurrentItem++;
+                Debug.Log(products[nextItem]);
+                Debug.Log(CurrentItem);
+                currentItems++;
                 spawnTimer = Random.Range(0, 4);
             }
 
