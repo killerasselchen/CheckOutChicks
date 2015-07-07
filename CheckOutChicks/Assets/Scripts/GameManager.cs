@@ -21,14 +21,14 @@ public class GameManager : MonoBehaviour {
 
     private bool paused = true;
 
-    public static List<GameObject> activeCameras;
+    public static List<GameObject> activeCameras = new List<GameObject>();
     public static GameObject camera_1;
     public static GameObject camera_2;
     public static GameObject camera_3;
     public static GameObject camera_4;
     private GameObject mainCamera;
 
-    public static List<GameObject> activePlayers;
+    public static List<GameObject> activePlayers = new List<GameObject>();
     public static GameObject player_1;
     public static GameObject player_2;
     public static GameObject player_3;
@@ -36,37 +36,20 @@ public class GameManager : MonoBehaviour {
     //public static List<GameObject> playerList;
 
     //public GameObject powerUp;
-    public int maxMapPowerUps = 6;
+    public int maxMapPowerUps = 16;
     public static int currentMapPowerUps;
     private int nextPowerUp;
-    private float Power_Up_Spawn_Timer = 5;
-    private float minSpawnDelay = 1;
-    private float maxSpawnDelay = 4;
+    private float Power_Up_Spawn_Timer = 1;
+    private float minSpawnDelay = 0;
+    private float maxSpawnDelay = 1;
     private GameObject[] powerUpSpawnPoints;
     private bool nextSpawnPointCheck;
     //public static List<Power_Up> availablePowerUps;
-    public static Power_Up[] availablePowerUps = new Power_Up[2];
-    public static GameObject stickyPuddlePrefab;
-    
-    //Buyable Items
-    //private GameObject[] itemSpawnPoints;
-    private List<GameObject> itemSpawnPoints;
-    //private float Item_Spawn_Timer = 5;
-    private int nextItem;
+    public static Power_Up[] availablePowerUps = new Power_Up[3];
+    public static string[] availablePowerUpsList = new string[3];
+    public bool allPowerUpsAvailable = true;
 
     
-    void FindItemSpawnPoints()
-    {
-        for (int i = 0; i < GameObject.FindGameObjectsWithTag("Product").Length; i++)
-		{
-            itemSpawnPoints.Add(GameObject.FindGameObjectsWithTag("Product")[i]);
-		}
-
-        for (int i = 0; i < itemSpawnPoints.Count; i++)
-        {
-            itemSpawnPoints[i].SetActive(false);
-        }
-    }
 
     void Awake ()
     {
@@ -74,45 +57,14 @@ public class GameManager : MonoBehaviour {
         FindCameras();
         FindPowerUpSpawnPoints();
         SetAvailablePowerUps();
-        FindItemSpawnPoints();
         Time.timeScale = 0;
 
         //When Load Level
         //powerUps = new GameObject[GameObject.FindGameObjectsWithTag("Power_up").Length];
     }
 
-    void SpawnItems()
-    {
-        //if (currentMapPowerUps <= maxMapPowerUps)
-        //{
-        //    if (Item_Spawn_Timer <= 0)
-        //    {
-        //        nextSpawnPointCheck = true;
-        //        while (nextSpawnPointCheck == true)
-        //        {
-        //            nextPowerUp = Random.Range(0, powerUpSpawnPoints.Length);
+    
 
-        //            if (!powerUpSpawnPoints[nextPowerUp].activeInHierarchy)
-        //            {
-        //                powerUpSpawnPoints[nextPowerUp].SetActive(true);
-        //                nextSpawnPointCheck = false;
-        //                currentMapPowerUps++;
-        //            }
-        //            Item_Spawn_Timer = Random.Range(minSpawnDelay, maxSpawnDelay);
-        //        }
-        //    }
-        //    Item_Spawn_Timer -= 1 * Time.deltaTime;
-        //}
-    }
-
-    void SelectNextItem()
-    {
-        nextItem = Random.Range(0, itemSpawnPoints.Count);
-
-
-        //if()
-    }
-	
 	void Update () 
     {
         KeyControl();
@@ -130,22 +82,22 @@ public class GameManager : MonoBehaviour {
         {
             Pause();
         }
-        else if (Input.GetKeyDown(KeyCode.F1) && paused)
+        else if (Input.GetKeyDown(KeyCode.Alpha1) && paused)
         {
             setToSinglePlayer = true;
             PlayerQuantitySelection();
         }
-        else if (Input.GetKeyDown(KeyCode.F2) && paused)
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && paused)
         {
             setToTwoPlayers = true;
             PlayerQuantitySelection();
         }
-        else if (Input.GetKeyDown(KeyCode.F3) && paused)
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && paused)
         {
             setToThreePlayers = true;
             PlayerQuantitySelection();
         }
-        else if (Input.GetKeyDown(KeyCode.F4) && paused)
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && paused)
         {
             setToFourPlayers = true;
             PlayerQuantitySelection();
@@ -325,12 +277,20 @@ public class GameManager : MonoBehaviour {
 
     void SetAvailablePowerUps()
     {
-        //This tim HardCoding !! Must fix
-        //availablePowerUps.Add(new Confuse_Other());
-        //availablePowerUps.Add(new Sticky_Puddle());
-        //powerUps.Add
-        availablePowerUps[0] = new Confuse_Other();
-        availablePowerUps[1] = new Sticky_Puddle();
+        //if(bool für jedes PowerUp)
+        //Liste mit Items und die Liste der Namen füllen
+        //AufListe umbauen, da es so vorab feststehen muß... zudem kann man per bool bei einer list jeder Item für sich activieren oder eben nicht
+        if(allPowerUpsAvailable)
+        {
+            availablePowerUps[0] = new Confuse_Other();
+            availablePowerUpsList[0] = "Confuse_Other";
+
+            availablePowerUps[1] = new Sticky_Puddle();
+            availablePowerUpsList[1] = "Sticky_Puddle";
+
+            availablePowerUps[2] = new Turbo_Boost();
+            availablePowerUpsList[2] = "Turbo";
+        }
     }
 
     void SetActivePlayerList()
@@ -353,21 +313,12 @@ public class GameManager : MonoBehaviour {
 
     void StartGame()
     {
-        Debug.Log("startgame");
-
         ActivatePlayers();
         ActivateCameras();
         paused = false;
         Time.timeScale = 1;
         SetActivePlayerList();
         SetActiveCameraList();
-    }
-
-
-    //PowerUp Managment
-    void LayStickyPuddle()
-    {
-
     }
 }
 

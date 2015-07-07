@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-class Sticky_Puddle : Power_Up 
+public class Turbo_Boost : Power_Up 
 {
     public override void Use(Player player)
     {
         for (int i = 0; i < GameManager.activePlayers.Count; i++)
         {
-            if (GameManager.activePlayers[i] == player.gameObject) continue;
+            if (GameManager.activePlayers[i] == player.gameObject)
             {
-                GameManager.activePlayers[i].GetComponent<Move>().inStickyPuddle = true;
+                GameManager.activePlayers[i].GetComponent<Move>().turboOn = true;
             }
         }
     }
-    
 }
