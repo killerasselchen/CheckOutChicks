@@ -24,11 +24,13 @@ ModelImporter:
     2300004: rad3
     2300006: rad4
     2300008: wagen
+    2300010: //RootNode
     3300000: rad1
     3300002: rad2
     3300004: rad3
     3300006: rad4
     3300008: wagen
+    3300010: //RootNode
     4300000: rad3
     4300002: rad4
     4300004: rad2
