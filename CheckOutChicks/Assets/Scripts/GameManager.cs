@@ -36,18 +36,18 @@ public class GameManager : MonoBehaviour {
     //public static List<GameObject> playerList;
 
     //public GameObject powerUp;
-    public int maxMapPowerUps = 16;
-    public static int currentMapPowerUps;
-    private int nextPowerUp;
-    private float Power_Up_Spawn_Timer = 1;
-    private float minSpawnDelay = 0;
-    private float maxSpawnDelay = 1;
-    private GameObject[] powerUpSpawnPoints;
-    private bool nextSpawnPointCheck;
-    //public static List<Power_Up> availablePowerUps;
-    public static Power_Up[] availablePowerUps = new Power_Up[3];
-    public static string[] availablePowerUpsList = new string[3];
-    public bool allPowerUpsAvailable = true;
+    //public int maxMapPowerUps = 16;
+    //public static int currentMapPowerUps;
+    //private int nextPowerUp;
+    //private float Power_Up_Spawn_Timer = 1;
+    //private float minSpawnDelay = 0;
+    //private float maxSpawnDelay = 1;
+    //private GameObject[] powerUpSpawnPoints;
+    //private bool nextSpawnPointCheck;
+    ////public static List<Power_Up> availablePowerUps;
+    //public static Power_Up[] availablePowerUps = new Power_Up[3];
+    //public static string[] availablePowerUpsList = new string[3];
+    //public bool allPowerUpsAvailable = true;
 
     
 
@@ -55,8 +55,8 @@ public class GameManager : MonoBehaviour {
     {
         FindPlayers();
         FindCameras();
-        FindPowerUpSpawnPoints();
-        SetAvailablePowerUps();
+        //FindPowerUpSpawnPoints();
+        //SetAvailablePowerUps();
         Time.timeScale = 0;
 
         //When Load Level
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour {
 	void Update () 
     {
         KeyControl();
-        SpawnPowerUp();
+        //SpawnPowerUp();
 	}
 
     void FixedUpdate()
@@ -241,57 +241,57 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void FindPowerUpSpawnPoints()
-    {
-        powerUpSpawnPoints = GameObject.FindGameObjectsWithTag("Power_Up"); //_Spawn_Point for later
+    //void FindPowerUpSpawnPoints()
+    //{
+    //    powerUpSpawnPoints = GameObject.FindGameObjectsWithTag("Power_Up"); //_Spawn_Point for later
 
-        for (int i = 0; i < powerUpSpawnPoints.Length; i++)
-        {
-            powerUpSpawnPoints[i].SetActive(false);
-        }
-    }
+    //    for (int i = 0; i < powerUpSpawnPoints.Length; i++)
+    //    {
+    //        powerUpSpawnPoints[i].SetActive(false);
+    //    }
+    //}
 
-    void SpawnPowerUp()
-    {
-        if(currentMapPowerUps <= maxMapPowerUps)
-        {
-            if(Power_Up_Spawn_Timer <= 0)
-            {
-                nextSpawnPointCheck = true;
-                while (nextSpawnPointCheck == true)
-                {
-                    nextPowerUp = Random.Range(0, powerUpSpawnPoints.Length);
+    //void SpawnPowerUp()
+    //{
+    //    if(currentMapPowerUps <= maxMapPowerUps)
+    //    {
+    //        if(Power_Up_Spawn_Timer <= 0)
+    //        {
+    //            nextSpawnPointCheck = true;
+    //            while (nextSpawnPointCheck == true)
+    //            {
+    //                nextPowerUp = Random.Range(0, powerUpSpawnPoints.Length);
 
-                    if (!powerUpSpawnPoints[nextPowerUp].activeInHierarchy)
-                    {
-                        powerUpSpawnPoints[nextPowerUp].SetActive(true);
-                        nextSpawnPointCheck = false;
-                        currentMapPowerUps++;
-                    }
-                    Power_Up_Spawn_Timer = Random.Range(minSpawnDelay, maxSpawnDelay);
-                }
-            }
-            Power_Up_Spawn_Timer -= 1 * Time.deltaTime;
-        }
-    }
+    //                if (!powerUpSpawnPoints[nextPowerUp].activeInHierarchy)
+    //                {
+    //                    powerUpSpawnPoints[nextPowerUp].SetActive(true);
+    //                    nextSpawnPointCheck = false;
+    //                    currentMapPowerUps++;
+    //                }
+    //                Power_Up_Spawn_Timer = Random.Range(minSpawnDelay, maxSpawnDelay);
+    //            }
+    //        }
+    //        Power_Up_Spawn_Timer -= 1 * Time.deltaTime;
+    //    }
+    //}
 
-    void SetAvailablePowerUps()
-    {
-        //if(bool für jedes PowerUp)
-        //Liste mit Items und die Liste der Namen füllen
-        //AufListe umbauen, da es so vorab feststehen muß... zudem kann man per bool bei einer list jeder Item für sich activieren oder eben nicht
-        if(allPowerUpsAvailable)
-        {
-            availablePowerUps[0] = new Confuse_Other();
-            availablePowerUpsList[0] = "Confuse_Other";
+    //void SetAvailablePowerUps()
+    //{
+    //    //if(bool für jedes PowerUp)
+    //    //Liste mit Items und die Liste der Namen füllen
+    //    //AufListe umbauen, da es so vorab feststehen muß... zudem kann man per bool bei einer list jeder Item für sich activieren oder eben nicht
+    //    if(allPowerUpsAvailable)
+    //    {
+    //        availablePowerUps[0] = new Confuse_Other();
+    //        availablePowerUpsList[0] = "Confuse_Other";
 
-            availablePowerUps[1] = new Sticky_Puddle();
-            availablePowerUpsList[1] = "Sticky_Puddle";
+    //        availablePowerUps[1] = new Sticky_Puddle();
+    //        availablePowerUpsList[1] = "Sticky_Puddle";
 
-            availablePowerUps[2] = new Turbo_Boost();
-            availablePowerUpsList[2] = "Turbo";
-        }
-    }
+    //        availablePowerUps[2] = new Turbo_Boost();
+    //        availablePowerUpsList[2] = "Turbo";
+    //    }
+    //}
 
     void SetActivePlayerList()
     {

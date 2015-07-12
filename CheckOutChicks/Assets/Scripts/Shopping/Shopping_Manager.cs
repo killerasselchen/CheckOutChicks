@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class Shopping_Manager : MonoBehaviour 
 {
-    private List<GameObject> products = new List<GameObject>();
-    private List<GameObject> productsCopie;
+    private List<GameObject> products;
+    private List<GameObject> productsBackUp;
     private int currentItems;
     private int maxItems;
     private int nextItem;
@@ -41,13 +41,15 @@ public class Shopping_Manager : MonoBehaviour
 
     void FindAvailableProducts()
     {
+        products = new List<GameObject>();
+        productsBackUp = new List<GameObject>();
+
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Product");
         for (int i = 0; i < temp.Length; i++)
 			{
                 products.Add(temp[i]);
+                productsBackUp.Add(temp[i]);
 			}
-
-        productsCopie = products;
 
         DeactivateItems();
     }
@@ -62,14 +64,12 @@ public class Shopping_Manager : MonoBehaviour
 
     void SpawnNextItem()
     {
-        if(currentItems <= maxItems && Products.Count > 1)
+        if(currentItems <= maxItems && products.Count > 0)
         {
             if(spawnTimer <= 0)
             {
                 nextItem = Random.Range(0, products.Count);
                 products[nextItem].SetActive(true);
-                Debug.Log(products[nextItem]);
-                Debug.Log(CurrentItem);
                 currentItems++;
                 spawnTimer = Random.Range(0, 4);
             }
@@ -79,7 +79,7 @@ public class Shopping_Manager : MonoBehaviour
 
         else if(Products.Count == 0)
         {
-            Products = productsCopie;
+            products = new List<GameObject>(productsBackUp);
         }
     }
 }

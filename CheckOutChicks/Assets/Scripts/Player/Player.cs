@@ -9,7 +9,8 @@ public class Player : MonoBehaviour {
     private int playerNr;
     private string myCam;
     private float speed;
-    private Vector3 lastPosition;
+    //Outsourcing lastPos
+    //private Vector3 lastPosition;
 
     private Power_Up[] myPowerUps = new Power_Up[2];
     private int random;
@@ -17,11 +18,10 @@ public class Player : MonoBehaviour {
     public static int leftItem;
     public static int rightItem;
     private Power_Up nextPowerUp;
-    private string leftPowerUpTexture;
-    private string rightPowerUpTexture;
 
     private UI_Power_Up ui_Power_Up;
     private Shopping_Manager shopping_Manager;
+    private Power_Up_Manager power_Up_Manager;
 
     private List<string> meineEinkaeufe = new List<string>();
 
@@ -31,10 +31,11 @@ public class Player : MonoBehaviour {
         playerTag = gameObject.tag;
         string temp = playerTag.Split('_')[1];
         playerNr = int.Parse(temp);
-        //GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        lastPosition = this.transform.position;
-        ui_Power_Up = GameObject.Find("Canvas_" + playerTag).GetComponent<UI_Power_Up>();
+        //Outsourcing lastPos
+        //lastPosition = this.transform.position;
+        ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<UI_Power_Up>();
         shopping_Manager = GameObject.Find("GameManager").GetComponent<Shopping_Manager>();
+        power_Up_Manager = GameObject.Find("GameManager").GetComponent<Power_Up_Manager>();
 	}
 	
 	// Update is called once per frame
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour {
         //tacho();
         if (Input.anyKeyDown)
             UsePowerUp();
+
 	}
 
     void SetPowerUp(Power_Up powerUp)
@@ -62,22 +64,15 @@ public class Player : MonoBehaviour {
                     UI_Power_Up.ActivateUI(ui_Power_Up.rightPowerUps[rightItem]);
                 }
                 myPowerUps[i] = powerUp;
-                Debug.Log(myPowerUps[i]);
                 return;
             }
         }
-    }
-
-    void SelectItem(int itemNr)
-    {
-
     }
 
     void UsePowerUp()
     {
         if (Input.GetButtonDown("Fire_Left_" + playerTag))
         {
-            Debug.Log("leftFire" + playerNr);
            if(myPowerUps[0] != null)
            {
                myPowerUps[0].Use(this);
@@ -98,29 +93,29 @@ public class Player : MonoBehaviour {
 
     void SetNextPowerUp()
     {
-        tempItem = Random.Range(0, GameManager.availablePowerUps.Length);
-        nextPowerUp = GameManager.availablePowerUps[tempItem];
+        tempItem = Random.Range(0, power_Up_Manager.AvailablePowerUp.Length);
+        nextPowerUp = power_Up_Manager.AvailablePowerUp[tempItem];
+        //nextPowerUp = power_Up_Manager.availablePowerUps[tempItem];
+
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Power_Up")
+        if (other.tag == "Power_Up_Spawn_Point")
         {
             SetNextPowerUp();
             SetPowerUp(nextPowerUp);
             other.gameObject.SetActive(false);
-            GameManager.currentMapPowerUps--;
+            power_Up_Manager.CurrentMapPowerUps--;
         }
 
         else if(other.tag == "Product")
         {
             meineEinkaeufe.Add(other.gameObject.name);
+
             shopping_Manager.Products.Remove(other.gameObject);
             //shopping_Manager.Products.Remove(shopping_Manager.Products[shopping_Manager.NextItem]);
-            Debug.Log(shopping_Manager.CurrentItem);
             shopping_Manager.CurrentItem = shopping_Manager.CurrentItem - 1;
-            Debug.Log(shopping_Manager.CurrentItem);
-
             other.gameObject.SetActive(false);
         }
     }
