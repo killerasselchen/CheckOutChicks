@@ -11,6 +11,7 @@ ModelImporter:
     3300000: //RootNode
     4300000: polySurface1
     4300002: gefrierschrank
+    4300004: Gefrierschrank
   materials:
     importMaterials: 1
     materialName: 0

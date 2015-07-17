@@ -22,6 +22,8 @@ ModelImporter:
     100028: transform4
     100030: eingang
     100032: polySurface5
+    100034: Eingang_links
+    100036: Eingang_rechts
     400000: //RootNode
     400002: group
     400004: pasted__pCube1
@@ -39,15 +41,23 @@ ModelImporter:
     400028: transform4
     400030: eingang
     400032: polySurface5
+    400034: Eingang_links
+    400036: Eingang_rechts
     2300000: pasted__pCylinder2
     2300002: eingang
     2300004: polySurface5
+    2300006: Eingang_links
+    2300008: Eingang_rechts
     3300000: pasted__pCylinder2
     3300002: eingang
     3300004: polySurface5
+    3300006: Eingang_links
+    3300008: Eingang_rechts
     4300000: pasted__pCylinder2
     4300002: polySurface5
     4300004: eingang
+    4300006: Eingang_links
+    4300008: Eingang_rechts
   materials:
     importMaterials: 1
     materialName: 0

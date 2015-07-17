@@ -8,14 +8,34 @@ ModelImporter:
     100000: //RootNode
     100002: kasse
     100004: pCube16
+    100006: glasscheibe
+    100008: kasse 1
+    100010: kasse1
+    100012: polySurface2
+    100014: polySurface4
+    100016: polySurface6
     400000: //RootNode
     400002: kasse
     400004: pCube16
+    400006: glasscheibe
+    400008: kasse 1
+    400010: kasse1
+    400012: polySurface2
+    400014: polySurface4
+    400016: polySurface6
     2300000: kasse
     2300002: //RootNode
+    2300004: glasscheibe
+    2300006: kasse 1
+    2300008: kasse1
     3300000: kasse
     3300002: //RootNode
+    3300004: glasscheibe
+    3300006: kasse 1
+    3300008: kasse1
     4300000: kasse
+    4300002: kasse1
+    4300004: glasscheibe
   materials:
     importMaterials: 1
     materialName: 0

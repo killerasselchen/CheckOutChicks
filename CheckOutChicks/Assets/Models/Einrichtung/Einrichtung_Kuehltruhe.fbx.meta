@@ -20,6 +20,7 @@ ModelImporter:
     4300000: pCube3
     4300002: pCylinder16
     4300004: Kuehltruhe
+    4300006: kuehltruhe
   materials:
     importMaterials: 1
     materialName: 0

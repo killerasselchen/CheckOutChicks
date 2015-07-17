@@ -10,6 +10,7 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: pCube36
+    4300002: palette
   materials:
     importMaterials: 1
     materialName: 0

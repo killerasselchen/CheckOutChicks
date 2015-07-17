@@ -13,6 +13,8 @@ ModelImporter:
     100010: rollie
     100012: rollie_boden
     100014: rolly
+    100016: Rollie
+    100018: Rollie_boden
     400000: //RootNode
     400002: pCube28
     400004: polySurface39
@@ -21,24 +23,32 @@ ModelImporter:
     400010: rollie
     400012: rollie_boden
     400014: rolly
+    400016: Rollie
+    400018: Rollie_boden
     2300000: pCube28
     2300002: polySurface39
     2300004: polySurface42
     2300006: polySurface43
     2300008: rollie_boden
     2300010: rolly
+    2300012: Rollie
+    2300014: Rollie_boden
     3300000: pCube28
     3300002: polySurface39
     3300004: polySurface42
     3300006: polySurface43
     3300008: rollie_boden
     3300010: rolly
+    3300012: Rollie
+    3300014: Rollie_boden
     4300000: pCube28
     4300002: polySurface39
     4300004: rollie_boden
     4300006: polySurface42
     4300008: polySurface43
     4300010: rolly
+    4300012: Rollie_boden
+    4300014: Rollie
   materials:
     importMaterials: 1
     materialName: 0
