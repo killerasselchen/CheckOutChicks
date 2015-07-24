@@ -17,13 +17,13 @@ public class Move : MonoBehaviour {
     //public bool inPowerFailure = false;
     
 
-    private float turboTimer = 5.0f;
+    private float turboTimer = 2.0f;
     private float confuseTimer = 5.0f;
     private float stickyTimer = 5.0f;
 
     private float forwardForcePower = 23;
     public static float forwarPowerUpMultiplier = 1;
-    private float sideStepPower = 22.0f;
+    private float sideStepPower = 12.0f;
     private static float sidePowerUpMultiplier = 1;
     private float rotationPower = 2;
     private static float rotationPowerUpMultiplier = 1;
@@ -69,7 +69,7 @@ public class Move : MonoBehaviour {
     {
         if (confuse)
         {
-            UI_Power_Up.ActivateUI(ui_Power_Up.confuse_Effect);
+            //UI_Power_Up.ActivateUI(ui_Power_Up.confuse_Effect);
             sidePowerUpMultiplier = -1;
             rotationPowerUpMultiplier = -1;
             confuseTimer -= 1.0f * Time.deltaTime;
@@ -81,7 +81,7 @@ public class Move : MonoBehaviour {
         }
         else if (!confuse)
         {
-            UI_Power_Up.DeActivateUI(ui_Power_Up.confuse_Effect);
+            //UI_Power_Up.DeActivateUI(ui_Power_Up.confuse_Effect);
             sidePowerUpMultiplier = 1;
             rotationPowerUpMultiplier = 1;
         }
@@ -91,7 +91,7 @@ public class Move : MonoBehaviour {
     {
         if (inStickyPuddle)
         {
-            UI_Power_Up.ActivateUI(ui_Power_Up.sticky_Effect);
+            //UI_Power_Up.ActivateUI(ui_Power_Up.sticky_Effect);
             forwarPowerUpMultiplier = 0.2f;
             stickyTimer -= 1.0f * Time.deltaTime;
             if (stickyTimer < 0)
@@ -102,7 +102,7 @@ public class Move : MonoBehaviour {
         }
         else if(!inStickyPuddle)
         {
-            UI_Power_Up.DeActivateUI(ui_Power_Up.sticky_Effect);
+            //UI_Power_Up.DeActivateUI(ui_Power_Up.sticky_Effect);
             forwarPowerUpMultiplier = 1.0f;
         }
     }
@@ -111,7 +111,7 @@ public class Move : MonoBehaviour {
     {
         if(turboOn)
         {
-            UI_Power_Up.ActivateUI(ui_Power_Up.turbo_Effect);
+            //UI_Power_Up.ActivateUI(ui_Power_Up.turbo_Effect);
             forwarPowerUpMultiplier = 1.5f;
             turboTimer -= 1.0f * Time.deltaTime;
 
@@ -123,7 +123,7 @@ public class Move : MonoBehaviour {
         }
         else if(!turboOn)
         {
-            UI_Power_Up.DeActivateUI(ui_Power_Up.turbo_Effect);
+            //UI_Power_Up.DeActivateUI(ui_Power_Up.turbo_Effect);
             forwarPowerUpMultiplier = 1.0f;
         }
     }

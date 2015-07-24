@@ -9,14 +9,12 @@ public class Shopping_Manager : MonoBehaviour
     private List<GameObject> productsBackUp;
     private List<GameObject> activeProducts;
     public static int currentItems = 0;
-    private int maxItems = 3;
+    private int maxItems = 2;
     private int nextItem;
     private float spawnTimer = 1;
 
     // Point System
-    //private float minPoints;
-    //private float maxPoints;
-    //private float bonusTime;
+    private float maxPoints;
 
     //public delegate void ItemEvent(Item item);
     //public ItemEvent OnCreateItem;
@@ -24,7 +22,7 @@ public class Shopping_Manager : MonoBehaviour
 
     void Awake()
     {
-        //maxPoints = 125;
+        maxPoints = 30;
         //bonusTime = 10;
         //minPoints = maxPoints / (bonusTime + 1);
         FindAvailableProducts();
@@ -93,6 +91,7 @@ public class Shopping_Manager : MonoBehaviour
             {
                 nextItem = UnityEngine.Random.Range(0, products.Count);
                 products[nextItem].SetActive(true);
+                products[nextItem].GetComponent<Item>().TimeBoni = maxPoints;
                 //currentItems++;
                 spawnTimer = UnityEngine.Random.Range(0, 2);
 

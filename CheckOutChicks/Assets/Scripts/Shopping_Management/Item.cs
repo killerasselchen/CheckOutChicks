@@ -4,30 +4,28 @@ using System;
 
 public class Item : MonoBehaviour
 {
-    public float lifetime = 0;
+    public float timeBoni = 0;
 
-    public float Lifetime
+    public float TimeBoni
     {
-        get { return lifetime; }
-        set { lifetime = value; }
+        get { return timeBoni; }
+        set { timeBoni = value; }
     }
 
     //public delegate void DeactivateEvent(Item item);
     //public DeactivateEvent OnItemDeactivation;
 
-    void OnEnable()
+    void Update()
     {
         LifeTimer();
     }
 
-    void OnDisable()
-    {
-        Lifetime = 0;
-    }
-
     private void LifeTimer()
     {
-        Lifetime += 1.0f * Time.deltaTime;
+        if (TimeBoni >= 0)
+            TimeBoni -= 1.0f * Time.deltaTime;
+        else
+            TimeBoni = 0;
     }
 
     //void Deactivate()

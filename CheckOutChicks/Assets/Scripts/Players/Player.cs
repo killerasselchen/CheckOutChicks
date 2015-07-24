@@ -74,11 +74,13 @@ public class Player : MonoBehaviour {
                 if(i == 0)
                 {
                     leftItem = tempItem;
+                    //Über Event lösen?!!!
                     UI_Power_Up.ActivateUI(ui_Power_Up.leftPowerUps[leftItem]);
                 }
                 else if(i == 1)
                 {
                     rightItem = tempItem;
+                    //Über Event lösen?!!!
                     UI_Power_Up.ActivateUI(ui_Power_Up.rightPowerUps[rightItem]);
                 }
                 myPowerUps[i] = powerUp;
@@ -138,14 +140,18 @@ public class Player : MonoBehaviour {
 
             //other.gameObject.GetComponent<Item>().Deactivate;
         }
+
+        //else if(other.tag == "Player")
+        //{
+        //    other.collider.transform.po
+        //}
     }
 
     void SetPoints(Item currentItem)
     {
-        if (currentItem.Lifetime >= 10)
             MyPoints += 25;
-        else
-            MyPoints += 125 - (currentItem.Lifetime * 10);
+
+            MyPoints += currentItem.TimeBoni;
     }
 
     //private void OnItemCreation(Item newItem)
