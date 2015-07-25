@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
 
+    public GameObject sticky_Puddle_Prefab;
+
+
     private string playerTag;
     private int playerNr;
     private string myCam;

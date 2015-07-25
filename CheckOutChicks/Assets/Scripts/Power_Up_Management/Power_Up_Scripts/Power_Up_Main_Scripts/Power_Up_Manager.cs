@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Power_Up_Manager : MonoBehaviour {
 
@@ -8,9 +9,9 @@ public class Power_Up_Manager : MonoBehaviour {
     private int nextPowerUp;
     private int lastPowerUp;
     private bool nextSpawnPointCheck;
-    private float powerUpSpawnTimer = 2; //
-    private float minSpawnDelay; //
-    private float maxSpawnDelay; //
+    private float powerUpSpawnTimer;
+    private float minSpawnDelay = 1;
+    private float maxSpawnDelay = 2;
 
     private GameObject[] powerUpSpawnPoints;
 

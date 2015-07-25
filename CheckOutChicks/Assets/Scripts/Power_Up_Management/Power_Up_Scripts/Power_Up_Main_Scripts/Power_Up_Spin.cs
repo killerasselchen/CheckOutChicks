@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Power_Up_Movement : MonoBehaviour {
+public class Power_Up_Spin : MonoBehaviour {
 
     private float speed = 20;
 
