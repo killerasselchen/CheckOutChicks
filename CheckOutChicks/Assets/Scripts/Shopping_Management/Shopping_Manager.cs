@@ -16,9 +16,9 @@ public class Shopping_Manager : MonoBehaviour
     // Point System
     private float maxPoints;
 
-    //public delegate void ItemEvent(Item item);
-    //public ItemEvent OnCreateItem;
-    //public ItemEvent OnDeactivateItem;
+    public delegate void ItemEvent(Item item);
+    public ItemEvent OnCreateItem;
+    public ItemEvent OnDeactivateItem;
 
     void Awake()
     {

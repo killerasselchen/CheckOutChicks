@@ -148,7 +148,10 @@ public class Player : MonoBehaviour {
         //{
         //    other.collider.transform.po
         //}
+
+        
     }
+
 
     void SetPoints(Item currentItem)
     {

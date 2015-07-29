@@ -93,21 +93,20 @@ public class Power_Up_Manager : MonoBehaviour {
 
     void SetAvailablePowerUps()
     {
-        availablePowerUps = new Power_Up[3];
-        availablePowerUpsList = new string[3];
+        availablePowerUps = new Power_Up[1];
+        availablePowerUpsList = new string[1];
 
         //if(bool für jedes PowerUp)
         //Liste mit Items und die Liste der Namen füllen
         //AufListe umbauen, da es so vorab feststehen muß... zudem kann man per bool bei einer list jeder Item für sich activieren oder eben nicht
-        
-        availablePowerUps[0] = new Confuse_Other();
-        availablePowerUpsList[0] = "Confuse_Other";
+        availablePowerUps[0] = new Sticky_Puddle();
+        availablePowerUpsList[0] = "Sticky_Puddle";
 
-        availablePowerUps[1] = new Sticky_Puddle();
-        availablePowerUpsList[1] = "Sticky_Puddle";
+        //availablePowerUps[1] = new Confuse_Other();
+        //availablePowerUpsList[1] = "Confuse_Other";
 
-        availablePowerUps[2] = new Turbo_Boost();
-        availablePowerUpsList[2] = "Turbo";
+        //availablePowerUps[2] = new Turbo_Boost();
+        //availablePowerUpsList[2] = "Turbo";
     } 
 
     //void SpawnNextItem()

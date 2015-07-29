@@ -19,15 +19,16 @@ public class Move : MonoBehaviour {
 
     private float turboTimer = 2.0f;
     private float confuseTimer = 5.0f;
-    private float stickyTimer = 5.0f;
+    public float stickyTimer;
+    private float stickyPower;
 
-    private float forwardForcePower = 23;
-    public static float forwarPowerUpMultiplier = 1;
+    private float forwardForcePower = 23.0f;
+    public static float forwarPowerUpMultiplier = 1.0f;
     private float sideStepPower = 12.0f;
-    private static float sidePowerUpMultiplier = 1;
-    private float rotationPower = 2;
-    private static float rotationPowerUpMultiplier = 1;
-
+    private static float sidePowerUpMultiplier = 1.0f;
+    private float rotationPower = 2.0f;
+    private static float rotationPowerUpMultiplier = 1.0f;
+    private static float wagonExtraMass = 0;
     private string playerTag;
 
     float forwardForceInput;
@@ -41,16 +42,21 @@ public class Move : MonoBehaviour {
         Wagon_RB = GetComponent<Rigidbody>();
         playerTag = gameObject.tag;
         ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<UI_Power_Up>();
+        stickyTimer = 4;
+        stickyPower = 0.4f;
 	}
 	
 	void FixedUpdate () 
     {
-        GoConfuse();
-        GoInSticky();
-        GiveTurbo();
-        //Debug.Log(forwarPowerUpMultiplier);
         Movement();
 	}
+
+    void Update()
+    {
+        GoInSticky();
+        GoConfuse();
+        GiveTurbo();
+    }
 
     void Movement()
     {
@@ -58,7 +64,7 @@ public class Move : MonoBehaviour {
         forwardForceInput = Input.GetAxis("Vertical_" + playerTag);
         rotate = Input.GetAxis("Horizontal_" + playerTag);
 
-        Vector3 MoveWagon = new Vector3(sideStepForceInput * sideStepPower * sidePowerUpMultiplier, 0, forwardForceInput * forwardForcePower * forwarPowerUpMultiplier);
+        Vector3 MoveWagon = new Vector3(sideStepForceInput * sideStepPower * sidePowerUpMultiplier, 0, (forwardForceInput * forwardForcePower) * forwarPowerUpMultiplier);
 
         //When i drive Backward i need a invert Input
         Wagon_RB.transform.Rotate(0, rotate * rotationPower * rotationPowerUpMultiplier, 0);
@@ -69,7 +75,6 @@ public class Move : MonoBehaviour {
     {
         if (confuse)
         {
-            //UI_Power_Up.ActivateUI(ui_Power_Up.confuse_Effect);
             sidePowerUpMultiplier = -1;
             rotationPowerUpMultiplier = -1;
             confuseTimer -= 1.0f * Time.deltaTime;
@@ -81,7 +86,6 @@ public class Move : MonoBehaviour {
         }
         else if (!confuse)
         {
-            //UI_Power_Up.DeActivateUI(ui_Power_Up.confuse_Effect);
             sidePowerUpMultiplier = 1;
             rotationPowerUpMultiplier = 1;
         }
@@ -89,21 +93,16 @@ public class Move : MonoBehaviour {
 
     void GoInSticky()
     {
-        if (inStickyPuddle)
+        if(stickyTimer <= 0)
         {
-            //UI_Power_Up.ActivateUI(ui_Power_Up.sticky_Effect);
-            forwarPowerUpMultiplier = 0.2f;
-            stickyTimer -= 1.0f * Time.deltaTime;
-            if (stickyTimer < 0)
-            {
-                inStickyPuddle = false;
-                stickyTimer = 5.0f;
-            }
+            inStickyPuddle = false;
+            stickyTimer = 4;
+            this.gameObject.GetComponent<Rigidbody>().mass -= stickyPower;
         }
-        else if(!inStickyPuddle)
+
+        else if(inStickyPuddle)
         {
-            //UI_Power_Up.DeActivateUI(ui_Power_Up.sticky_Effect);
-            forwarPowerUpMultiplier = 1.0f;
+            stickyTimer -= 1.0f * Time.deltaTime;
         }
     }
     
@@ -134,4 +133,23 @@ public class Move : MonoBehaviour {
 
     //    }
     //}
+
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.tag == "Sticky_Puddle")
+    //    {
+    //        //inStickyPuddle = true;
+    //        this.gameObject.GetComponent<Rigidbody>().mass += 0.6f;
+    //        Debug.Log("Give Mass ++");
+    //    }
+    //}
+    
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Sticky_Puddle" && inStickyPuddle != true)
+        {
+            inStickyPuddle = true;
+            this.gameObject.GetComponent<Rigidbody>().mass += stickyPower;
+        }
+    }
 }
