@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿//Coder: Timo Fabricius
+//Contact: Timo.Fabricius@gmx.de
+//Project: CheckOut Chicks
+//GPD414 at SAE Hamburg 04/2014-10/2015
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,7 +11,6 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour {
 
     public GameObject sticky_Puddle_Prefab;
-
 
     private string playerTag;
     private int playerNr;
@@ -34,31 +38,17 @@ public class Player : MonoBehaviour {
     private TextMesh ui_Points;
     private Shopping_Manager shopping_Manager;
     private Power_Up_Manager power_Up_Manager;
-    //public Arrow[] arrows;
 
     private List<string> meineEinkaeufe = new List<string>();
 
-	// Use this for initialization
 	void Awake () 
     {
         playerTag = gameObject.tag;
-        //string temp = playerTag.Split('_')[1];
-        //playerNr = int.Parse(temp);
         ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<UI_Power_Up>();
         ui_Points = GameObject.Find("Points_" + playerTag).GetComponent<TextMesh>();
         shopping_Manager = GameObject.Find("GameManager").GetComponent<Shopping_Manager>();
         power_Up_Manager = GameObject.Find("GameManager").GetComponent<Power_Up_Manager>();
 	}
-
-    //public void OnEnable()
-    //{
-    //    shopping_Manager.OnCreateItem += OnItemCreation;
-    //}
-
-    //public void OnDisable()
-    //{
-    //    shopping_Manager.OnCreateItem -= OnItemCreation;
-    //}
 
 	void Update () 
     {
@@ -118,8 +108,6 @@ public class Player : MonoBehaviour {
     {
         tempItem = Random.Range(0, power_Up_Manager.AvailablePowerUp.Length);
         nextPowerUp = power_Up_Manager.AvailablePowerUp[tempItem];
-        //nextPowerUp = power_Up_Manager.availablePowerUps[tempItem];
-
     }
 
     void OnTriggerEnter(Collider other)
@@ -135,7 +123,7 @@ public class Player : MonoBehaviour {
         else if(other.tag == "Product")
         {
             meineEinkaeufe.Add(other.gameObject.name);
-            SetPoints(other.gameObject.GetComponent<Item>());
+            SetPointsForItems(other.gameObject.GetComponent<Item>());
             other.gameObject.SetActive(false);
             shopping_Manager.Products.Remove(other.gameObject);
             //shopping_Manager.Products.Remove(shopping_Manager.Products[shopping_Manager.NextItem]);
@@ -143,36 +131,16 @@ public class Player : MonoBehaviour {
 
             //other.gameObject.GetComponent<Item>().Deactivate;
         }
-
-        //else if(other.tag == "Player")
-        //{
-        //    other.collider.transform.po
-        //}
-
-        
     }
 
 
-    void SetPoints(Item currentItem)
+    void SetPointsForItems(Item currentItem)
     {
-            MyPoints += 25;
-
-            MyPoints += currentItem.TimeBoni;
+        //Points for every Item
+        MyPoints += 25;
+        //Extra Points for fast collecting after spawn
+        MyPoints += currentItem.TimeBoni;
     }
-
-    //private void OnItemCreation(Item newItem)
-    //{
-    //    //Richtigen Pfeil finden Logik hier
-    //    for (int i = 0; i < arrows.Length; i++)
-    //    {
-    //        if (!arrows[i].gameObject.activeInHierarchy) //active in herachie???
-    //        {
-    //            arrows[i].gameObject.SetActive(true);
-    //            arrows[i].PointToTarget(newItem);
-    //            return;
-    //        }
-    //    }
-    //}
 
     //Must be OUTSOURCE!!
     //void tacho()

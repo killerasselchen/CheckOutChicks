@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿//Coder: Timo Fabricius
+//Contact: Timo.Fabricius@gmx.de
+//Project: CheckOut Chicks
+//GPD414 at SAE Hamburg 04/2014-10/2015
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -60,15 +65,6 @@ public class Power_Up_Manager : MonoBehaviour {
 
     void SpawnPowerUp()
     {
-        //if(currentMapPowerUps <= maxMapPowerUps && powerUpSpawnTimer <= 0)
-        //{
-        //    nextPowerUp = Random.Range(0,powerUpSpawnPoints.Length);
-        //    if(nextPowerUp != lastPowerUp)
-        //    {
-                
-        //    }
-        //    powerUpSpawnTimer -= 1.0f * Time.deltaTime;
-        //}
         if (currentMapPowerUps <= maxMapPowerUps)
         {
             if (powerUpSpawnTimer <= 0)
@@ -93,8 +89,8 @@ public class Power_Up_Manager : MonoBehaviour {
 
     void SetAvailablePowerUps()
     {
-        availablePowerUps = new Power_Up[1];
-        availablePowerUpsList = new string[1];
+        availablePowerUps = new Power_Up[3];
+        availablePowerUpsList = new string[3];
 
         //if(bool für jedes PowerUp)
         //Liste mit Items und die Liste der Namen füllen
@@ -102,13 +98,14 @@ public class Power_Up_Manager : MonoBehaviour {
         availablePowerUps[0] = new Sticky_Puddle();
         availablePowerUpsList[0] = "Sticky_Puddle";
 
-        //availablePowerUps[1] = new Confuse_Other();
-        //availablePowerUpsList[1] = "Confuse_Other";
+        availablePowerUps[1] = new Confuse_Other();
+        availablePowerUpsList[1] = "Confuse_Other";
 
-        //availablePowerUps[2] = new Turbo_Boost();
-        //availablePowerUpsList[2] = "Turbo";
+        availablePowerUps[2] = new Turbo_Boost();
+        availablePowerUpsList[2] = "Turbo";
     } 
 
+    //Sicherheitskopie
     //void SpawnNextItem()
     //{
     //    if (currentItems <= maxItems && products.Count > 0)

@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿//Coder: Timo Fabricius
+//Contact: Timo.Fabricius@gmx.de
+//Project: CheckOut Chicks
+//GPD414 at SAE Hamburg 04/2014-10/2015
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -72,14 +77,6 @@ public class Shopping_Manager : MonoBehaviour
         foreach (var product in products)
 	    {
 	    	 product.SetActive(false);
-
-             //if (OnDeactivateItem == null)
-             //{
-             //    throw new MissingMethodException("Shopping Manager Deactivate braucht noch member");
-             //    continue;
-             //}
-
-             //OnDeactivateItem();
 	    }
     }
 
@@ -94,11 +91,6 @@ public class Shopping_Manager : MonoBehaviour
                 products[nextItem].GetComponent<Item>().TimeBoni = maxPoints;
                 //currentItems++;
                 spawnTimer = UnityEngine.Random.Range(0, 2);
-
-                //if (OnCreateItem == null)
-                //    return;
-
-                //OnCreateItem(products[nextItem].GetComponent<Item>());
             }
 
             spawnTimer -= 1.0f * Time.deltaTime;

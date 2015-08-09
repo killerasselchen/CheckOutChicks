@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿//Coder: Timo Fabricius
+//Contact: Timo.Fabricius@gmx.de
+//Project: CheckOut Chicks
+//GPD414 at SAE Hamburg 04/2014-10/2015
+
+using UnityEngine;
 using System.Collections;
 using System;
 
@@ -12,9 +17,6 @@ public class Item : MonoBehaviour
         set { timeBoni = value; }
     }
 
-    //public delegate void DeactivateEvent(Item item);
-    //public DeactivateEvent OnItemDeactivation;
-
     void Update()
     {
         LifeTimer();
@@ -27,16 +29,4 @@ public class Item : MonoBehaviour
         else
             TimeBoni = 0;
     }
-
-    //void Deactivate()
-    //{
-    //    //Shopping_Manager.currentItems--;
-    //    if (OnItemDeactivation == null)
-    //    {
-    //        throw new MissingMethodException("OnItemDeactivation ist null");
-    //        OnItemDeactivation(this);
-    //        this.gameObject.SetActive(false);
-    //    }
-
-    //}
 }

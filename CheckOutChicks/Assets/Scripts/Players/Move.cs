@@ -20,20 +20,20 @@ public class Move : MonoBehaviour {
     private float turboTimer = 2.0f;
     private float confuseTimer = 5.0f;
     public float stickyTimer;
-    private float stickyPower;
+    private float massBoni;
 
-    private float forwardForcePower = 23.0f;
-    public static float forwarPowerUpMultiplier = 1.0f;
+    private float acceleration = 23.0f;
+    public static float accelerationMultiplier = 1.0f;
     private float sideStepPower = 12.0f;
-    private static float sidePowerUpMultiplier = 1.0f;
-    private float rotationPower = 2.0f;
-    private static float rotationPowerUpMultiplier = 1.0f;
+    private static float sideStepMultiplier = 1.0f;
+    private float steerPower = 2.0f;
+    private static float steerMultiplier = 1.0f;
     private static float wagonExtraMass = 0;
     private string playerTag;
 
     float forwardForceInput;
-    public float sideStepForceInput;
-    public float rotate;
+    float sideStepForceInput;
+    float rotate;
 
     private UI_Power_Up ui_Power_Up;
 
@@ -43,7 +43,7 @@ public class Move : MonoBehaviour {
         playerTag = gameObject.tag;
         ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<UI_Power_Up>();
         stickyTimer = 4;
-        stickyPower = 0.4f;
+        massBoni = 0.6f;
 	}
 	
 	void FixedUpdate () 
@@ -61,13 +61,13 @@ public class Move : MonoBehaviour {
     void Movement()
     {
         sideStepForceInput = Input.GetAxis("SideStep_" + playerTag);
-        forwardForceInput = Input.GetAxis("Vertical_" + playerTag);
-        rotate = Input.GetAxis("Horizontal_" + playerTag);
+        forwardForceInput = Input.GetAxis("Acceleration_" + playerTag);
+        rotate = Input.GetAxis("Steer_" + playerTag);
 
-        Vector3 MoveWagon = new Vector3(sideStepForceInput * sideStepPower * sidePowerUpMultiplier, 0, (forwardForceInput * forwardForcePower) * forwarPowerUpMultiplier);
+        Vector3 MoveWagon = new Vector3(sideStepForceInput * sideStepPower * sideStepMultiplier, 0, (forwardForceInput * acceleration) * accelerationMultiplier);
 
         //When i drive Backward i need a invert Input
-        Wagon_RB.transform.Rotate(0, rotate * rotationPower * rotationPowerUpMultiplier, 0);
+        Wagon_RB.transform.Rotate(0, rotate * steerPower * steerMultiplier, 0);
         Wagon_RB.AddRelativeForce(MoveWagon);
     }
 
@@ -75,8 +75,8 @@ public class Move : MonoBehaviour {
     {
         if (confuse)
         {
-            sidePowerUpMultiplier = -1;
-            rotationPowerUpMultiplier = -1;
+            sideStepMultiplier = -1;
+            steerMultiplier = -1;
             confuseTimer -= 1.0f * Time.deltaTime;
             if (confuseTimer < 0)
             {
@@ -86,22 +86,21 @@ public class Move : MonoBehaviour {
         }
         else if (!confuse)
         {
-            sidePowerUpMultiplier = 1;
-            rotationPowerUpMultiplier = 1;
+            sideStepMultiplier = 1;
+            steerMultiplier = 1;
         }
     }
 
     void GoInSticky()
     {
-        if(stickyTimer <= 0)
+        if(inStickyPuddle)
         {
-            inStickyPuddle = false;
-            stickyTimer = 4;
-            this.gameObject.GetComponent<Rigidbody>().mass -= stickyPower;
-        }
-
-        else if(inStickyPuddle)
-        {
+            if(stickyTimer <= 0)
+            {
+                inStickyPuddle = false;
+                stickyTimer = 4;
+                this.gameObject.GetComponent<Rigidbody>().mass -= massBoni;
+            }
             stickyTimer -= 1.0f * Time.deltaTime;
         }
     }
@@ -110,22 +109,19 @@ public class Move : MonoBehaviour {
     {
         if(turboOn)
         {
-            //UI_Power_Up.ActivateUI(ui_Power_Up.turbo_Effect);
-            forwarPowerUpMultiplier = 1.5f;
+            accelerationMultiplier = 1.25f;
+            //Give - on MassBoni!!?
             turboTimer -= 1.0f * Time.deltaTime;
 
             if (turboTimer < 0)
             {
                 turboOn = false;
                 turboTimer = 5.0f;
+                accelerationMultiplier = 1.0f;
             }
         }
-        else if(!turboOn)
-        {
-            //UI_Power_Up.DeActivateUI(ui_Power_Up.turbo_Effect);
-            forwarPowerUpMultiplier = 1.0f;
-        }
     }
+
     //void BeInPowerFailure()
     //{
     //    if(inPowerFailure)
@@ -134,22 +130,12 @@ public class Move : MonoBehaviour {
     //    }
     //}
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if(other.tag == "Sticky_Puddle")
-    //    {
-    //        //inStickyPuddle = true;
-    //        this.gameObject.GetComponent<Rigidbody>().mass += 0.6f;
-    //        Debug.Log("Give Mass ++");
-    //    }
-    //}
-    
     void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Sticky_Puddle" && inStickyPuddle != true)
         {
             inStickyPuddle = true;
-            this.gameObject.GetComponent<Rigidbody>().mass += stickyPower;
+            this.gameObject.GetComponent<Rigidbody>().mass += massBoni;
         }
     }
 }
