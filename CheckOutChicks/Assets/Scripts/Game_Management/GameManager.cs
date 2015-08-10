@@ -4,6 +4,7 @@
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,10 +14,10 @@ public class GameManager : MonoBehaviour {
     //OnLevelWasLoaded
 
     //To set the Playerquantity
-    public static bool setToSinglePlayer;
-    public static bool setToTwoPlayers;
-    public static bool setToThreePlayers;
-    public static bool setToFourPlayers;
+    public  bool setToSinglePlayer;
+    public  bool setToTwoPlayers;
+    public  bool setToThreePlayers;
+    public  bool setToFourPlayers;
     private int playerQuantity;
 
     private bool paused = true;
@@ -230,7 +231,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void StartGame()
+    public void StartGame()
     {
         ActivatePlayers();
         ActivateCameras();
@@ -238,6 +239,28 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1;
         SetActivePlayerList();
         SetActiveCameraList();
+    }
+
+    public void SetToTwoPlayer()
+    {
+        setToTwoPlayers = true;
+    }
+
+    public void SetToThreePlayer()
+    {
+        setToThreePlayers = true;
+    }
+
+    public void SetToFourPlayer()
+    {
+        setToFourPlayers = true;
+    }
+
+    public void ExitGame()
+    {
+        //if Sure .... than go
+        Application.CancelQuit();
+        Debug.Log("exit");
     }
 }
 

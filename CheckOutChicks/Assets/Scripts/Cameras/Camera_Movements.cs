@@ -25,6 +25,12 @@ public class Camera_Movements : MonoBehaviour {
     private float relCameraPosMag;
     private Vector3 tempPos;
 
+    private GameManager game_Manager;
+
+    void Awake()
+    {
+        game_Manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
     void Start()
     {
         TagNameFinder();
@@ -94,8 +100,8 @@ public class Camera_Movements : MonoBehaviour {
         float y = 0;
         float width = 1;
         float height = 1;
-       
-        if (GameManager.setToTwoPlayers)
+
+        if (game_Manager.setToTwoPlayers)
         {
             height = 0.5f;
             
@@ -103,7 +109,7 @@ public class Camera_Movements : MonoBehaviour {
                 y = 0.5f; ;
         }
 
-        else if (GameManager.setToThreePlayers)
+        else if (game_Manager.setToThreePlayers)
         {
             width = 0.5f;
             height = 0.5f;
@@ -124,7 +130,7 @@ public class Camera_Movements : MonoBehaviour {
             }
         }
 
-        else if (GameManager.setToFourPlayers)
+        else if (game_Manager.setToFourPlayers)
         {
             width = 0.5f;
             height = 0.5f;
