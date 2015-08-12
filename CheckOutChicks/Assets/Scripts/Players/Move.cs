@@ -82,12 +82,9 @@ public class Move : MonoBehaviour {
             {
                 confuse = false;
                 confuseTimer = 5.0f;
+                sideStepMultiplier = 1;
+                steerMultiplier = 1;
             }
-        }
-        else if (!confuse)
-        {
-            sideStepMultiplier = 1;
-            steerMultiplier = 1;
         }
     }
 

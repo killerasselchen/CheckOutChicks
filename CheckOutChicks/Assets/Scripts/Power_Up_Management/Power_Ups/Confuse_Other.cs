@@ -6,6 +6,9 @@
 using UnityEngine;
 using System.Collections;
 
+
+//the Player! doesnt work
+
 class Confuse_Other : Power_Up 
 {
     public override void Use(Player player)
