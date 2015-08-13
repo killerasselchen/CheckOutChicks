@@ -15,9 +15,12 @@ class Confuse_Other : Power_Up
     {
         for (int i = 0; i < GameManager.activePlayers.Count; i++)
         {
+            Debug.Log("toller text: "+GameManager.activePlayers[i]);
             if (GameManager.activePlayers[i] != player.gameObject)
             {
                 GameManager.activePlayers[i].GetComponent<Move>().confuse = true;
+                Debug.Log("who activate: " + player.gameObject);
+                Debug.Log("In list: " + GameManager.activePlayers[i].name);
             }
         }
     }

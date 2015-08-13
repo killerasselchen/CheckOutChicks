@@ -8,6 +8,7 @@ using System.Collections;
 
 public class Move : MonoBehaviour {
 
+    private string playerTag;
     public Rigidbody Wagon_RB;
 
     //For PowerUps
@@ -15,25 +16,24 @@ public class Move : MonoBehaviour {
     public bool inStickyPuddle = false;
     public bool turboOn = false;
     //public bool inPowerFailure = false;
-    
-
+    //->Timer needs Props for MenuChanges
     private float turboTimer = 2.0f;
     private float confuseTimer = 5.0f;
     public float stickyTimer;
     private float massBoni;
 
-    private float acceleration = 23.0f;
-    public static float accelerationMultiplier = 1.0f;
-    private float sideStepPower = 12.0f;
-    private static float sideStepMultiplier = 1.0f;
-    private float steerPower = 2.0f;
-    private static float steerMultiplier = 1.0f;
-    private static float wagonExtraMass = 0;
-    private string playerTag;
+    //For movement
+    private float forwardForceInput;
+    private float sideStepForceInput;
+    private float rotate;
 
-    float forwardForceInput;
-    float sideStepForceInput;
-    float rotate;
+    private float acceleration = 23.0f;
+    public float accelerationMultiplier = 1.0f;
+    private float sideStepPower = 12.0f;
+    private float sideStepMultiplier = 1.0f;
+    private float steerPower = 2.0f;
+    private float steerMultiplier = 1.0f;
+    private float wagonExtraMass = 0;
 
     private UI_Power_Up ui_Power_Up;
 
