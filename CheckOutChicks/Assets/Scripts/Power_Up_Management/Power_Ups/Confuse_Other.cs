@@ -6,21 +6,17 @@
 using UnityEngine;
 using System.Collections;
 
-
-//the Player! doesnt work
-
 class Confuse_Other : Power_Up 
 {
     public override void Use(Player player)
     {
         for (int i = 0; i < GameManager.activePlayers.Count; i++)
         {
-            Debug.Log("toller text: "+GameManager.activePlayers[i]);
             if (GameManager.activePlayers[i] != player.gameObject)
             {
-                GameManager.activePlayers[i].GetComponent<Move>().confuse = true;
-                Debug.Log("who activate: " + player.gameObject);
-                Debug.Log("In list: " + GameManager.activePlayers[i].name);
+                GameManager.activePlayers[i].GetComponent<Move>().IsConfuse = true;
+                GameManager.activePlayers[i].GetComponent<Move>().SideStepPower = -1;
+                GameManager.activePlayers[i].GetComponent<Move>().SteerMultiplier = -1;
             }
         }
     }

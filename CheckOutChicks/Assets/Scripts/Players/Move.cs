@@ -12,15 +12,39 @@ public class Move : MonoBehaviour {
     public Rigidbody Wagon_RB;
 
     //For PowerUps
-    public bool confuse = false;
-    public bool inStickyPuddle = false;
-    public bool turboOn = false;
-    //public bool inPowerFailure = false;
+    //Needs Props to not longer public
+    public bool IsConfuse = false;
+    public bool OnTurbo = false;
+    private bool inStickyPuddle = false;
+    private bool onSlipperyWet = false;
+    //private bool isHollow = false;
+
+    private float stickyMassBoni;
+    
+    public float StickyMassBoni
+    {
+        get { return stickyMassBoni; }
+        set { stickyMassBoni = value; }
+    }
+
+    private float turboMassBoni;
+
+    public float TurboMassBoni
+    {
+        get { return turboMassBoni; }
+        set { turboMassBoni = value; }
+    }
+
     //->Timer needs Props for MenuChanges
-    private float turboTimer = 2.0f;
-    private float confuseTimer = 5.0f;
-    public float stickyTimer;
-    private float massBoni;
+    private float turboTimerOriginal = 2.0f;
+    private float turboTimer;
+    private float confuseTimerOriginal = 5.0f;
+    private float confuseTimer;
+    private float stickyTimerOriginal = 5.0f;
+    private float stickyTimer;
+    private float slipperyWhenWetTimerOriginal = 5.0f;
+    private float slipperyWhenWetTimer;
+
 
     //For movement
     private float forwardForceInput;
@@ -28,12 +52,30 @@ public class Move : MonoBehaviour {
     private float rotate;
 
     private float acceleration = 23.0f;
-    public float accelerationMultiplier = 1.0f;
+    private float accelerationMultiplier = 1.0f;
     private float sideStepPower = 12.0f;
     private float sideStepMultiplier = 1.0f;
     private float steerPower = 2.0f;
     private float steerMultiplier = 1.0f;
     private float wagonExtraMass = 0;
+
+    public float AccelerationMultiplier
+    {
+        get { return accelerationMultiplier; }
+        set { accelerationMultiplier = value; }
+    }
+
+    public float SideStepPower
+    {
+        get { return sideStepMultiplier; }
+        set { sideStepMultiplier = value; }
+    }
+    
+    public float SteerMultiplier
+    {
+        get { return steerMultiplier; }
+        set { steerMultiplier = value; }
+    }
 
     private UI_Power_Up ui_Power_Up;
 
@@ -42,8 +84,9 @@ public class Move : MonoBehaviour {
         Wagon_RB = GetComponent<Rigidbody>();
         playerTag = gameObject.tag;
         ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<UI_Power_Up>();
-        stickyTimer = 4;
-        massBoni = 0.6f;
+        TimerSettings();
+        StickyMassBoni = 0.8f;
+        TurboMassBoni = 0.3f;
 	}
 	
 	void FixedUpdate () 
@@ -51,15 +94,17 @@ public class Move : MonoBehaviour {
         Movement();
 	}
 
-    void Update()
-    {
-        GoInSticky();
-        GoConfuse();
-        GiveTurbo();
-    }
-
     void Movement()
     {
+        if(inStickyPuddle)
+            InSticky();
+
+        else if (IsConfuse)
+            Confuse();
+
+        else if (OnTurbo)
+            Turbo();
+
         sideStepForceInput = Input.GetAxis("SideStep_" + playerTag);
         forwardForceInput = Input.GetAxis("Acceleration_" + playerTag);
         rotate = Input.GetAxis("Steer_" + playerTag);
@@ -71,68 +116,80 @@ public class Move : MonoBehaviour {
         Wagon_RB.AddRelativeForce(MoveWagon);
     }
 
-    void GoConfuse()
+    void Confuse()
     {
-        if (confuse)
+        if (confuseTimer < 0)
         {
-            sideStepMultiplier = -1;
-            steerMultiplier = -1;
-            confuseTimer -= 1.0f * Time.deltaTime;
-            if (confuseTimer < 0)
-            {
-                confuse = false;
-                confuseTimer = 5.0f;
-                sideStepMultiplier = 1;
-                steerMultiplier = 1;
-            }
+            IsConfuse = false;
+            confuseTimer = confuseTimerOriginal;
+            SideStepPower = 1;
+            SteerMultiplier = 1;
         }
+        
+        confuseTimer -= 1.0f * Time.deltaTime;
     }
 
-    void GoInSticky()
+    void InSticky()
     {
-        if(inStickyPuddle)
+        if(stickyTimer <= 0)
         {
-            if(stickyTimer <= 0)
-            {
-                inStickyPuddle = false;
-                stickyTimer = 4;
-                this.gameObject.GetComponent<Rigidbody>().mass -= massBoni;
-            }
-            stickyTimer -= 1.0f * Time.deltaTime;
+            inStickyPuddle = false;
+            stickyTimer = stickyTimerOriginal;
+            this.gameObject.GetComponent<Rigidbody>().mass -= StickyMassBoni;
         }
+
+        stickyTimer -= 1.0f * Time.deltaTime;
+    }
+
+    void OnSlipperyWet()
+    {
+        if (slipperyWhenWetTimer <= 0)
+        {
+            onSlipperyWet = false;
+            slipperyWhenWetTimer = slipperyWhenWetTimerOriginal;
+            this.gameObject.GetComponent<Rigidbody>().mass -= stickyMassBoni;
+        }
+
+        slipperyWhenWetTimer -= 1.0f * Time.deltaTime;
     }
     
-    void GiveTurbo()
+    void Turbo()
     {
-        if(turboOn)
+        //Give - on MassBoni!!?
+        if (turboTimer < 0)
         {
-            accelerationMultiplier = 1.25f;
-            //Give - on MassBoni!!?
-            turboTimer -= 1.0f * Time.deltaTime;
-
-            if (turboTimer < 0)
-            {
-                turboOn = false;
-                turboTimer = 5.0f;
-                accelerationMultiplier = 1.0f;
-            }
+            OnTurbo = false;
+            turboTimer = turboTimerOriginal;
+            //AccelerationMultiplier -= 0.0f;
+            this.gameObject.GetComponent<Rigidbody>().mass += TurboMassBoni;
         }
+
+        turboTimer -= 1.0f * Time.deltaTime;
     }
 
-    //void BeInPowerFailure()
-    //{
-    //    if(inPowerFailure)
-    //    {
 
-    //    }
-    //}
+
+    void TimerSettings()
+    {
+        turboTimer = turboTimerOriginal;
+        confuseTimer = confuseTimerOriginal;
+        stickyTimer = stickyTimerOriginal;
+        slipperyWhenWetTimer = slipperyWhenWetTimerOriginal;
+    }
 
     void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Sticky_Puddle" && inStickyPuddle != true)
         {
             inStickyPuddle = true;
-            this.gameObject.GetComponent<Rigidbody>().mass += massBoni;
+            this.gameObject.GetComponent<Rigidbody>().mass += StickyMassBoni;
+        }
+
+        else if (other.tag == "Sliery_When_Wet" && onSlipperyWet != true)
+        {
+            onSlipperyWet = true;
         }
     }
+
+    
 }

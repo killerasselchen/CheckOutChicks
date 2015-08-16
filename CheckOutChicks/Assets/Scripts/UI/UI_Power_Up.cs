@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 public class UI_Power_Up : MonoBehaviour 
 {
-    public GameObject confuse_Effect;
-    public GameObject sticky_Effect;
-    public GameObject turbo_Effect;
-           
+    //public GameObject confuse_Effect;
+    //public GameObject sticky_Effect;
+    //public GameObject turbo_Effect;
+    
+    
+    //Alles noch viel zu unorganisiert. Die PowerUpListe aus dem PowerUpManager soll hiermit zusammen hängen
     public GameObject right_Confuse_Power_Up;
     public GameObject left_Confuse_Power_Up;
            
@@ -17,9 +19,15 @@ public class UI_Power_Up : MonoBehaviour
     public GameObject right_Turbo_Power_Up;
     public GameObject left_Turbo_Power_Up;
 
+    public GameObject right_Slippery_Wet_Power_Up;
+    public GameObject left_Slippery_Wet_Power_Up;
+
+    public GameObject right_Point_Boost_Power_Up;
+    public GameObject left_Point_Boost_Power_Up;
+
     public List<GameObject> rightPowerUps;
     public List<GameObject> leftPowerUps;
-
+    
     void Awake()
     {
         SetPowerUpLists();

@@ -44,7 +44,7 @@ public class Power_Up_Manager : MonoBehaviour {
     void Awake()
     {
         FindPowerUpSpawnPoints();
-        MaxMapPowerUps = powerUpSpawnPoints.Length / 2;
+        MaxMapPowerUps = powerUpSpawnPoints.Length ;
         SetAvailablePowerUps();
     }
 
@@ -89,8 +89,8 @@ public class Power_Up_Manager : MonoBehaviour {
 
     void SetAvailablePowerUps()
     {
-        availablePowerUps = new Power_Up[3];
-        availablePowerUpsList = new string[3];
+        availablePowerUps = new Power_Up[5];
+        availablePowerUpsList = new string[5];
 
         //if(bool für jedes PowerUp)
         //Liste mit Items und die Liste der Namen füllen
@@ -103,6 +103,12 @@ public class Power_Up_Manager : MonoBehaviour {
 
         availablePowerUps[2] = new Turbo_Boost();
         availablePowerUpsList[2] = "Turbo";
+
+        availablePowerUps[3] = new Point_Boost();
+        availablePowerUpsList[3] = "Point_Boost";
+
+        availablePowerUps[4] = new Slippery_When_Wet();
+        availablePowerUpsList[4] = "Slippery_When_Wet";
     } 
 
     //Sicherheitskopie

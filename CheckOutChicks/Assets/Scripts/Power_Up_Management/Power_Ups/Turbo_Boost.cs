@@ -9,7 +9,10 @@ public class Turbo_Boost : Power_Up
         {
             if (GameManager.activePlayers[i] == player.gameObject)
             {
-                GameManager.activePlayers[i].GetComponent<Move>().turboOn = true;
+                if (GameManager.activePlayers[i].GetComponent<Move>().OnTurbo != true)
+                    GameManager.activePlayers[i].GetComponent<Move>().OnTurbo = true;
+                //player.gameObject.GetComponentInParent<Move>().AccelerationMultiplier += 0.0f;
+                player.gameObject.GetComponentInParent<Rigidbody>().mass -= player.gameObject.GetComponentInParent<Move>().TurboMassBoni;
             }
         }
     }

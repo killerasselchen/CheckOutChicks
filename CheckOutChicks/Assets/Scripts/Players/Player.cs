@@ -11,17 +11,33 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour {
 
     public GameObject sticky_Puddle_Prefab;
+    public GameObject wet_Floor_Prefab;
 
     private string playerTag;
     private int playerNr;
     private string myCam;
     private float speed;
     private float myPoints;
+    private bool onPointBoost = false;
+    private float pointBoosterTimerOriganal = 10.0f;
+    private float pointBoosterTimer;
 
     public float MyPoints
     {
         get { return myPoints; }
-        set { myPoints = value; }
+        set
+        {
+            if (onPointBoost)
+            { myPoints = value * 2; }
+            else
+            { myPoints = value; }
+        }
+    }
+
+    public bool OnPowerBoost
+    {
+        get { return onPointBoost; }
+        set { onPointBoost = value; }
     }
 
     //Outsourcing lastPos
@@ -41,6 +57,8 @@ public class Player : MonoBehaviour {
 
     private List<string> meineEinkaeufe = new List<string>();
 
+    
+
 	void Awake () 
     {
         playerTag = gameObject.tag;
@@ -50,12 +68,14 @@ public class Player : MonoBehaviour {
         power_Up_Manager = GameObject.Find("GameManager").GetComponent<Power_Up_Manager>();
 	}
 
-	void Update () 
+	void FixedUpdate () 
     {
         //tacho();
         if (Input.anyKeyDown)
             UsePowerUp();
-        ui_Points.text = MyPoints.ToString("0.0");
+        else if (onPointBoost)
+            PointBoost();
+        ui_Points.text = MyPoints.ToString("0");
 	}
 
     void SetPowerUp(Power_Up powerUp)
@@ -110,6 +130,25 @@ public class Player : MonoBehaviour {
         nextPowerUp = power_Up_Manager.AvailablePowerUp[tempItem];
     }
 
+    void SetPointsForItems(Item currentItem)
+    {
+        //Points for every Item
+        MyPoints += 25;
+        //Extra Points for fast collecting after spawn
+        MyPoints += currentItem.TimeBoni;
+    }
+
+    void PointBoost()
+    {
+        if (pointBoosterTimer <= 0)
+        {
+            onPointBoost = false;
+            pointBoosterTimer = pointBoosterTimerOriganal;
+        }
+
+        pointBoosterTimer -= 1.0f * Time.deltaTime;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Power_Up_Spawn_Point")
@@ -120,7 +159,7 @@ public class Player : MonoBehaviour {
             power_Up_Manager.CurrentMapPowerUps--;
         }
 
-        else if(other.tag == "Product")
+        else if (other.tag == "Product")
         {
             meineEinkaeufe.Add(other.gameObject.name);
             SetPointsForItems(other.gameObject.GetComponent<Item>());
@@ -131,15 +170,6 @@ public class Player : MonoBehaviour {
 
             //other.gameObject.GetComponent<Item>().Deactivate;
         }
-    }
-
-
-    void SetPointsForItems(Item currentItem)
-    {
-        //Points for every Item
-        MyPoints += 25;
-        //Extra Points for fast collecting after spawn
-        MyPoints += currentItem.TimeBoni;
     }
 
     //Must be OUTSOURCE!!

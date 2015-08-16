@@ -46,7 +46,7 @@ public class Item_Sticky_Puddle : MonoBehaviour {
     {
         if (other.tag == "Player" && other.GetComponentInParent<Player>() != constructedPlayer)
         {
-            if(trapLevelOne <= trapLevelTwo)
+            if (trapLevelOne <= trapLevelTwo)
             {
                 constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
                 trapLevelOne += 1.0f * Time.deltaTime;
@@ -59,6 +59,7 @@ public class Item_Sticky_Puddle : MonoBehaviour {
         }
     }
 
+    
     public void SetConstructedPlayer(Player constructedPlayer)
     {
         ConstructedPlayer = constructedPlayer;
