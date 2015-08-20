@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class Shopping_Manager : MonoBehaviour 
+public class ShoppingManager : MonoBehaviour 
 {
     private List<GameObject> products;
     private List<GameObject> productsBackUp;

@@ -94,6 +94,8 @@ public class Camera_Movements : MonoBehaviour {
         transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * Time.deltaTime);
     }
 
+
+    //im GameManager nutzen - GGF Instatiate Player -> Cam -> Rect & next Player...
     void ViewPortSelection()
     {
         float x = 0;
@@ -106,7 +108,7 @@ public class Camera_Movements : MonoBehaviour {
             height = 0.5f;
             
             if(playerNr == "P_1")
-                y = 0.5f; ;
+                y = 0.5f;
         }
 
         else if (game_Manager.setToThreePlayers)

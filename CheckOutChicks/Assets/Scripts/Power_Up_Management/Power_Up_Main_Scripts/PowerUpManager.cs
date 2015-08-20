@@ -7,9 +7,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Power_Up_Manager : MonoBehaviour {
+public class PowerUpManager : MonoBehaviour {
 
-    private int maxMapPowerUps;
+    private int maxMapPowerUps = 2;
     private int currentMapPowerUps;
     private int nextPowerUp;
     private int lastPowerUp;
@@ -17,10 +17,17 @@ public class Power_Up_Manager : MonoBehaviour {
     private float powerUpSpawnTimer;
     private float minSpawnDelay = 1;
     private float maxSpawnDelay = 2;
+    [SerializeField]
+    private Sprite[] powerUpIcons;
+
+    public Sprite[] PowerUpIcons
+    {
+        get { return powerUpIcons; }
+    }
 
     private GameObject[] powerUpSpawnPoints;
 
-    public static Power_Up[] availablePowerUps;
+    public static PowerUp[] availablePowerUps;
     public static string[] availablePowerUpsList;
 
     public int MaxMapPowerUps
@@ -35,7 +42,7 @@ public class Power_Up_Manager : MonoBehaviour {
         set { currentMapPowerUps = value; }
     }
 
-    public Power_Up[] AvailablePowerUp
+    public PowerUp[] AvailablePowerUp
     {
         get { return availablePowerUps;}
         set { availablePowerUps = value;}
@@ -65,7 +72,7 @@ public class Power_Up_Manager : MonoBehaviour {
 
     void SpawnPowerUp()
     {
-        if (currentMapPowerUps <= maxMapPowerUps)
+        if (currentMapPowerUps + 1 <= MaxMapPowerUps)
         {
             if (powerUpSpawnTimer <= 0)
             {
@@ -89,26 +96,23 @@ public class Power_Up_Manager : MonoBehaviour {
 
     void SetAvailablePowerUps()
     {
-        availablePowerUps = new Power_Up[5];
+        availablePowerUps = new PowerUp[5];
         availablePowerUpsList = new string[5];
 
-        //if(bool für jedes PowerUp)
-        //Liste mit Items und die Liste der Namen füllen
-        //AufListe umbauen, da es so vorab feststehen muß... zudem kann man per bool bei einer list jeder Item für sich activieren oder eben nicht
-        availablePowerUps[0] = new Sticky_Puddle();
+        availablePowerUps[0] = new StickyPuddle();
         availablePowerUpsList[0] = "Sticky_Puddle";
 
-        availablePowerUps[1] = new Confuse_Other();
+        availablePowerUps[1] = new ConfuseOther();
         availablePowerUpsList[1] = "Confuse_Other";
 
-        availablePowerUps[2] = new Turbo_Boost();
+        availablePowerUps[2] = new TurboBoost();
         availablePowerUpsList[2] = "Turbo";
 
-        availablePowerUps[3] = new Point_Boost();
-        availablePowerUpsList[3] = "Point_Boost";
+        availablePowerUps[3] = new SlipperyWhenWet();
+        availablePowerUpsList[3] = "Slippery_When_Wet";
 
-        availablePowerUps[4] = new Slippery_When_Wet();
-        availablePowerUpsList[4] = "Slippery_When_Wet";
+        availablePowerUps[4] = new PointBoost();
+        availablePowerUpsList[4] = "Point_Boost";
     } 
 
     //Sicherheitskopie

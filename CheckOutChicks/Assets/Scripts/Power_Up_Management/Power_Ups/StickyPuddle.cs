@@ -6,13 +6,13 @@
 using UnityEngine;
 using System.Collections;
 
-class Sticky_Puddle : Power_Up 
+class StickyPuddle : PowerUp 
 {
     public override void Use(Player player)
     {
-        GameObject Puddle = GameObject.Instantiate(player.sticky_Puddle_Prefab) as GameObject;
+        GameObject Puddle = GameObject.Instantiate(player.Sticky_Puddle_Prefab) as GameObject;
         Puddle.transform.localRotation = player.transform.localRotation;
         Puddle.transform.localPosition = new Vector3(player.transform.position.x, Puddle.transform.position.y, player.transform.position.z);
-        Puddle.GetComponent<Item_Sticky_Puddle>().SetConstructedPlayer(player);
+        Puddle.GetComponent<StickyPuddleItem>().SetConstructedPlayer(player);
     }
 }

@@ -9,7 +9,7 @@ using System;
 
 public class Item : MonoBehaviour
 {
-    public float timeBoni = 0;
+    private float timeBoni = 25;
 
     public float TimeBoni
     {

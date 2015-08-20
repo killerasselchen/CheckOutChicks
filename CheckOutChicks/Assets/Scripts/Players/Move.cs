@@ -9,7 +9,8 @@ using System.Collections;
 public class Move : MonoBehaviour {
 
     private string playerTag;
-    public Rigidbody Wagon_RB;
+    [SerializeField]
+    private Rigidbody wagon_RB;
 
     //For PowerUps
     //Needs Props to not longer public
@@ -40,11 +41,6 @@ public class Move : MonoBehaviour {
     private float turboTimer;
     private float confuseTimerOriginal = 5.0f;
     private float confuseTimer;
-    private float stickyTimerOriginal = 5.0f;
-    private float stickyTimer;
-    private float slipperyWhenWetTimerOriginal = 5.0f;
-    private float slipperyWhenWetTimer;
-
 
     //For movement
     private float forwardForceInput;
@@ -77,16 +73,14 @@ public class Move : MonoBehaviour {
         set { steerMultiplier = value; }
     }
 
-    private UI_Power_Up ui_Power_Up;
+    private PowerUpUI ui_Power_Up;
 
 	void Awake () 
     {
-        Wagon_RB = GetComponent<Rigidbody>();
+        //reinziehen
         playerTag = gameObject.tag;
-        ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<UI_Power_Up>();
+        ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<PowerUpUI>();
         TimerSettings();
-        StickyMassBoni = 0.8f;
-        TurboMassBoni = 0.3f;
 	}
 	
 	void FixedUpdate () 
@@ -94,26 +88,36 @@ public class Move : MonoBehaviour {
         Movement();
 	}
 
-    void Movement()
+    void Update()
     {
-        if(inStickyPuddle)
-            InSticky();
+        CheckOnPowerUpEffects();
+    }
 
-        else if (IsConfuse)
-            Confuse();
-
-        else if (OnTurbo)
-            Turbo();
-
+    void CheckInput()
+    {
         sideStepForceInput = Input.GetAxis("SideStep_" + playerTag);
         forwardForceInput = Input.GetAxis("Acceleration_" + playerTag);
         rotate = Input.GetAxis("Steer_" + playerTag);
+    }
+
+    void Movement()
+    {
+        CheckInput();
 
         Vector3 MoveWagon = new Vector3(sideStepForceInput * sideStepPower * sideStepMultiplier, 0, (forwardForceInput * acceleration) * accelerationMultiplier);
-
         //When i drive Backward i need a invert Input
-        Wagon_RB.transform.Rotate(0, rotate * steerPower * steerMultiplier, 0);
-        Wagon_RB.AddRelativeForce(MoveWagon);
+        wagon_RB.transform.Rotate(0, rotate * steerPower * steerMultiplier, 0);
+        wagon_RB.AddRelativeForce(MoveWagon);
+    }
+
+    void CheckOnPowerUpEffects()
+    {
+        //Scripte instanzieren auf die jeweiligen Player
+        if (IsConfuse)
+            Confuse();
+
+        if (OnTurbo)
+            Turbo();
     }
 
     void Confuse()
@@ -129,66 +133,45 @@ public class Move : MonoBehaviour {
         confuseTimer -= 1.0f * Time.deltaTime;
     }
 
-    void InSticky()
-    {
-        if(stickyTimer <= 0)
-        {
-            inStickyPuddle = false;
-            stickyTimer = stickyTimerOriginal;
-            this.gameObject.GetComponent<Rigidbody>().mass -= StickyMassBoni;
-        }
+    //void OnSlipperyWet()
+    //{
+    //    if (slipperyWhenWetTimer <= 0)
+    //    {
+    //        onSlipperyWet = false;
+    //        slipperyWhenWetTimer = slipperyWhenWetTimerOriginal;
+    //        //this.gameObject.GetComponent<Rigidbody>().mass -= stickyMassBoni;
+    //    }
 
-        stickyTimer -= 1.0f * Time.deltaTime;
-    }
-
-    void OnSlipperyWet()
-    {
-        if (slipperyWhenWetTimer <= 0)
-        {
-            onSlipperyWet = false;
-            slipperyWhenWetTimer = slipperyWhenWetTimerOriginal;
-            this.gameObject.GetComponent<Rigidbody>().mass -= stickyMassBoni;
-        }
-
-        slipperyWhenWetTimer -= 1.0f * Time.deltaTime;
-    }
+    //    slipperyWhenWetTimer -= 1.0f * Time.deltaTime;
+    //}
     
     void Turbo()
     {
         //Give - on MassBoni!!?
-        if (turboTimer < 0)
+        if (turboTimer <= 0)
         {
             OnTurbo = false;
+            Debug.Log("Go Out of Turbo");
             turboTimer = turboTimerOriginal;
             //AccelerationMultiplier -= 0.0f;
             this.gameObject.GetComponent<Rigidbody>().mass += TurboMassBoni;
         }
 
         turboTimer -= 1.0f * Time.deltaTime;
+        Debug.Log("TurboTimer: " + turboTimer);
     }
 
-
+    
 
     void TimerSettings()
     {
         turboTimer = turboTimerOriginal;
         confuseTimer = confuseTimerOriginal;
-        stickyTimer = stickyTimerOriginal;
-        slipperyWhenWetTimer = slipperyWhenWetTimerOriginal;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Sticky_Puddle" && inStickyPuddle != true)
-        {
-            inStickyPuddle = true;
-            this.gameObject.GetComponent<Rigidbody>().mass += StickyMassBoni;
-        }
-
-        else if (other.tag == "Sliery_When_Wet" && onSlipperyWet != true)
-        {
-            onSlipperyWet = true;
-        }
+        
     }
 
     

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Power_Up_Spin : MonoBehaviour {
+public class PowerUpSpin : MonoBehaviour {
 
     private float speed = 20;
 
@@ -21,8 +21,8 @@ public class Power_Up_Spin : MonoBehaviour {
         this.transform.Rotate(0, speed * Time.deltaTime, 0);
     }
 
-    private void GoUpAndDown()
-    {
+    //private void GoUpAndDown()
+    //{
        
-    }
+    //}
 }

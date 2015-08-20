@@ -36,6 +36,12 @@ public class GameManager : MonoBehaviour {
     public static GameObject player_4;
     //public static List<GameObject> playerList;
 
+    ////Challenges. Derzeit noch NiceToHave
+    //höhste Geschwindigkeit
+    //meisten Einkäufe
+    //längste Fahrtstrecke
+    //meisten PowerUps
+
     void Awake ()
     {
         FindPlayers();

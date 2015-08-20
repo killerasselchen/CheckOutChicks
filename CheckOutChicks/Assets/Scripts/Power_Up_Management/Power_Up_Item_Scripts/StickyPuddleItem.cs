@@ -6,7 +6,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Item_Sticky_Puddle : MonoBehaviour {
+public class StickyPuddleItem : MonoBehaviour {
 
     private float lifeTime;
 
@@ -44,21 +44,24 @@ public class Item_Sticky_Puddle : MonoBehaviour {
 
     void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player" && other.GetComponentInParent<Player>() != constructedPlayer)
+        Rigidbody temp = other.GetComponent<Rigidbody>();
+
+        if (temp == null) return;
+        if (other.GetComponent<Player>() == constructedPlayer) return;
+        if (trapLevelOne <= trapLevelTwo)
         {
-            if (trapLevelOne <= trapLevelTwo)
-            {
-                constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
-                trapLevelOne += 1.0f * Time.deltaTime;
-            }
-
-            else if (trapLevelOne >= trapLevelTwo)
-            {
-                constructedPlayer.MyPoints += 20.0f * Time.deltaTime;
-            }
+            constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
+            trapLevelOne += 1.0f * Time.deltaTime;
         }
-    }
 
+        else if (trapLevelOne >= trapLevelTwo)
+        {
+            constructedPlayer.MyPoints += 20.0f * Time.deltaTime;
+        }
+
+        //ggf noch Lerp von der Eintrittsgeschwindigkeit
+        temp.velocity = Vector3.ClampMagnitude(temp.velocity, 2);
+    }
     
     public void SetConstructedPlayer(Player constructedPlayer)
     {

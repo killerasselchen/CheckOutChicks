@@ -3,20 +3,37 @@
 //Project: CheckOut Chicks
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
-using UnityEngine;
+//Sublime Text
+//CodeMaid download
+//str + K + D = Format Document
+//
+
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject sticky_Puddle_Prefab;
 
-    public GameObject sticky_Puddle_Prefab;
-    public GameObject wet_Floor_Prefab;
+    public GameObject Sticky_Puddle_Prefab
+    {
+        get { return sticky_Puddle_Prefab; }
+    }
+
+    [SerializeField]
+    private GameObject wet_Floor_Prefab;
+
+    public GameObject Wet_Floor_Prefab
+    {
+        get { return wet_Floor_Prefab; }
+    }
 
     private string playerTag;
-    private int playerNr;
     private string myCam;
-    private float speed;
     private float myPoints;
     private bool onPointBoost = false;
     private float pointBoosterTimerOriganal = 10.0f;
@@ -28,9 +45,9 @@ public class Player : MonoBehaviour {
         set
         {
             if (onPointBoost)
-            { myPoints = value * 2; }
+                myPoints = value * 2;
             else
-            { myPoints = value; }
+                myPoints = value;
         }
     }
 
@@ -40,62 +57,51 @@ public class Player : MonoBehaviour {
         set { onPointBoost = value; }
     }
 
-    //Outsourcing lastPos
-    //private Vector3 lastPosition;
-
-    private Power_Up[] myPowerUps = new Power_Up[2];
+    private PowerUp[] myPowerUps = new PowerUp[2];
     private int random;
     private int tempItem;
-    public static int leftItem;
-    public static int rightItem;
-    private Power_Up nextPowerUp;
+    private int leftItem;
+    private int rightItem;
+    private PowerUp nextPowerUp;
 
-    private UI_Power_Up ui_Power_Up;
+    private PowerUpUI ui_Power_Up;
     private TextMesh ui_Points;
-    private Shopping_Manager shopping_Manager;
-    private Power_Up_Manager power_Up_Manager;
+    private ShoppingManager shopping_Manager;
+    private PowerUpManager power_Up_Manager;
 
     private List<string> meineEinkaeufe = new List<string>();
+    [SerializeField]
+    private Rigidbody RB;
+    public Vector3 Velocity;
 
     
 
-	void Awake () 
+    void Awake()
     {
         playerTag = gameObject.tag;
-        ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<UI_Power_Up>();
+        ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<PowerUpUI>();
         ui_Points = GameObject.Find("Points_" + playerTag).GetComponent<TextMesh>();
-        shopping_Manager = GameObject.Find("GameManager").GetComponent<Shopping_Manager>();
-        power_Up_Manager = GameObject.Find("GameManager").GetComponent<Power_Up_Manager>();
-	}
+        shopping_Manager = GameObject.Find("GameManager").GetComponent<ShoppingManager>();
+        power_Up_Manager = GameObject.Find("GameManager").GetComponent<PowerUpManager>();
+    }
 
-	void FixedUpdate () 
+    void FixedUpdate()
     {
-        //tacho();
         if (Input.anyKeyDown)
             UsePowerUp();
         else if (onPointBoost)
             PointBoost();
         ui_Points.text = MyPoints.ToString("0");
-	}
+        Velocity = RB.velocity;
+    }
 
-    void SetPowerUp(Power_Up powerUp)
+    void SetPowerUp(PowerUp powerUp)
     {
         for (int i = 0; i < myPowerUps.Length; i++)
         {
-            if(myPowerUps[i] == null)
+            if (myPowerUps[i] == null)
             {
-                if(i == 0)
-                {
-                    leftItem = tempItem;
-                    //Über Event lösen?!!!
-                    UI_Power_Up.ActivateUI(ui_Power_Up.leftPowerUps[leftItem]);
-                }
-                else if(i == 1)
-                {
-                    rightItem = tempItem;
-                    //Über Event lösen?!!!
-                    UI_Power_Up.ActivateUI(ui_Power_Up.rightPowerUps[rightItem]);
-                }
+                ui_Power_Up.SetImage(i, power_Up_Manager.PowerUpIcons[tempItem]);
                 myPowerUps[i] = powerUp;
                 return;
             }
@@ -106,12 +112,12 @@ public class Player : MonoBehaviour {
     {
         if (Input.GetButtonDown("Fire_Left_" + playerTag))
         {
-           if(myPowerUps[0] != null)
-           {
-               myPowerUps[0].Use(this);
-               myPowerUps[0] = null;
-               UI_Power_Up.DeActivateUI(ui_Power_Up.leftPowerUps[leftItem]);
-           }
+            if (myPowerUps[0] != null)
+            {
+                myPowerUps[0].Use(this);
+                myPowerUps[0] = null;
+                ui_Power_Up.SetImage(0, null);
+            }
         }
         if (Input.GetButtonDown("Fire_Right_" + playerTag))
         {
@@ -119,7 +125,7 @@ public class Player : MonoBehaviour {
             {
                 myPowerUps[1].Use(this);
                 myPowerUps[1] = null;
-                UI_Power_Up.DeActivateUI(ui_Power_Up.rightPowerUps[rightItem]);
+                ui_Power_Up.SetImage(1, null);
             }
         }
     }
@@ -159,36 +165,13 @@ public class Player : MonoBehaviour {
             power_Up_Manager.CurrentMapPowerUps--;
         }
 
-        else if (other.tag == "Product")
+        if (other.tag == "Product")
         {
             meineEinkaeufe.Add(other.gameObject.name);
             SetPointsForItems(other.gameObject.GetComponent<Item>());
             other.gameObject.SetActive(false);
             shopping_Manager.Products.Remove(other.gameObject);
-            //shopping_Manager.Products.Remove(shopping_Manager.Products[shopping_Manager.NextItem]);
-            //shopping_Manager.CurrentItems = shopping_Manager.CurrentItems - 1;
-
-            //other.gameObject.GetComponent<Item>().Deactivate;
         }
     }
-
-    //Must be OUTSOURCE!!
-    //void tacho()
-    //{
-    //    for (int i = 0; i < GameManager.activeCameras.Count; i++)
-    //    {
-    //        Debug.Log("@time");
-    //        speed = (this.transform.position - lastPosition).magnitude / Time.deltaTime;
-    //        speed = speed * 100;
-
-    //        if (i + 1 == playerNr)
-    //        {
-    //            Debug.Log("@TextMesh");
-
-    //            GameManager.activeCameras[i].GetComponentInChildren<TextMesh>().text = speed.ToString("0.");
-    //            lastPosition = this.transform.position;
-    //        }
-    //    }
-    //}
 }
- 
+
