@@ -6,7 +6,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Camera_Movements : MonoBehaviour {
+public class CameraMovements : MonoBehaviour {
 
 
     private float smooth = 3f;

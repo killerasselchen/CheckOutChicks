@@ -147,18 +147,15 @@ public class Move : MonoBehaviour {
     
     void Turbo()
     {
-        //Give - on MassBoni!!?
+        //Make is a nother way
         if (turboTimer <= 0)
         {
             OnTurbo = false;
-            Debug.Log("Go Out of Turbo");
             turboTimer = turboTimerOriginal;
-            //AccelerationMultiplier -= 0.0f;
             this.gameObject.GetComponent<Rigidbody>().mass += TurboMassBoni;
         }
 
         turboTimer -= 1.0f * Time.deltaTime;
-        Debug.Log("TurboTimer: " + turboTimer);
     }
 
     
@@ -168,11 +165,4 @@ public class Move : MonoBehaviour {
         turboTimer = turboTimerOriginal;
         confuseTimer = confuseTimerOriginal;
     }
-
-    void OnTriggerEnter(Collider other)
-    {
-        
-    }
-
-    
 }
