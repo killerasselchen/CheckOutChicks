@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class SlipperyWhenWetItem : MonoBehaviour {
-
+public class SlipperyWhenWetItem : MonoBehaviour
+{
     private float lifeTime;
 
     private Player constructedPlayer = new Player();
@@ -13,13 +12,13 @@ public class SlipperyWhenWetItem : MonoBehaviour {
         set { constructedPlayer = value; }
     }
 
-    void Awake()
+    private void Awake()
     {
         lifeTime = 8;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         LifeTimeCheck();
     }
@@ -29,16 +28,15 @@ public class SlipperyWhenWetItem : MonoBehaviour {
         ConstructedPlayer = constructedPlayer;
     }
 
-    void LifeTimeCheck()
+    private void LifeTimeCheck()
     {
         if (lifeTime >= 0)
             lifeTime -= 1 * Time.deltaTime;
-
         else if (lifeTime <= 0)
             Destroy(this.gameObject);
     }
 
-    void OnTriggerStay(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         for (int i = 0; i < GameManager.activePlayers.Count; i++)
         {
@@ -53,14 +51,13 @@ public class SlipperyWhenWetItem : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         Rigidbody temp = other.GetComponent<Rigidbody>();
 
         if (temp == null) return;
-        if(other.GetComponent<Player>() == constructedPlayer)
-       
-            constructedPlayer.MyPoints += 20.0f;
+        if (other.GetComponent<Player>() == constructedPlayer)
 
+            constructedPlayer.MyPoints += 20.0f;
     }
 }

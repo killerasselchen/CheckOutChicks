@@ -4,24 +4,25 @@
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
 using UnityEngine;
-using System.Collections;
 
-public class Move : MonoBehaviour {
-
+public class Move : MonoBehaviour
+{
     private string playerTag;
+
     [SerializeField]
     private Rigidbody wagon_RB;
 
     //For PowerUps
     //Needs Props to not longer public
     public bool IsConfuse = false;
+
     public bool OnTurbo = false;
     private bool inStickyPuddle = false;
     private bool onSlipperyWet = false;
     //private bool isHollow = false;
 
     private float stickyMassBoni;
-    
+
     public float StickyMassBoni
     {
         get { return stickyMassBoni; }
@@ -38,12 +39,14 @@ public class Move : MonoBehaviour {
 
     //->Timer needs Props for MenuChanges
     private float turboTimerOriginal = 2.0f;
+
     private float turboTimer;
     private float confuseTimerOriginal = 5.0f;
     private float confuseTimer;
 
     //For movement
     private float forwardForceInput;
+
     private float sideStepForceInput;
     private float rotate;
 
@@ -66,7 +69,7 @@ public class Move : MonoBehaviour {
         get { return sideStepMultiplier; }
         set { sideStepMultiplier = value; }
     }
-    
+
     public float SteerMultiplier
     {
         get { return steerMultiplier; }
@@ -75,32 +78,32 @@ public class Move : MonoBehaviour {
 
     private PowerUpUI ui_Power_Up;
 
-	void Awake () 
+    private void Awake()
     {
         //reinziehen
         playerTag = gameObject.tag;
         ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<PowerUpUI>();
         TimerSettings();
-	}
-	
-	void FixedUpdate () 
+    }
+
+    private void FixedUpdate()
     {
         Movement();
-	}
+    }
 
-    void Update()
+    private void Update()
     {
         CheckOnPowerUpEffects();
     }
 
-    void CheckInput()
+    private void CheckInput()
     {
         sideStepForceInput = Input.GetAxis("SideStep_" + playerTag);
         forwardForceInput = Input.GetAxis("Acceleration_" + playerTag);
         rotate = Input.GetAxis("Steer_" + playerTag);
     }
 
-    void Movement()
+    private void Movement()
     {
         CheckInput();
 
@@ -110,7 +113,7 @@ public class Move : MonoBehaviour {
         wagon_RB.AddRelativeForce(MoveWagon);
     }
 
-    void CheckOnPowerUpEffects()
+    private void CheckOnPowerUpEffects()
     {
         //Scripte instanzieren auf die jeweiligen Player
         if (IsConfuse)
@@ -120,7 +123,7 @@ public class Move : MonoBehaviour {
             Turbo();
     }
 
-    void Confuse()
+    private void Confuse()
     {
         if (confuseTimer < 0)
         {
@@ -129,7 +132,7 @@ public class Move : MonoBehaviour {
             SideStepPower = 1;
             SteerMultiplier = 1;
         }
-        
+
         confuseTimer -= 1.0f * Time.deltaTime;
     }
 
@@ -144,8 +147,8 @@ public class Move : MonoBehaviour {
 
     //    slipperyWhenWetTimer -= 1.0f * Time.deltaTime;
     //}
-    
-    void Turbo()
+
+    private void Turbo()
     {
         //Make is a nother way
         if (turboTimer <= 0)
@@ -158,9 +161,7 @@ public class Move : MonoBehaviour {
         turboTimer -= 1.0f * Time.deltaTime;
     }
 
-    
-
-    void TimerSettings()
+    private void TimerSettings()
     {
         turboTimer = turboTimerOriginal;
         confuseTimer = confuseTimerOriginal;

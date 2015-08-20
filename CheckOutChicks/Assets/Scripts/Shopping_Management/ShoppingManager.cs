@@ -3,12 +3,10 @@
 //Project: CheckOut Chicks
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
 
-public class ShoppingManager : MonoBehaviour 
+public class ShoppingManager : MonoBehaviour
 {
     private List<GameObject> products;
     private List<GameObject> productsBackUp;
@@ -22,10 +20,11 @@ public class ShoppingManager : MonoBehaviour
     private float maxPoints;
 
     public delegate void ItemEvent(Item item);
+
     public ItemEvent OnCreateItem;
     public ItemEvent OnDeactivateItem;
 
-    void Awake()
+    private void Awake()
     {
         maxPoints = 30;
         //bonusTime = 10;
@@ -33,7 +32,7 @@ public class ShoppingManager : MonoBehaviour
         FindAvailableProducts();
     }
 
-    void Update()
+    private void Update()
     {
         SearchActivProducts();
         SpawnNextItem();
@@ -41,8 +40,8 @@ public class ShoppingManager : MonoBehaviour
 
     public List<GameObject> Products
     {
-        get { return products;}
-        set { products = value;}
+        get { return products; }
+        set { products = value; }
     }
 
     public List<GameObject> ActiveProducts
@@ -53,38 +52,38 @@ public class ShoppingManager : MonoBehaviour
 
     public int MaxItems
     {
-        get { return maxItems;}
+        get { return maxItems; }
         set { maxItems = value; }
     }
 
-    void FindAvailableProducts()
+    private void FindAvailableProducts()
     {
         products = new List<GameObject>();
         productsBackUp = new List<GameObject>();
 
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Product");
         for (int i = 0; i < temp.Length; i++)
-			{
-                products.Add(temp[i]);
-                productsBackUp.Add(temp[i]);
-			}
+        {
+            products.Add(temp[i]);
+            productsBackUp.Add(temp[i]);
+        }
 
         DeactivateItems();
     }
 
-    void DeactivateItems()
+    private void DeactivateItems()
     {
         foreach (var product in products)
-	    {
-	    	 product.SetActive(false);
-	    }
+        {
+            product.SetActive(false);
+        }
     }
 
-    void SpawnNextItem()
+    private void SpawnNextItem()
     {
-        if(currentItems < maxItems && products.Count > 0)
+        if (currentItems < maxItems && products.Count > 0)
         {
-            if(spawnTimer <= 0)
+            if (spawnTimer <= 0)
             {
                 nextItem = UnityEngine.Random.Range(0, products.Count);
                 products[nextItem].SetActive(true);
@@ -95,14 +94,13 @@ public class ShoppingManager : MonoBehaviour
 
             spawnTimer -= 1.0f * Time.deltaTime;
         }
-
         else
         {
             products = new List<GameObject>(productsBackUp);
         }
     }
 
-    void SearchActivProducts()
+    private void SearchActivProducts()
     {
         currentItems = GameObject.FindGameObjectsWithTag("Product").Length;
     }

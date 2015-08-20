@@ -3,21 +3,20 @@
 //Project: CheckOut Chicks
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
-using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class GameManager : MonoBehaviour {
-
+public class GameManager : MonoBehaviour
+{
     //dont destroy on load
     //OnLevelWasLoaded
 
     //To set the Playerquantity
-    public  bool setToSinglePlayer;
-    public  bool setToTwoPlayers;
-    public  bool setToThreePlayers;
-    public  bool setToFourPlayers;
+    public bool setToSinglePlayer;
+
+    public bool setToTwoPlayers;
+    public bool setToThreePlayers;
+    public bool setToFourPlayers;
     private int playerQuantity;
 
     private bool paused = true;
@@ -42,21 +41,21 @@ public class GameManager : MonoBehaviour {
     //längste Fahrtstrecke
     //meisten PowerUps
 
-    void Awake ()
+    private void Awake()
     {
         FindPlayers();
         FindCameras();
         Time.timeScale = 0;
     }
 
-	void Update () 
+    private void Update()
     {
         KeyControl();
-	}
+    }
 
-    void KeyControl()
+    private void KeyControl()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Pause();
         }
@@ -83,7 +82,7 @@ public class GameManager : MonoBehaviour {
     }
 
     //Little Function to test the PlayerQuantitySelection and the Activation of Players and Cameras. (4.6.2015)
-    void PlayerQuantitySelection()
+    private void PlayerQuantitySelection()
     {
         if (setToSinglePlayer == true)
         {
@@ -106,7 +105,7 @@ public class GameManager : MonoBehaviour {
     }
 
     //Find over Tags the Player GameObjects after the PlayerQuantity is selected. (5.6.2015)
-    void FindPlayers()
+    private void FindPlayers()
     {
         player_1 = GameObject.FindGameObjectWithTag("P_1");
         player_2 = GameObject.FindGameObjectWithTag("P_2");
@@ -118,7 +117,7 @@ public class GameManager : MonoBehaviour {
 
     //Find over Tags the Camera GameObjects. It is outside the "FindPlayer()", because i wana use it later for more Cameras an nother funktions. (5.6.2015)
     //Only active Objects will be find over Tag. I look for a work around, but yet i search all GameObjects and deactivate them.
-    void FindCameras()
+    private void FindCameras()
     {
         mainCamera = GameObject.FindGameObjectWithTag("Main_Camera");
         camera_1 = GameObject.FindGameObjectWithTag("Camera_1");
@@ -130,7 +129,7 @@ public class GameManager : MonoBehaviour {
     }
 
     //Activate the Player GameObjects. This way i can check over an nother bool if a Controller ist conected (5.6.2015)
-    void ActivatePlayers()
+    private void ActivatePlayers()
     {
         if (setToSinglePlayer)
         {
@@ -157,35 +156,35 @@ public class GameManager : MonoBehaviour {
     }
 
     //Activate the Cameras GameObjects. If Game Paused, i can controll what the Players see in this time (5.6.2015)
-    void ActivateCameras()
+    private void ActivateCameras()
     {
-            if (setToSinglePlayer)
-            {
-                camera_1.SetActive(true);
-            }
-            else if (setToTwoPlayers)
-            {
-                camera_1.SetActive(true);
-                camera_2.SetActive(true);
-            }
-            else if (setToThreePlayers)
-            {
-                camera_1.SetActive(true);
-                camera_2.SetActive(true);
-                camera_3.SetActive(true);
-            }
-            else if (setToFourPlayers)
-            {
-                camera_1.SetActive(true);
-                camera_2.SetActive(true);
-                camera_3.SetActive(true);
-                camera_4.SetActive(true);
-            }
+        if (setToSinglePlayer)
+        {
+            camera_1.SetActive(true);
+        }
+        else if (setToTwoPlayers)
+        {
+            camera_1.SetActive(true);
+            camera_2.SetActive(true);
+        }
+        else if (setToThreePlayers)
+        {
+            camera_1.SetActive(true);
+            camera_2.SetActive(true);
+            camera_3.SetActive(true);
+        }
+        else if (setToFourPlayers)
+        {
+            camera_1.SetActive(true);
+            camera_2.SetActive(true);
+            camera_3.SetActive(true);
+            camera_4.SetActive(true);
+        }
 
-            mainCamera.SetActive(false);
+        mainCamera.SetActive(false);
     }
 
-    void DeActivatePlayers()
+    private void DeActivatePlayers()
     {
         player_1.SetActive(false);
         player_2.SetActive(false);
@@ -193,7 +192,7 @@ public class GameManager : MonoBehaviour {
         player_4.SetActive(false);
     }
 
-    void DeActivateCameras()
+    private void DeActivateCameras()
     {
         camera_1.SetActive(false);
         camera_2.SetActive(false);
@@ -201,16 +200,16 @@ public class GameManager : MonoBehaviour {
         camera_4.SetActive(false);
     }
 
-    void Pause()
+    private void Pause()
     {
-        if(!paused)
+        if (!paused)
         {
             paused = true;
             Time.timeScale = 0;
             DeActivateCameras();
             mainCamera.SetActive(true);
         }
-        else if(paused)
+        else if (paused)
         {
             paused = false;
             Time.timeScale = 1;
@@ -219,7 +218,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void SetActivePlayerList()
+    private void SetActivePlayerList()
     {
         playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
 
@@ -229,7 +228,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void SetActiveCameraList()
+    private void SetActiveCameraList()
     {
         for (int i = 1; i < playerQuantity + 1; i++)
         {
@@ -269,4 +268,3 @@ public class GameManager : MonoBehaviour {
         Debug.Log("exit");
     }
 }
-

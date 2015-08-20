@@ -4,11 +4,9 @@
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
 using UnityEngine;
-using System.Collections;
 
-public class CameraMovements : MonoBehaviour {
-
-
+public class CameraMovements : MonoBehaviour
+{
     private float smooth = 3f;
 
     private Transform player_Position;
@@ -27,11 +25,12 @@ public class CameraMovements : MonoBehaviour {
 
     private GameManager game_Manager;
 
-    void Awake()
+    private void Awake()
     {
         game_Manager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
-    void Start()
+
+    private void Start()
     {
         TagNameFinder();
 
@@ -45,13 +44,13 @@ public class CameraMovements : MonoBehaviour {
         relCameraPos = transform.position - player_Position.position;
         relCameraPosMag = relCameraPos.magnitude - 1.0f;
     }
-	
-	void FixedUpdate() 
+
+    private void FixedUpdate()
     {
         Vector3 standardPos = cam_Origin.position;
         Vector3 nearestPos = player_Position.position;
         Vector3[] checkPoints = new Vector3[6];
-        
+
         checkPoints[0] = standardPos;
         checkPoints[1] = Vector3.Lerp(standardPos, nearestPos, 0.2f);
         checkPoints[2] = Vector3.Lerp(standardPos, nearestPos, 0.4f);
@@ -68,9 +67,9 @@ public class CameraMovements : MonoBehaviour {
         transform.position = Vector3.Lerp(transform.position, tempPos, smooth * Time.deltaTime);
 
         LookAtPlayer();
-	}
+    }
 
-    bool ViewingPosCheck (Vector3 checkPoint)
+    private bool ViewingPosCheck(Vector3 checkPoint)
     {
         RaycastHit hit;
 
@@ -87,16 +86,15 @@ public class CameraMovements : MonoBehaviour {
     }
 
     //Rotate smoothly the Camera behind the Players-Rotation
-    void LookAtPlayer()
+    private void LookAtPlayer()
     {
         Vector3 relPlayerPosition = cam_Target.position - transform.position;
         Quaternion lookAtRotation = Quaternion.LookRotation(relPlayerPosition, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * Time.deltaTime);
     }
 
-
     //im GameManager nutzen - GGF Instatiate Player -> Cam -> Rect & next Player...
-    void ViewPortSelection()
+    private void ViewPortSelection()
     {
         float x = 0;
         float y = 0;
@@ -106,22 +104,21 @@ public class CameraMovements : MonoBehaviour {
         if (game_Manager.setToTwoPlayers)
         {
             height = 0.5f;
-            
-            if(playerNr == "P_1")
+
+            if (playerNr == "P_1")
                 y = 0.5f;
         }
-
         else if (game_Manager.setToThreePlayers)
         {
             width = 0.5f;
             height = 0.5f;
 
-            if(playerNr == "P_1")
+            if (playerNr == "P_1")
             {
                 x = 0.0f;
                 y = 0.5f;
             }
-            else if(playerNr == "P_2")
+            else if (playerNr == "P_2")
             {
                 x = 0.5f;
                 y = 0.5f;
@@ -131,7 +128,6 @@ public class CameraMovements : MonoBehaviour {
                 x = 0.0f;
             }
         }
-
         else if (game_Manager.setToFourPlayers)
         {
             width = 0.5f;
@@ -161,13 +157,12 @@ public class CameraMovements : MonoBehaviour {
 
     //"Spieler zuweisung" oder ähnlich müßte es heißen. Name finden!!
     //Use the Tag for set the right Tag-Information for Player- and CameraPosition-References.
-    void TagNameFinder()
+    private void TagNameFinder()
     {
         cam_Tag = this.gameObject.tag;
 
         playerNr = "P_" + cam_Tag.Split('_')[1];
         cam_Origin_Tag = "Cam_Pos_" + cam_Tag.Split('_')[1];
         cam_Target_Tag = "Cam_Target_" + cam_Tag.Split('_')[1];
-        
     }
 }

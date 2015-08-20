@@ -3,10 +3,7 @@
 //Project: CheckOut Chicks
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
-using UnityEngine;
-using System.Collections;
-
-class ConfuseOther : PowerUp 
+internal class ConfuseOther : PowerUp
 {
     public override void Use(Player player)
     {

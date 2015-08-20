@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class PointBoost : PowerUp
+﻿public class PointBoost : PowerUp
 {
     public override void Use(Player player)
     {

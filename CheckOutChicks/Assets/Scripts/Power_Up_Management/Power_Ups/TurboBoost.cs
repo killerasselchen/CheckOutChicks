@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class TurboBoost : PowerUp 
+public class TurboBoost : PowerUp
 {
     public override void Use(Player player)
     {

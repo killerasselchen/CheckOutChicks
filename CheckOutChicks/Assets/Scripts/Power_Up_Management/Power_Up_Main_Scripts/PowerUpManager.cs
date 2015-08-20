@@ -4,11 +4,9 @@
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
-public class PowerUpManager : MonoBehaviour {
-
+public class PowerUpManager : MonoBehaviour
+{
     private int maxMapPowerUps = 2;
     private int currentMapPowerUps;
     private int nextPowerUp;
@@ -17,6 +15,7 @@ public class PowerUpManager : MonoBehaviour {
     private float powerUpSpawnTimer;
     private float minSpawnDelay = 1;
     private float maxSpawnDelay = 2;
+
     [SerializeField]
     private Sprite[] powerUpIcons;
 
@@ -32,35 +31,35 @@ public class PowerUpManager : MonoBehaviour {
 
     public int MaxMapPowerUps
     {
-        get { return maxMapPowerUps;}
-        set { maxMapPowerUps = value;}
+        get { return maxMapPowerUps; }
+        set { maxMapPowerUps = value; }
     }
 
     public int CurrentMapPowerUps
     {
-        get { return currentMapPowerUps;}
+        get { return currentMapPowerUps; }
         set { currentMapPowerUps = value; }
     }
 
     public PowerUp[] AvailablePowerUp
     {
-        get { return availablePowerUps;}
-        set { availablePowerUps = value;}
+        get { return availablePowerUps; }
+        set { availablePowerUps = value; }
     }
 
-    void Awake()
+    private void Awake()
     {
         FindPowerUpSpawnPoints();
-        MaxMapPowerUps = powerUpSpawnPoints.Length ;
+        MaxMapPowerUps = powerUpSpawnPoints.Length;
         SetAvailablePowerUps();
     }
 
-    void Update()
+    private void Update()
     {
         SpawnPowerUp();
     }
 
-	void FindPowerUpSpawnPoints()
+    private void FindPowerUpSpawnPoints()
     {
         powerUpSpawnPoints = GameObject.FindGameObjectsWithTag("Power_Up_Spawn_Point");
 
@@ -70,7 +69,7 @@ public class PowerUpManager : MonoBehaviour {
         }
     }
 
-    void SpawnPowerUp()
+    private void SpawnPowerUp()
     {
         if (currentMapPowerUps + 1 <= MaxMapPowerUps)
         {
@@ -94,7 +93,7 @@ public class PowerUpManager : MonoBehaviour {
         }
     }
 
-    void SetAvailablePowerUps()
+    private void SetAvailablePowerUps()
     {
         availablePowerUps = new PowerUp[5];
         availablePowerUpsList = new string[5];
@@ -113,7 +112,7 @@ public class PowerUpManager : MonoBehaviour {
 
         availablePowerUps[4] = new PointBoost();
         availablePowerUpsList[4] = "Point_Boost";
-    } 
+    }
 
     //Sicherheitskopie
     //void SpawnNextItem()

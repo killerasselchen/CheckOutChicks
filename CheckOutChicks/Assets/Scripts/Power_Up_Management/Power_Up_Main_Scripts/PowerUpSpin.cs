@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class PowerUpSpin : MonoBehaviour {
-
+public class PowerUpSpin : MonoBehaviour
+{
     private float speed = 20;
 
     public float Speed
@@ -11,7 +10,7 @@ public class PowerUpSpin : MonoBehaviour {
         set { speed = value; }
     }
 
-	void Update()
+    private void Update()
     {
         Spin();
     }
@@ -23,6 +22,5 @@ public class PowerUpSpin : MonoBehaviour {
 
     //private void GoUpAndDown()
     //{
-       
     //}
 }

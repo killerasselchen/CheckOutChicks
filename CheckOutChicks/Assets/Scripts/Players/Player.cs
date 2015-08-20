@@ -8,11 +8,8 @@
 //str + K + D = Format Document
 //
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
 
 public class Player : MonoBehaviour
 {
@@ -70,13 +67,13 @@ public class Player : MonoBehaviour
     private PowerUpManager power_Up_Manager;
 
     private List<string> meineEinkaeufe = new List<string>();
+
     [SerializeField]
     private Rigidbody RB;
+
     public Vector3 Velocity;
 
-    
-
-    void Awake()
+    private void Awake()
     {
         playerTag = gameObject.tag;
         ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<PowerUpUI>();
@@ -85,7 +82,7 @@ public class Player : MonoBehaviour
         power_Up_Manager = GameObject.Find("GameManager").GetComponent<PowerUpManager>();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (Input.anyKeyDown)
             UsePowerUp();
@@ -95,7 +92,7 @@ public class Player : MonoBehaviour
         Velocity = RB.velocity;
     }
 
-    void SetPowerUp(PowerUp powerUp)
+    private void SetPowerUp(PowerUp powerUp)
     {
         for (int i = 0; i < myPowerUps.Length; i++)
         {
@@ -108,7 +105,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void UsePowerUp()
+    private void UsePowerUp()
     {
         if (Input.GetButtonDown("Fire_Left_" + playerTag))
         {
@@ -130,13 +127,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    void SetNextPowerUp()
+    private void SetNextPowerUp()
     {
         tempItem = Random.Range(0, power_Up_Manager.AvailablePowerUp.Length);
         nextPowerUp = power_Up_Manager.AvailablePowerUp[tempItem];
     }
 
-    void SetPointsForItems(Item currentItem)
+    private void SetPointsForItems(Item currentItem)
     {
         //Points for every Item
         MyPoints += 25;
@@ -144,7 +141,7 @@ public class Player : MonoBehaviour
         MyPoints += currentItem.TimeBoni;
     }
 
-    void PointBoost()
+    private void PointBoost()
     {
         if (pointBoosterTimer <= 0)
         {
@@ -155,7 +152,7 @@ public class Player : MonoBehaviour
         pointBoosterTimer -= 1.0f * Time.deltaTime;
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Power_Up_Spawn_Point")
         {
@@ -174,4 +171,3 @@ public class Player : MonoBehaviour
         }
     }
 }
-

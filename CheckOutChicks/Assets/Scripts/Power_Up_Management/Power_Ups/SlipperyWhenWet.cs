@@ -4,9 +4,8 @@
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
 using UnityEngine;
-using System.Collections;
 
-class SlipperyWhenWet : PowerUp
+internal class SlipperyWhenWet : PowerUp
 {
     public override void Use(Player player)
     {
