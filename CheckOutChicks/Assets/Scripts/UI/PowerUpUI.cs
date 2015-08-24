@@ -7,7 +7,16 @@ public class PowerUpUI : MonoBehaviour
     private Image[] PowerUpIcons;
 
     [SerializeField]
+    public Sprite emptySlotIcon;
+
+    [SerializeField]
     private Sprite confuseIcon;
+
+    [SerializeField]
+    private Sprite pointBoostIcon;
+    
+    [SerializeField]
+    private Sprite slipperyIcon;
 
     [SerializeField]
     private Sprite stickyIcon;
@@ -15,11 +24,15 @@ public class PowerUpUI : MonoBehaviour
     [SerializeField]
     private Sprite turboIcon;
 
-    [SerializeField]
-    private Sprite slipperyIcon;
+    public void SetImage(int i, Sprite sprite)
+    {
+        PowerUpIcons[i].sprite = sprite;
+    }
 
-    [SerializeField]
-    private Sprite pointBoostIcon;
+    public void ClearImage(int i)
+    {
+        PowerUpIcons[i].sprite = emptySlotIcon;
+    }
 
     private void Awake()
     {
@@ -30,18 +43,13 @@ public class PowerUpUI : MonoBehaviour
     //{
     //}
 
-    public static void ActivateUI(GameObject PowerUpName)
-    {
-        PowerUpName.SetActive(true);
-    }
+    //public static void ActivateUI(GameObject PowerUpName)
+    //{
+    //    PowerUpName.SetActive(true);
+    //}
 
-    public static void DeActivateUI(GameObject PowerUpName)
-    {
-        PowerUpName.SetActive(false);
-    }
-
-    public void SetImage(int i, Sprite sprite)
-    {
-        PowerUpIcons[i].sprite = sprite;
-    }
+    //public static void DeActivateUI(GameObject PowerUpName)
+    //{
+    //    PowerUpName.SetActive(false);
+    //}
 }

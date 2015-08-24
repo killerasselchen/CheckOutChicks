@@ -38,17 +38,20 @@ public class SlipperyWhenWetItem : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        for (int i = 0; i < GameManager.activePlayers.Count; i++)
+        Rigidbody temp = other.GetComponent<Rigidbody>();
+
+        if (temp == null) return;
+        if (other.GetComponentInParent<Player>() != constructedPlayer)
         {
-            if (other.tag == "P_" + (i + 1) && other.GetComponentInParent<Player>() != constructedPlayer)
+            //hier weiter machen -- kann ja eh nicht const player sein
+            if (other.GetComponentInParent<Player>() != constructedPlayer)
             {
-                //hier weiter machen
-                if (other.GetComponentInParent<Player>() != constructedPlayer)
-                {
-                    constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
-                }
+                constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
             }
         }
+
+
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,8 +59,8 @@ public class SlipperyWhenWetItem : MonoBehaviour
         Rigidbody temp = other.GetComponent<Rigidbody>();
 
         if (temp == null) return;
-        if (other.GetComponent<Player>() == constructedPlayer)
 
+        if (other.GetComponent<Player>() != constructedPlayer)
             constructedPlayer.MyPoints += 20.0f;
     }
 }

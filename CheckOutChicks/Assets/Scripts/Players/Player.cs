@@ -4,7 +4,6 @@
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
 //Sublime Text
-//CodeMaid download
 //str + K + D = Format Document
 //
 
@@ -13,28 +12,42 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public Vector3 Velocity;
+
+    private List<string> myPurchases = new List<string>();
+
+    private float myPoints;
+
+    private PowerUp[] myPowerUps = new PowerUp[2];
+
+    private PowerUp nextPowerUp;
+
+    private bool onPointBoost = false;
+
+    private string playerTag;
+
+    private float pointBoosterTimer;
+
+    private float pointBoosterTimerOriganal = 10.0f;
+
+    private PowerUpManager power_Up_Manager;
+
+    [SerializeField]
+    private Rigidbody RB;
+
+    private ShoppingManager shopping_Manager;
+
     [SerializeField]
     private GameObject sticky_Puddle_Prefab;
 
-    public GameObject Sticky_Puddle_Prefab
-    {
-        get { return sticky_Puddle_Prefab; }
-    }
+    private int tempItem;
+
+    private TextMesh ui_Points;
+
+    private PowerUpUI ui_Power_Up;
 
     [SerializeField]
     private GameObject wet_Floor_Prefab;
-
-    public GameObject Wet_Floor_Prefab
-    {
-        get { return wet_Floor_Prefab; }
-    }
-
-    private string playerTag;
-    private string myCam;
-    private float myPoints;
-    private bool onPointBoost = false;
-    private float pointBoosterTimerOriganal = 10.0f;
-    private float pointBoosterTimer;
 
     public float MyPoints
     {
@@ -54,25 +67,14 @@ public class Player : MonoBehaviour
         set { onPointBoost = value; }
     }
 
-    private PowerUp[] myPowerUps = new PowerUp[2];
-    private int random;
-    private int tempItem;
-    private int leftItem;
-    private int rightItem;
-    private PowerUp nextPowerUp;
-
-    private PowerUpUI ui_Power_Up;
-    private TextMesh ui_Points;
-    private ShoppingManager shopping_Manager;
-    private PowerUpManager power_Up_Manager;
-
-    private List<string> meineEinkaeufe = new List<string>();
-
-    [SerializeField]
-    private Rigidbody RB;
-
-    public Vector3 Velocity;
-
+    public GameObject Sticky_Puddle_Prefab
+    {
+        get { return sticky_Puddle_Prefab; }
+    }
+    public GameObject Wet_Floor_Prefab
+    {
+        get { return wet_Floor_Prefab; }
+    }
     private void Awake()
     {
         playerTag = gameObject.tag;
@@ -90,6 +92,50 @@ public class Player : MonoBehaviour
             PointBoost();
         ui_Points.text = MyPoints.ToString("0");
         Velocity = RB.velocity;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Power_Up_Spawn_Point")
+        {
+            SetNextPowerUp();
+            SetPowerUp(nextPowerUp);
+            other.gameObject.SetActive(false);
+            power_Up_Manager.CurrentMapPowerUps--;
+        }
+
+        if (other.tag == "Product")
+        {
+            myPurchases.Add(other.gameObject.name);
+            SetPointsForItems(other.gameObject.GetComponent<Item>());
+            other.gameObject.SetActive(false);
+            shopping_Manager.Products.Remove(other.gameObject);
+        }
+    }
+
+    private void PointBoost()
+    {
+        if (pointBoosterTimer <= 0)
+        {
+            onPointBoost = false;
+            pointBoosterTimer = pointBoosterTimerOriganal;
+        }
+
+        pointBoosterTimer -= 1.0f * Time.deltaTime;
+    }
+
+    private void SetNextPowerUp()
+    {
+        tempItem = Random.Range(0, power_Up_Manager.AvailablePowerUp.Length);
+        nextPowerUp = power_Up_Manager.AvailablePowerUp[tempItem];
+    }
+
+    private void SetPointsForItems(Item currentItem)
+    {
+        //Points for every Item
+        MyPoints += 25;
+        //Extra Points for fast collecting after spawn
+        MyPoints += currentItem.TimeBoni;
     }
 
     private void SetPowerUp(PowerUp powerUp)
@@ -113,7 +159,8 @@ public class Player : MonoBehaviour
             {
                 myPowerUps[0].Use(this);
                 myPowerUps[0] = null;
-                ui_Power_Up.SetImage(0, null);
+                ui_Power_Up.ClearImage(0);
+                //ui_Power_Up.SetImage(0, null);
             }
         }
         if (Input.GetButtonDown("Fire_Right_" + playerTag))
@@ -122,52 +169,9 @@ public class Player : MonoBehaviour
             {
                 myPowerUps[1].Use(this);
                 myPowerUps[1] = null;
-                ui_Power_Up.SetImage(1, null);
+                ui_Power_Up.ClearImage(1);
+                //ui_Power_Up.SetImage(1, null);
             }
-        }
-    }
-
-    private void SetNextPowerUp()
-    {
-        tempItem = Random.Range(0, power_Up_Manager.AvailablePowerUp.Length);
-        nextPowerUp = power_Up_Manager.AvailablePowerUp[tempItem];
-    }
-
-    private void SetPointsForItems(Item currentItem)
-    {
-        //Points for every Item
-        MyPoints += 25;
-        //Extra Points for fast collecting after spawn
-        MyPoints += currentItem.TimeBoni;
-    }
-
-    private void PointBoost()
-    {
-        if (pointBoosterTimer <= 0)
-        {
-            onPointBoost = false;
-            pointBoosterTimer = pointBoosterTimerOriganal;
-        }
-
-        pointBoosterTimer -= 1.0f * Time.deltaTime;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Power_Up_Spawn_Point")
-        {
-            SetNextPowerUp();
-            SetPowerUp(nextPowerUp);
-            other.gameObject.SetActive(false);
-            power_Up_Manager.CurrentMapPowerUps--;
-        }
-
-        if (other.tag == "Product")
-        {
-            meineEinkaeufe.Add(other.gameObject.name);
-            SetPointsForItems(other.gameObject.GetComponent<Item>());
-            other.gameObject.SetActive(false);
-            shopping_Manager.Products.Remove(other.gameObject);
         }
     }
 }

@@ -7,32 +7,26 @@ using UnityEngine;
 
 public class PowerUpManager : MonoBehaviour
 {
-    private int maxMapPowerUps = 2;
+    public static PowerUp[] availablePowerUps;
+    //public static string[] availablePowerUpsList;
     private int currentMapPowerUps;
-    private int nextPowerUp;
     private int lastPowerUp;
-    private bool nextSpawnPointCheck;
-    private float powerUpSpawnTimer;
-    private float minSpawnDelay = 1;
+    private int maxMapPowerUps = 2;
     private float maxSpawnDelay = 2;
+    private float minSpawnDelay = 1;
+    private int nextPowerUp;
+    private bool nextSpawnPointCheck;
 
     [SerializeField]
     private Sprite[] powerUpIcons;
 
-    public Sprite[] PowerUpIcons
-    {
-        get { return powerUpIcons; }
-    }
-
     private GameObject[] powerUpSpawnPoints;
+    private float powerUpSpawnTimer;
 
-    public static PowerUp[] availablePowerUps;
-    public static string[] availablePowerUpsList;
-
-    public int MaxMapPowerUps
+    public PowerUp[] AvailablePowerUp
     {
-        get { return maxMapPowerUps; }
-        set { maxMapPowerUps = value; }
+        get { return availablePowerUps; }
+        set { availablePowerUps = value; }
     }
 
     public int CurrentMapPowerUps
@@ -41,10 +35,15 @@ public class PowerUpManager : MonoBehaviour
         set { currentMapPowerUps = value; }
     }
 
-    public PowerUp[] AvailablePowerUp
+    public int MaxMapPowerUps
     {
-        get { return availablePowerUps; }
-        set { availablePowerUps = value; }
+        get { return maxMapPowerUps; }
+        set { maxMapPowerUps = value; }
+    }
+
+    public Sprite[] PowerUpIcons
+    {
+        get { return powerUpIcons; }
     }
 
     private void Awake()
@@ -52,11 +51,6 @@ public class PowerUpManager : MonoBehaviour
         FindPowerUpSpawnPoints();
         MaxMapPowerUps = powerUpSpawnPoints.Length;
         SetAvailablePowerUps();
-    }
-
-    private void Update()
-    {
-        SpawnPowerUp();
     }
 
     private void FindPowerUpSpawnPoints()
@@ -67,6 +61,27 @@ public class PowerUpManager : MonoBehaviour
         {
             powerUpSpawnPoints[i].SetActive(false);
         }
+    }
+
+    private void SetAvailablePowerUps()
+    {
+        availablePowerUps = new PowerUp[5];
+        //availablePowerUpsList = new string[5];
+
+        availablePowerUps[0] = new StickyPuddle();
+        //availablePowerUpsList[0] = "Sticky_Puddle";
+
+        availablePowerUps[1] = new ConfuseOther();
+        //availablePowerUpsList[1] = "Confuse_Other";
+
+        availablePowerUps[2] = new TurboBoost();
+        //availablePowerUpsList[2] = "Turbo";
+
+        availablePowerUps[3] = new SlipperyWhenWet();
+        //availablePowerUpsList[3] = "Slippery_When_Wet";
+
+        availablePowerUps[4] = new PointBoost();
+        //availablePowerUpsList[4] = "Point_Boost";
     }
 
     private void SpawnPowerUp()
@@ -93,25 +108,9 @@ public class PowerUpManager : MonoBehaviour
         }
     }
 
-    private void SetAvailablePowerUps()
+    private void Update()
     {
-        availablePowerUps = new PowerUp[5];
-        availablePowerUpsList = new string[5];
-
-        availablePowerUps[0] = new StickyPuddle();
-        availablePowerUpsList[0] = "Sticky_Puddle";
-
-        availablePowerUps[1] = new ConfuseOther();
-        availablePowerUpsList[1] = "Confuse_Other";
-
-        availablePowerUps[2] = new TurboBoost();
-        availablePowerUpsList[2] = "Turbo";
-
-        availablePowerUps[3] = new SlipperyWhenWet();
-        availablePowerUpsList[3] = "Slippery_When_Wet";
-
-        availablePowerUps[4] = new PointBoost();
-        availablePowerUpsList[4] = "Point_Boost";
+        SpawnPowerUp();
     }
 
     //Sicherheitskopie
