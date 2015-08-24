@@ -7,9 +7,13 @@ using UnityEngine;
 
 public class StickyPuddleItem : MonoBehaviour
 {
+    private Player constructedPlayer = new Player();
     private float lifeTime;
 
-    private Player constructedPlayer = new Player();
+    //When Someone else drive into the StickyPuddle, the constructedPlayer became Points per Sec. The TrapLevels are Timeborders in Sec. and increase the Points per Sec.
+    private float trapLevelOne = 0;
+
+    private float trapLevelTwo = 2;
 
     public Player ConstructedPlayer
     {
@@ -17,20 +21,14 @@ public class StickyPuddleItem : MonoBehaviour
         set { constructedPlayer = value; }
     }
 
-    //When Someone else drive into the StickyPuddle, the constructedPlayer became Points per Sec. The TrapLevels are Timeborders in Sec. and increase the Points per Sec.
-    private float trapLevelOne = 0;
-
-    private float trapLevelTwo = 2;
+    public void SetConstructedPlayer(Player constructedPlayer)
+    {
+        ConstructedPlayer = constructedPlayer;
+    }
 
     private void Awake()
     {
         lifeTime = 8;
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        LifeTimeCheck();
     }
 
     private void LifeTimeCheck()
@@ -46,23 +44,25 @@ public class StickyPuddleItem : MonoBehaviour
         Rigidbody temp = other.GetComponent<Rigidbody>();
 
         if (temp == null) return;
-        if (other.GetComponent<Player>() == constructedPlayer) return;
-        if (trapLevelOne <= trapLevelTwo)
+        if (other.GetComponent<Player>() != constructedPlayer)
         {
-            constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
-            trapLevelOne += 1.0f * Time.deltaTime;
+            if (trapLevelOne <= trapLevelTwo)
+            {
+                constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
+                trapLevelOne += 1.0f * Time.deltaTime;
+            }
+            else if (trapLevelOne >= trapLevelTwo)
+            {
+                constructedPlayer.MyPoints += 20.0f * Time.deltaTime;
+            }
         }
-        else if (trapLevelOne >= trapLevelTwo)
-        {
-            constructedPlayer.MyPoints += 20.0f * Time.deltaTime;
-        }
-
         //ggf noch Lerp von der Eintrittsgeschwindigkeit
-        temp.velocity = Vector3.ClampMagnitude(temp.velocity, 2);
+        temp.velocity = Vector3.ClampMagnitude(temp.velocity, 3);
     }
 
-    public void SetConstructedPlayer(Player constructedPlayer)
+    // Update is called once per frame
+    private void Update()
     {
-        ConstructedPlayer = constructedPlayer;
+        LifeTimeCheck();
     }
 }

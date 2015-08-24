@@ -7,55 +7,42 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
-    private string playerTag;
-
-    [SerializeField]
-    private Rigidbody wagon_RB;
-
-    //For PowerUps
-    //Needs Props to not longer public
+    public bool InStickyPuddle = false;
     public bool IsConfuse = false;
-
+    public bool OnSlipperyWet = false;
     public bool OnTurbo = false;
-    private bool inStickyPuddle = false;
-    private bool onSlipperyWet = false;
-    //private bool isHollow = false;
+
+    private float acceleration = 23.0f;
+    private float accelerationMultiplier = 1.0f;
+
+    private float confuseTimer;
+    private float confuseTimerOriginal = 5.0f;
+    private float forwardForceInput;
+    private string playerTag;
+    private float rotate;
+    private float sideStepForceInput;
+    private float sideStepMultiplier = 1.0f;
+    private float sideStepPower = 12.0f;
+    private float slipperyWhenWetTimer;
+    private float slipperyWhenWetTimerOriginal = 6.0f;
+    private float steerMultiplier = 1.0f;
+
+    private float steerPower = 2.0f;
 
     private float stickyMassBoni;
 
-    public float StickyMassBoni
-    {
-        get { return stickyMassBoni; }
-        set { stickyMassBoni = value; }
-    }
-
     private float turboMassBoni;
 
-    public float TurboMassBoni
-    {
-        get { return turboMassBoni; }
-        set { turboMassBoni = value; }
-    }
+    private float turboTimer;
 
     //->Timer needs Props for MenuChanges
     private float turboTimerOriginal = 2.0f;
 
-    private float turboTimer;
-    private float confuseTimerOriginal = 5.0f;
-    private float confuseTimer;
+    private PowerUpUI ui_Power_Up;
 
-    //For movement
-    private float forwardForceInput;
+    [SerializeField]
+    private Rigidbody wagon_RB;
 
-    private float sideStepForceInput;
-    private float rotate;
-
-    private float acceleration = 23.0f;
-    private float accelerationMultiplier = 1.0f;
-    private float sideStepPower = 12.0f;
-    private float sideStepMultiplier = 1.0f;
-    private float steerPower = 2.0f;
-    private float steerMultiplier = 1.0f;
     private float wagonExtraMass = 0;
 
     public float AccelerationMultiplier
@@ -76,7 +63,18 @@ public class Move : MonoBehaviour
         set { steerMultiplier = value; }
     }
 
-    private PowerUpUI ui_Power_Up;
+    //private bool isHollow = false;
+    public float StickyMassBoni
+    {
+        get { return stickyMassBoni; }
+        set { stickyMassBoni = value; }
+    }
+
+    public float TurboMassBoni
+    {
+        get { return turboMassBoni; }
+        set { turboMassBoni = value; }
+    }
 
     private void Awake()
     {
@@ -86,31 +84,11 @@ public class Move : MonoBehaviour
         TimerSettings();
     }
 
-    private void FixedUpdate()
-    {
-        Movement();
-    }
-
-    private void Update()
-    {
-        CheckOnPowerUpEffects();
-    }
-
     private void CheckInput()
     {
         sideStepForceInput = Input.GetAxis("SideStep_" + playerTag);
         forwardForceInput = Input.GetAxis("Acceleration_" + playerTag);
         rotate = Input.GetAxis("Steer_" + playerTag);
-    }
-
-    private void Movement()
-    {
-        CheckInput();
-
-        Vector3 MoveWagon = new Vector3(sideStepForceInput * sideStepPower * sideStepMultiplier, 0, (forwardForceInput * acceleration) * accelerationMultiplier);
-        //When i drive Backward i need a invert Input
-        wagon_RB.transform.Rotate(0, rotate * steerPower * steerMultiplier, 0);
-        wagon_RB.AddRelativeForce(MoveWagon);
     }
 
     private void CheckOnPowerUpEffects()
@@ -136,17 +114,39 @@ public class Move : MonoBehaviour
         confuseTimer -= 1.0f * Time.deltaTime;
     }
 
-    //void OnSlipperyWet()
+    private void FixedUpdate()
+    {
+        Movement();
+    }
+
+    private void Movement()
+    {
+        CheckInput();
+        if (OnTurbo)
+            Turbo();
+        Vector3 MoveWagon = new Vector3(sideStepForceInput * sideStepPower * sideStepMultiplier, 0, (forwardForceInput * acceleration) * accelerationMultiplier);
+        //When i drive Backward i need a invert Input
+        wagon_RB.transform.Rotate(0, rotate * steerPower * steerMultiplier, 0);
+        wagon_RB.AddRelativeForce(MoveWagon);
+    }
+
+    //private void OnSlipperyWet()
     //{
     //    if (slipperyWhenWetTimer <= 0)
     //    {
-    //        onSlipperyWet = false;
+    //        OnSlipperyWet = false;
     //        slipperyWhenWetTimer = slipperyWhenWetTimerOriginal;
     //        //this.gameObject.GetComponent<Rigidbody>().mass -= stickyMassBoni;
     //    }
 
     //    slipperyWhenWetTimer -= 1.0f * Time.deltaTime;
     //}
+
+    private void TimerSettings()
+    {
+        turboTimer = turboTimerOriginal;
+        confuseTimer = confuseTimerOriginal;
+    }
 
     private void Turbo()
     {
@@ -161,9 +161,8 @@ public class Move : MonoBehaviour
         turboTimer -= 1.0f * Time.deltaTime;
     }
 
-    private void TimerSettings()
+    private void Update()
     {
-        turboTimer = turboTimerOriginal;
-        confuseTimer = confuseTimerOriginal;
+        CheckOnPowerUpEffects();
     }
 }
