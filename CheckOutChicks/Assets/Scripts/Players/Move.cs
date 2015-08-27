@@ -15,28 +15,29 @@ public class Move : MonoBehaviour
     private float acceleration = 23.0f;
     private float accelerationMultiplier = 1.0f;
 
+    #region Timer
+
     private float confuseTimer;
     private float confuseTimerOriginal = 5.0f;
+    private float slipperyWhenWetTimer;
+    private float slipperyWhenWetTimerOriginal = 6.0f;
+    private float turboTimer;
+
+    //->Timer needs Props for MenuChanges
+    private float turboTimerOriginal = 2.0f;
+
+    #endregion Timer
+
     private float forwardForceInput;
     private string playerTag;
     private float rotate;
     private float sideStepForceInput;
     private float sideStepMultiplier = 1.0f;
     private float sideStepPower = 12.0f;
-    private float slipperyWhenWetTimer;
-    private float slipperyWhenWetTimerOriginal = 6.0f;
     private float steerMultiplier = 1.0f;
-
     private float steerPower = 2.0f;
-
     private float stickyMassBoni;
-
     private float turboMassBoni;
-
-    private float turboTimer;
-
-    //->Timer needs Props for MenuChanges
-    private float turboTimerOriginal = 2.0f;
 
     private PowerUpUI ui_Power_Up;
 
