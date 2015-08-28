@@ -1,10 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class SlipperyWhenWetItem : MonoBehaviour
 {
-    private float lifeTime;
+    [SerializeField]
+    private List<Collider> collider = new List<Collider>();
 
     private Player constructedPlayer = new Player();
+
+    private float lifeTime;
+
+    [SerializeField]
+    private float TempSliperyFactor;
 
     public Player ConstructedPlayer
     {
@@ -12,31 +19,40 @@ public class SlipperyWhenWetItem : MonoBehaviour
         set { constructedPlayer = value; }
     }
 
-    private void Awake()
+    public void OnDestroy()
     {
-        lifeTime = 8;
+        foreach (var c in collider)
+        {
+            c.GetComponent<Move>().SliperyFactor = 1;
+        }
     }
 
-    // Update is called once per frame
-    private void Update()
+    public void OnTriggerEnter(Collider other)
     {
-        LifeTimeCheck();
+        //Temp noch ersetzen durch abfrage des Tag??
+        //Rigidbody temp = other.GetComponent<Rigidbody>();
+
+        //if (temp == null) return;
+        if (other.tag == "P_1" || other.tag == "P_2" || other.tag == "P_3" || other.tag == "P_4")
+        {
+            if (other.GetComponent<Player>() != constructedPlayer)
+                constructedPlayer.MyPoints += 20.0f;
+
+            other.GetComponent<Move>().SliperyFactor = TempSliperyFactor;
+            collider.Add(other);
+        }
     }
 
-    public void SetConstructedPlayer(Player constructedPlayer)
+    public void OnTriggerExit(Collider other)
     {
-        ConstructedPlayer = constructedPlayer;
+        if (other.tag == "P_1" || other.tag == "P_2" || other.tag == "P_3" || other.tag == "P_4")
+        {
+            other.GetComponent<Move>().SliperyFactor = 1;
+            collider.Remove(other);
+        }
     }
 
-    private void LifeTimeCheck()
-    {
-        if (lifeTime >= 0)
-            lifeTime -= 1 * Time.deltaTime;
-        else if (lifeTime <= 0)
-            Destroy(this.gameObject);
-    }
-
-    private void OnTriggerStay(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         Rigidbody temp = other.GetComponent<Rigidbody>();
 
@@ -49,18 +65,29 @@ public class SlipperyWhenWetItem : MonoBehaviour
                 constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
             }
         }
-
-
-        
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void SetConstructedPlayer(Player constructedPlayer)
     {
-        Rigidbody temp = other.GetComponent<Rigidbody>();
+        ConstructedPlayer = constructedPlayer;
+    }
 
-        if (temp == null) return;
+    private void Awake()
+    {
+        lifeTime = 8;
+    }
 
-        if (other.GetComponent<Player>() != constructedPlayer)
-            constructedPlayer.MyPoints += 20.0f;
+    private void LifeTimeCheck()
+    {
+        if (lifeTime >= 0)
+            lifeTime -= 1 * Time.deltaTime;
+        else if (lifeTime <= 0)
+            Destroy(this.gameObject);
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        LifeTimeCheck();
     }
 }

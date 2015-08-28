@@ -12,22 +12,12 @@ public class Move : MonoBehaviour
     public bool OnSlipperyWet = false;
     public bool OnTurbo = false;
 
+    #region Movement
+    [SerializeField]
+    private new Rigidbody rigidbody;
+
     private float acceleration = 23.0f;
     private float accelerationMultiplier = 1.0f;
-
-    #region Timer
-
-    private float confuseTimer;
-    private float confuseTimerOriginal = 5.0f;
-    private float slipperyWhenWetTimer;
-    private float slipperyWhenWetTimerOriginal = 6.0f;
-    private float turboTimer;
-
-    //->Timer needs Props for MenuChanges
-    private float turboTimerOriginal = 2.0f;
-
-    #endregion Timer
-
     private float forwardForceInput;
     private string playerTag;
     private float rotate;
@@ -36,15 +26,19 @@ public class Move : MonoBehaviour
     private float sideStepPower = 12.0f;
     private float steerMultiplier = 1.0f;
     private float steerPower = 2.0f;
-    private float stickyMassBoni;
-    private float turboMassBoni;
-
-    private PowerUpUI ui_Power_Up;
-
     [SerializeField]
-    private Rigidbody wagon_RB;
+    private float sliperyFactor = 1;
+    public float OldVelocity { get; set; }
+    public Vector3 OldDirection { get; set; }
+    public Vector3 Direction { get; set; }
+    public float Velocity { get; set; }
 
-    private float wagonExtraMass = 0;
+
+    public float SliperyFactor
+    {
+        get { return sliperyFactor; }
+        set { sliperyFactor = value; }
+    }
 
     public float AccelerationMultiplier
     {
@@ -63,6 +57,30 @@ public class Move : MonoBehaviour
         get { return steerMultiplier; }
         set { steerMultiplier = value; }
     }
+
+    #endregion Movement
+
+
+    #region Timer
+
+    private float confuseTimer;
+    private float confuseTimerOriginal = 5.0f;
+    private float slipperyWhenWetTimer;
+    private float slipperyWhenWetTimerOriginal = 6.0f;
+    private float turboTimer;
+
+    //->Timer needs Props for MenuChanges
+    private float turboTimerOriginal = 2.0f;
+
+    #endregion Timer
+
+    
+    private float stickyMassBoni;
+    private float turboMassBoni;
+
+    private PowerUpUI ui_Power_Up;
+
+    private float wagonExtraMass = 0;
 
     //private bool isHollow = false;
     public float StickyMassBoni
@@ -125,10 +143,20 @@ public class Move : MonoBehaviour
         CheckInput();
         if (OnTurbo)
             Turbo();
-        Vector3 MoveWagon = new Vector3(sideStepForceInput * sideStepPower * sideStepMultiplier, 0, (forwardForceInput * acceleration) * accelerationMultiplier);
+
+        OldDirection = Direction;
+        OldVelocity = Velocity;
+
+        Direction = new Vector3(sideStepForceInput * sideStepPower * sideStepMultiplier, 0, (forwardForceInput * acceleration) * accelerationMultiplier);
+        Velocity = Direction.magnitude;
+        Direction.Normalize();
+        Direction = Vector3.Slerp(OldDirection, Direction, SliperyFactor);
+
+
         //When i drive Backward i need a invert Input
-        wagon_RB.transform.Rotate(0, rotate * steerPower * steerMultiplier, 0);
-        wagon_RB.AddRelativeForce(MoveWagon);
+        rigidbody.transform.Rotate(0, rotate * steerPower * steerMultiplier, 0);
+        //rigidbody.velocity = Direction * Velocity * Time.deltaTime;
+        rigidbody.AddRelativeForce(Direction);
     }
 
     //private void OnSlipperyWet()
