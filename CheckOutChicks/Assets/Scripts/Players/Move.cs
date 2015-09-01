@@ -13,32 +13,28 @@ public class Move : MonoBehaviour
     public bool OnTurbo = false;
 
     #region Movement
+
+    private float acceleration = 23.0f;
+
+    private float accelerationMultiplier = 1.0f;
+
+    private float forwardForceInput;
+
+    private string playerTag;
+
     [SerializeField]
     private new Rigidbody rigidbody;
 
-    private float acceleration = 23.0f;
-    private float accelerationMultiplier = 1.0f;
-    private float forwardForceInput;
-    private string playerTag;
     private float rotate;
     private float sideStepForceInput;
     private float sideStepMultiplier = 1.0f;
     private float sideStepPower = 12.0f;
-    private float steerMultiplier = 1.0f;
-    private float steerPower = 2.0f;
+
     [SerializeField]
     private float sliperyFactor = 1;
-    public float OldVelocity { get; set; }
-    public Vector3 OldDirection { get; set; }
-    public Vector3 Direction { get; set; }
-    public float Velocity { get; set; }
 
-
-    public float SliperyFactor
-    {
-        get { return sliperyFactor; }
-        set { sliperyFactor = value; }
-    }
+    private float steerMultiplier = 1.0f;
+    private float steerPower = 2.0f;
 
     public float AccelerationMultiplier
     {
@@ -46,10 +42,20 @@ public class Move : MonoBehaviour
         set { accelerationMultiplier = value; }
     }
 
+    public Vector3 Direction { get; set; }
+    public Vector3 OldDirection { get; set; }
+    public float OldVelocity { get; set; }
+
     public float SideStepPower
     {
         get { return sideStepMultiplier; }
         set { sideStepMultiplier = value; }
+    }
+
+    public float SliperyFactor
+    {
+        get { return sliperyFactor; }
+        set { sliperyFactor = value; }
     }
 
     public float SteerMultiplier
@@ -58,31 +64,33 @@ public class Move : MonoBehaviour
         set { steerMultiplier = value; }
     }
 
+    public float Velocity { get; set; }
+
     #endregion Movement
 
-
     #region Timer
-
+    //->Timer needs Props for MenuChanges
     private float confuseTimer;
     private float confuseTimerOriginal = 5.0f;
     private float slipperyWhenWetTimer;
-    private float slipperyWhenWetTimerOriginal = 6.0f;
+    private float slipperyWhenWetTimerOriginal = 7.0f;
     private float turboTimer;
-
-    //->Timer needs Props for MenuChanges
-    private float turboTimerOriginal = 2.0f;
+    private float turboTimerOriginal = 10.0f;
 
     #endregion Timer
 
-    
+    #region PowerUp Fields and Props
+
+    [SerializeField]
+    private GameObject shield;
+
     private float stickyMassBoni;
-    private float turboMassBoni;
+    private float turboMassBoni = 0.3f;
 
     private PowerUpUI ui_Power_Up;
 
     private float wagonExtraMass = 0;
 
-    //private bool isHollow = false;
     public float StickyMassBoni
     {
         get { return stickyMassBoni; }
@@ -95,24 +103,23 @@ public class Move : MonoBehaviour
         set { turboMassBoni = value; }
     }
 
-    private void Awake()
+    public void ActivateTurbo()
     {
-        //reinziehen
-        playerTag = gameObject.tag;
-        ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<PowerUpUI>();
-        TimerSettings();
-    }
+        if (OnTurbo == false)
+        {
+            this.rigidbody.mass -= TurboMassBoni;
+            shield.SetActive(true);
+            //Für einen anderen Lösungsansatz gedacht
+            //this.gameObject.layer = 13;
+            OnTurbo = true;
+        }
 
-    private void CheckInput()
-    {
-        sideStepForceInput = Input.GetAxis("SideStep_" + playerTag);
-        forwardForceInput = Input.GetAxis("Acceleration_" + playerTag);
-        rotate = Input.GetAxis("Steer_" + playerTag);
+        turboTimer = turboTimerOriginal;
     }
 
     private void CheckOnPowerUpEffects()
     {
-        //Scripte instanzieren auf die jeweiligen Player
+        //evtl. Scripte instanzieren auf die jeweiligen Player
         if (IsConfuse)
             Confuse();
 
@@ -131,6 +138,45 @@ public class Move : MonoBehaviour
         }
 
         confuseTimer -= 1.0f * Time.deltaTime;
+    }
+
+    private void TimerSettings()
+    {
+        turboTimer = turboTimerOriginal;
+        confuseTimer = confuseTimerOriginal;
+    }
+
+    private void Turbo()
+    {
+        if (turboTimer <= 0)
+        {
+            shield.SetActive(false);
+
+            //Für einen anderen Lösungsansatz gedacht
+            //this.gameObject.layer = 14;
+            OnTurbo = false;
+            turboTimer = turboTimerOriginal;
+            this.rigidbody.mass += TurboMassBoni;
+        }
+
+        turboTimer -= 1.0f * Time.deltaTime;
+    }
+
+    #endregion PowerUp Fields and Props
+
+    private void Awake()
+    {
+        //reinziehen
+        playerTag = gameObject.tag;
+        ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<PowerUpUI>();
+        TimerSettings();
+    }
+
+    private void CheckInput()
+    {
+        sideStepForceInput = Input.GetAxis("SideStep_" + playerTag);
+        forwardForceInput = Input.GetAxis("Acceleration_" + playerTag);
+        rotate = Input.GetAxis("Steer_" + playerTag);
     }
 
     private void FixedUpdate()
@@ -152,42 +198,9 @@ public class Move : MonoBehaviour
         Direction.Normalize();
         Direction = Vector3.Slerp(OldDirection, Direction, SliperyFactor);
 
-
         //When i drive Backward i need a invert Input
         rigidbody.transform.Rotate(0, rotate * steerPower * steerMultiplier, 0);
-        //rigidbody.velocity = Direction * Velocity * Time.deltaTime;
         rigidbody.AddRelativeForce(Direction);
-    }
-
-    //private void OnSlipperyWet()
-    //{
-    //    if (slipperyWhenWetTimer <= 0)
-    //    {
-    //        OnSlipperyWet = false;
-    //        slipperyWhenWetTimer = slipperyWhenWetTimerOriginal;
-    //        //this.gameObject.GetComponent<Rigidbody>().mass -= stickyMassBoni;
-    //    }
-
-    //    slipperyWhenWetTimer -= 1.0f * Time.deltaTime;
-    //}
-
-    private void TimerSettings()
-    {
-        turboTimer = turboTimerOriginal;
-        confuseTimer = confuseTimerOriginal;
-    }
-
-    private void Turbo()
-    {
-        //Make is a nother way
-        if (turboTimer <= 0)
-        {
-            OnTurbo = false;
-            turboTimer = turboTimerOriginal;
-            this.gameObject.GetComponent<Rigidbody>().mass += TurboMassBoni;
-        }
-
-        turboTimer -= 1.0f * Time.deltaTime;
     }
 
     private void Update()
