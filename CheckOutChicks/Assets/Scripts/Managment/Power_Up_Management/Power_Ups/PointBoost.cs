@@ -6,7 +6,7 @@
         {
             if (GameManager.activePlayers[i] == player.gameObject)
             {
-                GameManager.activePlayers[i].GetComponent<Player>().OnPowerBoost = true;
+                GameManager.activePlayers[i].GetComponent<Player>().OnPointBoost = true;
             }
         }
     }
