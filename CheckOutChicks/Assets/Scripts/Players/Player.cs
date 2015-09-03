@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     public Vector3 Velocity;
 
     private List<string> myPurchases = new List<string>();
-
+    [SerializeField]
     private float myPoints;
 
     private PowerUp[] myPowerUps = new PowerUp[2];

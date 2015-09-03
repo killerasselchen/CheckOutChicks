@@ -69,6 +69,7 @@ public class Move : MonoBehaviour
     #endregion Movement
 
     #region Timer
+
     //->Timer needs Props for MenuChanges
     private float confuseTimer;
     private float confuseTimerOriginal = 5.0f;

@@ -18,17 +18,17 @@ public class Shield : MonoBehaviour
         collider.Clear();
     }
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    Rigidbody temp = other.GetComponent<Rigidbody>();
-    //    if (temp == null) return;
+    void OnTriggerEnter(Collider other)
+    {
+        Rigidbody temp = other.GetComponent<Rigidbody>();
+        if (temp == null) return;
 
-    //    if (other.tag == "Interieur")
-    //    {
-    //        other.GetComponent<Rigidbody>().isKinematic = true;
-    //        collider.Add(other);
-    //    }
-    //}
+        if (other.tag == "Interieur" && !collider.Contains(other))
+        {
+            other.GetComponent<Rigidbody>().isKinematic = true;
+            collider.Add(other);
+        }
+    }
 
     void OnTriggerStay(Collider other)
     {
