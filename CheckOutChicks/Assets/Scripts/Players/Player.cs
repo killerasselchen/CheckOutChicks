@@ -12,10 +12,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    #region Timer
+
+    private float pointBoosterTimer;
+    private float pointBoosterTimerOriganal = 10.0f;
+
+    #endregion Timer
     public Vector3 Velocity;
 
     private List<string> myPurchases = new List<string>();
-
+    [SerializeField]
     private float myPoints;
 
     private PowerUp[] myPowerUps = new PowerUp[2];
@@ -26,9 +32,7 @@ public class Player : MonoBehaviour
 
     private string playerTag;
 
-    private float pointBoosterTimer;
-
-    private float pointBoosterTimerOriganal = 10.0f;
+    
 
     private PowerUpManager power_Up_Manager;
 
@@ -61,7 +65,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public bool OnPowerBoost
+    public bool OnPointBoost
     {
         get { return onPointBoost; }
         set { onPointBoost = value; }
