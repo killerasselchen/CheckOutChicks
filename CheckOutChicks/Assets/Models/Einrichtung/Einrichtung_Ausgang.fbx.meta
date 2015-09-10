@@ -29,6 +29,10 @@ ModelImporter:
     100042: ausgang2
     100044: ausgang_links
     100046: ausgang_rechts
+    100048: Ausgang
+    100050: Ausgang_links
+    100052: Ausgang_rechts
+    100054: polySurface5
     400000: //RootNode
     400002: group
     400004: pasted__pCube1
@@ -53,6 +57,10 @@ ModelImporter:
     400042: ausgang2
     400044: ausgang_links
     400046: ausgang_rechts
+    400048: Ausgang
+    400050: Ausgang_links
+    400052: Ausgang_rechts
+    400054: polySurface5
     2300000: polySurface1
     2300002: polySurface2
     2300004: polySurface3
@@ -61,6 +69,9 @@ ModelImporter:
     2300010: ausgang2
     2300012: ausgang_links
     2300014: ausgang_rechts
+    2300016: Ausgang
+    2300018: Ausgang_links
+    2300020: Ausgang_rechts
     3300000: polySurface1
     3300002: polySurface2
     3300004: polySurface3
@@ -69,6 +80,9 @@ ModelImporter:
     3300010: ausgang2
     3300012: ausgang_links
     3300014: ausgang_rechts
+    3300016: Ausgang
+    3300018: Ausgang_links
+    3300020: Ausgang_rechts
     4300000: polySurface1
     4300002: polySurface2
     4300004: polySurface3
@@ -77,6 +91,9 @@ ModelImporter:
     4300010: ausgang2
     4300012: ausgang_rechts
     4300014: ausgang_links
+    4300016: Ausgang_links
+    4300018: Ausgang_rechts
+    4300020: Ausgang
   materials:
     importMaterials: 1
     materialName: 0
