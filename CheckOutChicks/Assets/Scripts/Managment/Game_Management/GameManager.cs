@@ -6,34 +6,285 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerName { One, Two, Three, Four }
+
+public enum PlayMode { Single = 1, Two = 2, Three = 3, Four = 4 }
+
 public class GameManager : MonoBehaviour
 {
-    //dont destroy on load
-    //OnLevelWasLoaded
+    public static Rect[][] viewports =
+    {
+        new Rect[] {new Rect (0,0,1,1)},
+        new Rect[] {new Rect (0,0.5f,1,0.5f),new Rect(0,0,1,0.5f)},
+        new Rect[] {new Rect (0,0.5f,0.5f,0.5f),new Rect(0.5f,0.5f,0.5f,0.5f),new Rect(0,0,0.5f,0.5f)},
+        new Rect[] {new Rect (0,0.5f,0.5f,0.5f),new Rect(0.5f,0.5f,0.5f,0.5f),new Rect(0,0,0.5f,0.5f),new Rect(0.5f,0,0.5f,0.5f)}
+    };
 
-    //To set the Playerquantity
-    public bool setToSinglePlayer;
+    [SerializeField]
+    private Sprite startMenuBackground;
+    [SerializeField]
+    private Sprite startMenuBackgroundMarketOne;
+    [SerializeField]
+    private Sprite startMenuBackgroundMarketTwo;
 
-    public bool setToTwoPlayers;
-    public bool setToThreePlayers;
-    public bool setToFourPlayers;
-    private int playerQuantity;
+    private Camera[] cameras;
 
     private bool paused = true;
 
-    public static List<GameObject> activeCameras = new List<GameObject>();
-    public static GameObject camera_1;
-    public static GameObject camera_2;
-    public static GameObject camera_3;
-    public static GameObject camera_4;
-    private GameObject mainCamera;
+    [SerializeField]
+    private Camera playerCameraPrefab;
+
+    [SerializeField]
+    private Player playerPrefab;
+
+    private Player[] players;
+
+    [SerializeField]
+    private Canvas playerUIPrefab;
+
+    private Canvas[] playerUIs;
+
+    [SerializeField]
+    private PowerUpManager powerUpManager;
+
+    [SerializeField]
+    private ShoppingManager shoppingManager;
+
+    private bool supermarketOneIsActive;
+
+    private bool supermarketTwoIsActive;
+
+    //TODO: Need to implement it
+    public void ExitGame()
+    {
+        //if Sure .... than go
+        Application.CancelQuit();
+        Debug.Log("exit");
+    }
+
+    public void SelectMarketOne()
+    {
+        supermarketOne.SetActive(true);
+        supermarketTwoMainCam.gameObject.SetActive(false);
+        supermarketTwo.SetActive(false);
+        supermarketOneMainCamPrefab.gameObject.SetActive(true);
+        mainUI.GetComponent<Canvas>().worldCamera = supermarketOneMainCam;
+        startMenuBackground = startMenuBackgroundMarketOne;
+
+        supermarketOneIsActive = true;
+        supermarketTwoIsActive = false;
+    }
+
+    public void SelectMarketTwo()
+    {
+        //TODO: MainOne doesnt go out. And startSprite do not change
+        supermarketTwo.SetActive(true);
+        supermarketOneMainCamPrefab.gameObject.SetActive(false);
+        supermarketOne.SetActive(false);
+        supermarketTwoMainCam.gameObject.SetActive(true);
+        mainUI.GetComponent<Canvas>().worldCamera = supermarketTwoMainCam;
+        startMenuBackground = startMenuBackgroundMarketTwo;
+
+        supermarketTwoIsActive = true;
+        supermarketOneIsActive = false;
+    }
+
+    public void SetPlayMode(PlayMode playMode)
+    {
+        FindPlayerSpawnPoints();
+
+        playerUIs = new Canvas[(int)playMode];
+        cameras = new Camera[(int)playMode];
+        players = new Player[(int)playMode];
+
+        for (int i = 0; i < (int)playMode; i++)
+        {
+            Player player = Instantiate(playerPrefab);
+            player.transform.position = SelectRandomPlayerSpawnPoint();
+            player.gameObject.tag = "Player_" + ((PlayerName)i).ToString();
+            player.GetComponent<Move>().playerTag = player.tag;
+            player.shopping_Manager = shoppingManager;
+            player.power_Up_Manager = powerUpManager;
+            Camera playerCamera = Instantiate(playerCameraPrefab);
+            SetLayerRecursive(playerCamera.gameObject, i + 9);
+            playerCamera.rect = viewports[(int)playMode - 1][i];
+            CameraMovements cameraMovment = playerCamera.GetComponent<CameraMovements>();
+            cameraMovment.player_Position = player.transform;
+            cameraMovment.camOrigin = player.cameraPosition;
+            cameraMovment.camTarget = player.cameraTarget;
+            Canvas playerUI = Instantiate(playerUIPrefab);
+            SetLayerRecursive(playerUI.gameObject, i + 9);
+            playerUI.worldCamera = playerCamera;
+            player.ui_Power_Up = playerUI.GetComponent<PowerUpUI>();
+            player.ui_Points = player.ui_Power_Up.PointsText;
+
+            activePlayers.Add(player.gameObject);
+        }
+    }
+
+    public void SetToFourPlayer()
+    {
+        selectedPlayMode = PlayMode.Four;
+    }
+
+    public void SetToSinglePlayer()
+    {
+        selectedPlayMode = PlayMode.Single;
+    }
+
+    public void SetToThreePlayer()
+    {
+        selectedPlayMode = PlayMode.Three;
+    }
+
+    //TODO:
+    //private void Pause()
+    //{
+    //    if (!paused)
+    //    {
+    //        paused = true;
+    //        Time.timeScale = 0;
+    //        DeActivateCameras();
+    //        mainCamera.SetActive(true);
+    //    }
+    //    else if (paused)
+    //    {
+    //        paused = false;
+    //        Time.timeScale = 1;
+    //        ActivateCameras();
+    //        mainCamera.SetActive(false);
+    //    }
+    //}
+    public void SetToTwoPlayer()
+    {
+        selectedPlayMode = PlayMode.Two;
+    }
+
+    public void StartGame()
+    {
+        SetPlayMode(selectedPlayMode);
+       // Time.timeScale = 1;
+    }
+
+    private void Awake()
+    {
+        //Time.timeScale = 0;
+        PreLoadSupermarkets();
+        this.gameObject.GetComponent<PowerUpManager>().FindPowerUpSpawnPoints();
+        //FindCameras();
+        SelectMarketOne();
+    }
+
+    private void FindPlayerSpawnPoints()
+    {
+        playerSpawnPoints.Clear();
+
+        GameObject[] temp = GameObject.FindGameObjectsWithTag("Player_Spawn_Point");
+
+        for (int i = 0; i < temp.Length; i++)
+        {
+            playerSpawnPoints.Add(temp[i]);
+        }
+    }
+
+    private void PreLoadSupermarkets()
+    {
+        supermarketOne = Instantiate(supermarketOnePrefab) as GameObject;
+        supermarketOneMainCam = Instantiate(supermarketOneMainCamPrefab,supermarketOneMainCamPrefab.transform.position, supermarketOneMainCamPrefab.transform.rotation) as Camera;
+
+        supermarketTwo = Instantiate(supermarketTwoPrefab) as GameObject;
+        supermarketTwoMainCam = Instantiate(supermarketTwoMainCamPrefab) as Camera;
+    }
+
+    //private void PrepairMainMenu()
+    //{
+    //    //GameObject MainMenu = Instantiate(mainUI) as GameObject;
+    //    //GameObject PlayMenu = Instantiate(playMenu) as GameObject;
+    //    //GameObject OptionMenu = Instantiate(optionMenu) as GameObject;
+    //    //GameObject CreditsMenu = Instantiate(creditsMenu) as GameObject;
+    //    //GameObject QuitMenu = Instantiate(quitMenu) as GameObject;
+    //}
+    private Vector3 SelectRandomPlayerSpawnPoint()
+    {
+        if (lastPlayerSpawnPoint != null)
+            playerSpawnPoints.Remove(lastPlayerSpawnPoint);
+
+        int temp = Random.Range(0, playerSpawnPoints.Count);
+        lastPlayerSpawnPoint = playerSpawnPoints[temp];
+        Vector3 tempVector = lastPlayerSpawnPoint.transform.position;
+        return tempVector;
+    }
+
+    private void SetLayerRecursive(GameObject gameObject, int layer)
+    {
+        gameObject.layer = layer;
+
+        foreach (Transform child in gameObject.transform)
+        {
+            SetLayerRecursive(child.gameObject, layer);
+        }
+    }
+
+    #region InGame GameObjects
+
+    public static List<Camera> activeCameras = new List<Camera>();
 
     public static List<GameObject> activePlayers = new List<GameObject>();
-    public static GameObject player_1;
-    public static GameObject player_2;
-    public static GameObject player_3;
-    public static GameObject player_4;
-    //public static List<GameObject> playerList;
+
+    #endregion InGame GameObjects
+
+    #region Menu GameObjects
+
+    [SerializeField]
+    private GameObject creditsMenu;
+
+    [SerializeField]
+    private GameObject levelMenu;
+
+    [SerializeField]
+    private GameObject mainUI;
+
+    [SerializeField]
+    private GameObject optionMenu;
+
+    [SerializeField]
+    private GameObject playerMenu;
+
+    [SerializeField]
+    private GameObject quitMenu;
+
+    #endregion Menu GameObjects
+
+    #region Market GameObjects
+
+    private GameObject lastPlayerSpawnPoint;
+
+    [SerializeField]
+    private List<GameObject> playerSpawnPoints = new List<GameObject>();
+
+    private PlayMode selectedPlayMode;
+
+    private GameObject supermarketOne;
+
+    private Camera supermarketOneMainCam;
+
+    [SerializeField]
+    private Camera supermarketOneMainCamPrefab;
+
+    [SerializeField]
+    private GameObject supermarketOnePrefab;
+
+    private GameObject supermarketTwo;
+
+    private Camera supermarketTwoMainCam;
+
+    [SerializeField]
+    private Camera supermarketTwoMainCamPrefab;
+
+    [SerializeField]
+    private GameObject supermarketTwoPrefab;
+
+    #endregion Market GameObjects
 
     ////Challenges. Derzeit noch NiceToHave
     //höhste Geschwindigkeit
@@ -41,230 +292,56 @@ public class GameManager : MonoBehaviour
     //längste Fahrtstrecke
     //meisten PowerUps
 
-    private void Awake()
-    {
-        FindPlayers();
-        FindCameras();
-        Time.timeScale = 0;
-    }
+    #region Player Cameras
 
-    private void Update()
-    {
-        KeyControl();
-    }
+    //private void ActivatePlayerCameras()
+    //{
+    //    //Kurze Version für später wenn ich nur die Cams habe die auch nötig sind. Dazu fehlt mit die zuweisung der UI.canvas.renderCam und die UI.OnClick zuweisungen über Code
+    //    foreach (var camera in activeCameras)
+    //    {
+    //        camera.gameObject.SetActive(true);
+    //    }
+    //    supermarketOneMainCam.gameObject.SetActive(false);
+    //    supermarketTwoMainCam.gameObject.SetActive(false);
 
-    private void KeyControl()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Pause();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1) && paused)
-        {
-            setToSinglePlayer = true;
-            PlayerQuantitySelection();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && paused)
-        {
-            setToTwoPlayers = true;
-            PlayerQuantitySelection();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3) && paused)
-        {
-            setToThreePlayers = true;
-            PlayerQuantitySelection();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4) && paused)
-        {
-            setToFourPlayers = true;
-            PlayerQuantitySelection();
-        }
-    }
+    //    //SetViewPorts();
 
-    //Little Function to test the PlayerQuantitySelection and the Activation of Players and Cameras. (4.6.2015)
-    private void PlayerQuantitySelection()
-    {
-        if (setToSinglePlayer == true)
-        {
-            StartGame();
-        }
-        else if (setToTwoPlayers == true)
-        {
-            StartGame();
-        }
-        else if (setToThreePlayers == true)
-        {
-            StartGame();
-        }
-        else if (setToFourPlayers == true)
-        {
-            StartGame();
-        }
+    //}
 
-        playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
-    }
+    //private void DeactivatePlayerCameras()
+    //{
+    //    foreach (var camera in activeCameras)
+    //    {
+    //        camera.gameObject.SetActive(false);
+    //    }
 
-    //Find over Tags the Player GameObjects after the PlayerQuantity is selected. (5.6.2015)
-    private void FindPlayers()
-    {
-        player_1 = GameObject.FindGameObjectWithTag("P_1");
-        player_2 = GameObject.FindGameObjectWithTag("P_2");
-        player_3 = GameObject.FindGameObjectWithTag("P_3");
-        player_4 = GameObject.FindGameObjectWithTag("P_4");
+    //    if (supermarketOneIsActive)
+    //        supermarketOneMainCam.gameObject.SetActive(true);
+    //    else if (supermarketTwoIsActive)
+    //        supermarketTwoMainCam.gameObject.SetActive(true);
+    //}
 
-        DeActivatePlayers();
-    }
+    //private void CreatePlayerCamera(Camera PlayerCamPrefab, Vector3 PlayerPosition)
+    //{
+    //    Camera PlayerCamera = Instantiate(PlayerCamPrefab, PlayerPosition, Quaternion.identity) as Camera;
+    //    activeCameras.Add(PlayerCamera);
+    //}
 
-    //Find over Tags the Camera GameObjects. It is outside the "FindPlayer()", because i wana use it later for more Cameras an nother funktions. (5.6.2015)
-    //Only active Objects will be find over Tag. I look for a work around, but yet i search all GameObjects and deactivate them.
-    private void FindCameras()
-    {
-        mainCamera = GameObject.FindGameObjectWithTag("Main_Camera");
-        camera_1 = GameObject.FindGameObjectWithTag("Camera_1");
-        camera_2 = GameObject.FindGameObjectWithTag("Camera_2");
-        camera_3 = GameObject.FindGameObjectWithTag("Camera_3");
-        camera_4 = GameObject.FindGameObjectWithTag("Camera_4");
+    #endregion Player Cameras
 
-        DeActivateCameras();
-    }
+    //private void PlayMenu()
+    //{
+    //}
 
-    //Activate the Player GameObjects. This way i can check over an nother bool if a Controller ist conected (5.6.2015)
-    private void ActivatePlayers()
-    {
-        if (setToSinglePlayer)
-        {
-            player_1.SetActive(true);
-        }
-        else if (setToTwoPlayers)
-        {
-            player_1.SetActive(true);
-            player_2.SetActive(true);
-        }
-        else if (setToThreePlayers)
-        {
-            player_1.SetActive(true);
-            player_2.SetActive(true);
-            player_3.SetActive(true);
-        }
-        else if (setToFourPlayers)
-        {
-            player_1.SetActive(true);
-            player_2.SetActive(true);
-            player_3.SetActive(true);
-            player_4.SetActive(true);
-        }
-    }
+    //private void OptionMenu()
+    //{
+    //}
 
-    //Activate the Cameras GameObjects. If Game Paused, i can controll what the Players see in this time (5.6.2015)
-    private void ActivateCameras()
-    {
-        if (setToSinglePlayer)
-        {
-            camera_1.SetActive(true);
-        }
-        else if (setToTwoPlayers)
-        {
-            camera_1.SetActive(true);
-            camera_2.SetActive(true);
-        }
-        else if (setToThreePlayers)
-        {
-            camera_1.SetActive(true);
-            camera_2.SetActive(true);
-            camera_3.SetActive(true);
-        }
-        else if (setToFourPlayers)
-        {
-            camera_1.SetActive(true);
-            camera_2.SetActive(true);
-            camera_3.SetActive(true);
-            camera_4.SetActive(true);
-        }
+    //private void CreditMenu()
+    //{
+    //}
 
-        mainCamera.SetActive(false);
-    }
-
-    private void DeActivatePlayers()
-    {
-        player_1.SetActive(false);
-        player_2.SetActive(false);
-        player_3.SetActive(false);
-        player_4.SetActive(false);
-    }
-
-    private void DeActivateCameras()
-    {
-        camera_1.SetActive(false);
-        camera_2.SetActive(false);
-        camera_3.SetActive(false);
-        camera_4.SetActive(false);
-    }
-
-    private void Pause()
-    {
-        if (!paused)
-        {
-            paused = true;
-            Time.timeScale = 0;
-            DeActivateCameras();
-            mainCamera.SetActive(true);
-        }
-        else if (paused)
-        {
-            paused = false;
-            Time.timeScale = 1;
-            ActivateCameras();
-            mainCamera.SetActive(false);
-        }
-    }
-
-    private void SetActivePlayerList()
-    {
-        playerQuantity = GameObject.FindGameObjectsWithTag("Player").Length;
-
-        for (int i = 1; i < playerQuantity + 1; i++)
-        {
-            activePlayers.Add(GameObject.FindGameObjectWithTag("P_" + i));
-        }
-    }
-
-    private void SetActiveCameraList()
-    {
-        for (int i = 1; i < playerQuantity + 1; i++)
-        {
-            activeCameras.Add(GameObject.FindGameObjectWithTag("Camera_" + i));
-        }
-    }
-
-    public void StartGame()
-    {
-        ActivatePlayers();
-        ActivateCameras();
-        paused = false;
-        Time.timeScale = 1;
-        SetActivePlayerList();
-        SetActiveCameraList();
-    }
-
-    public void SetToTwoPlayer()
-    {
-        setToTwoPlayers = true;
-    }
-
-    public void SetToThreePlayer()
-    {
-        setToThreePlayers = true;
-    }
-
-    public void SetToFourPlayer()
-    {
-        setToFourPlayers = true;
-    }
-
-    public void ExitGame()
-    {
-        //if Sure .... than go
-        Application.CancelQuit();
-        Debug.Log("exit");
-    }
+    //private void ExitMenu()
+    //{
+    //}
 }

@@ -46,16 +46,17 @@ public class PowerUpManager : MonoBehaviour
         get { return powerUpIcons; }
     }
 
-    private void Awake()
+    private void OnEnable()
     {
-        FindPowerUpSpawnPoints();
-        MaxMapPowerUps = powerUpSpawnPoints.Length;
+        //FindPowerUpSpawnPoints();
         SetAvailablePowerUps();
     }
 
-    private void FindPowerUpSpawnPoints()
+    public void FindPowerUpSpawnPoints()
     {
         powerUpSpawnPoints = GameObject.FindGameObjectsWithTag("Power_Up_Spawn_Point");
+
+        MaxMapPowerUps = powerUpSpawnPoints.Length / 2;
 
         for (int i = 0; i < powerUpSpawnPoints.Length; i++)
         {
@@ -108,29 +109,8 @@ public class PowerUpManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         SpawnPowerUp();
     }
-
-    //Sicherheitskopie
-    //void SpawnNextItem()
-    //{
-    //    if (currentItems <= maxItems && products.Count > 0)
-    //    {
-    //        if (spawnTimer <= 0)
-    //        {
-    //            nextItem = Random.Range(0, products.Count);
-    //            products[nextItem].SetActive(true);
-    //            currentItems++;
-    //            spawnTimer = Random.Range(0, 4);
-    //        }
-    //        spawnTimer -= 1.0f * Time.deltaTime;
-    //    }
-
-    //    else if (Products.Count == 0)
-    //    {
-    //        products = new List<GameObject>(productsBackUp);
-    //    }
-    //}
 }

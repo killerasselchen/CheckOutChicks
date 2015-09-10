@@ -9,13 +9,12 @@ public class CameraMovements : MonoBehaviour
 {
     private float smooth = 3f;
 
-    private Transform player_Position;
-    private string playerNr;
+    public Transform player_Position;
 
-    private Transform cam_Origin;
+    public Transform camOrigin;
     private string cam_Origin_Tag;
-    private Transform cam_Target;
-    public string cam_Target_Tag;
+    public Transform camTarget;
+    //public string cam_Target_Tag;
 
     private string cam_Tag;
 
@@ -23,31 +22,24 @@ public class CameraMovements : MonoBehaviour
     private float relCameraPosMag;
     private Vector3 tempPos;
 
-    private GameManager game_Manager;
-
-    private void Awake()
-    {
-        game_Manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-    }
-
     private void Start()
     {
-        TagNameFinder();
+        //TagNameFinder();
 
-        player_Position = GameObject.FindGameObjectWithTag(playerNr).transform;
-        cam_Origin = GameObject.FindGameObjectWithTag(cam_Origin_Tag).transform;
-        cam_Target = GameObject.FindGameObjectWithTag(cam_Target_Tag).transform;
+        //player_Position = GameObject.FindGameObjectWithTag("Player_" + this.gameObject.name.Split('_')[1]).transform;
+        //cam_Origin = GameObject.FindGameObjectWithTag(cam_Origin_Tag).transform;
+        //cam_Target = GameObject.FindGameObjectWithTag(cam_Target_Tag).transform;
 
-        ViewPortSelection();
+        //ViewPortSelection();
 
-        transform.position = cam_Origin.position;
+        transform.position = camOrigin.position;
         relCameraPos = transform.position - player_Position.position;
         relCameraPosMag = relCameraPos.magnitude - 1.0f;
     }
 
     private void FixedUpdate()
     {
-        Vector3 standardPos = cam_Origin.position;
+        Vector3 standardPos = camOrigin.position;
         Vector3 nearestPos = player_Position.position;
         Vector3[] checkPoints = new Vector3[6];
 
@@ -73,9 +65,9 @@ public class CameraMovements : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(checkPoint, cam_Target.position - checkPoint, out hit, relCameraPosMag))
+        if (Physics.Raycast(checkPoint, camTarget.position - checkPoint, out hit, relCameraPosMag))
         {
-            if (hit.transform != cam_Target)
+            if (hit.transform != camTarget)
             {
                 return false;
             }
@@ -88,81 +80,81 @@ public class CameraMovements : MonoBehaviour
     //Rotate smoothly the Camera behind the Players-Rotation
     private void LookAtPlayer()
     {
-        Vector3 relPlayerPosition = cam_Target.position - transform.position;
+        Vector3 relPlayerPosition = camTarget.position - transform.position;
         Quaternion lookAtRotation = Quaternion.LookRotation(relPlayerPosition, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * Time.deltaTime);
     }
 
     //im GameManager nutzen - GGF Instatiate Player -> Cam -> Rect & next Player...
-    private void ViewPortSelection()
-    {
-        float x = 0;
-        float y = 0;
-        float width = 1;
-        float height = 1;
+    //private void ViewPortSelection()
+    //{
+    //    float x = 0;
+    //    float y = 0;
+    //    float width = 1;
+    //    float height = 1;
 
-        if (game_Manager.setToTwoPlayers)
-        {
-            height = 0.5f;
+    //    if (game_Manager.setToTwoPlayers)
+    //    {
+    //        height = 0.5f;
 
-            if (playerNr == "P_1")
-                y = 0.5f;
-        }
-        else if (game_Manager.setToThreePlayers)
-        {
-            width = 0.5f;
-            height = 0.5f;
+    //        if (playerNr == "P_1")
+    //            y = 0.5f;
+    //    }
+    //    else if (game_Manager.setToThreePlayers)
+    //    {
+    //        width = 0.5f;
+    //        height = 0.5f;
 
-            if (playerNr == "P_1")
-            {
-                x = 0.0f;
-                y = 0.5f;
-            }
-            else if (playerNr == "P_2")
-            {
-                x = 0.5f;
-                y = 0.5f;
-            }
-            else if (playerNr == "P_3")
-            {
-                x = 0.0f;
-            }
-        }
-        else if (game_Manager.setToFourPlayers)
-        {
-            width = 0.5f;
-            height = 0.5f;
+    //        if (playerNr == "P_1")
+    //        {
+    //            x = 0.0f;
+    //            y = 0.5f;
+    //        }
+    //        else if (playerNr == "P_2")
+    //        {
+    //            x = 0.5f;
+    //            y = 0.5f;
+    //        }
+    //        else if (playerNr == "P_3")
+    //        {
+    //            x = 0.0f;
+    //        }
+    //    }
+    //    else if (game_Manager.setToFourPlayers)
+    //    {
+    //        width = 0.5f;
+    //        height = 0.5f;
 
-            if (playerNr == "P_1")
-            {
-                x = 0.0f;
-                y = 0.5f;
-            }
-            else if (playerNr == "P_2")
-            {
-                x = 0.5f;
-                y = 0.5f;
-            }
-            else if (playerNr == "P_3")
-            {
-                x = 0.0f;
-            }
-            else if (playerNr == "P_4")
-            {
-                x = 0.5f;
-            }
-        }
-        this.GetComponent<Camera>().rect = new Rect(x, y, width, height);
-    }
+    //        if (playerNr == "P_1")
+    //        {
+    //            x = 0.0f;
+    //            y = 0.5f;
+    //        }
+    //        else if (playerNr == "P_2")
+    //        {
+    //            x = 0.5f;
+    //            y = 0.5f;
+    //        }
+    //        else if (playerNr == "P_3")
+    //        {
+    //            x = 0.0f;
+    //        }
+    //        else if (playerNr == "P_4")
+    //        {
+    //            x = 0.5f;
+    //        }
+    //    }
+    //    this.GetComponent<Camera>().rect = new Rect(x, y, width, height);
+    //}
 
     //"Spieler zuweisung" oder ähnlich müßte es heißen. Name finden!!
     //Use the Tag for set the right Tag-Information for Player- and CameraPosition-References.
-    private void TagNameFinder()
-    {
-        cam_Tag = this.gameObject.tag;
+    //private void TagNameFinder()
+    //{
+    //    cam_Tag = this.gameObject.tag;
 
-        playerNr = "P_" + cam_Tag.Split('_')[1];
-        cam_Origin_Tag = "Cam_Pos_" + cam_Tag.Split('_')[1];
-        cam_Target_Tag = "Cam_Target_" + cam_Tag.Split('_')[1];
-    }
+    //    playerNr = "P_" + cam_Tag.Split('_')[1];
+    //    cam_Origin_Tag = "Cam_Pos_" + cam_Tag.Split('_')[1];
+    //    cam_Target_Tag = "Cam_Target_" + cam_Tag.Split('_')[1];
+    //}
 }

@@ -9,9 +9,13 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    public Transform cameraTarget;
+    public Transform cameraPosition;
+
     #region Timer
 
     private float pointBoosterTimer;
@@ -34,34 +38,35 @@ public class Player : MonoBehaviour
 
     
 
-    private PowerUpManager power_Up_Manager;
+    public PowerUpManager power_Up_Manager;
 
     [SerializeField]
     private Rigidbody RB;
 
-    private ShoppingManager shopping_Manager;
+    public ShoppingManager shopping_Manager;
 
     [SerializeField]
     private GameObject sticky_Puddle_Prefab;
 
     private int tempItem;
 
-    private TextMesh ui_Points;
+    public Text ui_Points;
 
-    private PowerUpUI ui_Power_Up;
+    public PowerUpUI ui_Power_Up;
 
     [SerializeField]
     private GameObject wet_Floor_Prefab;
 
     public float MyPoints
     {
+        //TODO: Doesnt Work. PointBoost kicks Point in Infinity in few Sek
         get { return myPoints; }
         set
         {
             if (onPointBoost)
-                myPoints = value * 2;
+                myPoints += value * 2;
             else
-                myPoints = value;
+                myPoints += value;
         }
     }
 
@@ -82,10 +87,10 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         playerTag = gameObject.tag;
-        ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<PowerUpUI>();
-        ui_Points = GameObject.Find("Points_" + playerTag).GetComponent<TextMesh>();
-        shopping_Manager = GameObject.Find("GameManager").GetComponent<ShoppingManager>();
-        power_Up_Manager = GameObject.Find("GameManager").GetComponent<PowerUpManager>();
+        //ui_Power_Up = GameObject.Find("UI_Player_" + playerTag.Split('_','(')[1]).GetComponent<PowerUpUI>();
+        //ui_Points = GameObject.Find("Points_Player_" + playerTag.Split('_','(')[1]).GetComponent<TextMesh>();
+        //shopping_Manager = GameObject.Find("GameManager").GetComponent<ShoppingManager>();
+        //power_Up_Manager = GameObject.Find("GameManager").GetComponent<PowerUpManager>();
     }
 
     private void FixedUpdate()
@@ -164,7 +169,6 @@ public class Player : MonoBehaviour
                 myPowerUps[0].Use(this);
                 myPowerUps[0] = null;
                 ui_Power_Up.ClearImage(0);
-                //ui_Power_Up.SetImage(0, null);
             }
         }
         if (Input.GetButtonDown("Fire_Right_" + playerTag))
@@ -174,7 +178,6 @@ public class Player : MonoBehaviour
                 myPowerUps[1].Use(this);
                 myPowerUps[1] = null;
                 ui_Power_Up.ClearImage(1);
-                //ui_Power_Up.SetImage(1, null);
             }
         }
     }

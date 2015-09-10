@@ -20,7 +20,8 @@ public class Move : MonoBehaviour
 
     private float forwardForceInput;
 
-    private string playerTag;
+    [SerializeField]
+    public string playerTag;
 
     [SerializeField]
     private new Rigidbody rigidbody;
@@ -88,7 +89,7 @@ public class Move : MonoBehaviour
     private float stickyMassBoni;
     private float turboMassBoni = 0.3f;
 
-    private PowerUpUI ui_Power_Up;
+    //private PowerUpUI ui_Power_Up;
 
     private float wagonExtraMass = 0;
 
@@ -168,8 +169,8 @@ public class Move : MonoBehaviour
     private void Awake()
     {
         //reinziehen
-        playerTag = gameObject.tag;
-        ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<PowerUpUI>();
+        //playerTag = gameObject.tag;
+        //ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<PowerUpUI>();
         TimerSettings();
     }
 
