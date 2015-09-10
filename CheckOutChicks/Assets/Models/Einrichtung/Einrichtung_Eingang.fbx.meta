@@ -24,6 +24,12 @@ ModelImporter:
     100032: polySurface5
     100034: Eingang_links
     100036: Eingang_rechts
+    100038: Eingang_rahmen
+    100040: Eingang_rechts 1
+    100042: polySurface10
+    100044: polySurface12
+    100046: polySurface7
+    100048: Eingang_links1
     400000: //RootNode
     400002: group
     400004: pasted__pCube1
@@ -43,21 +49,35 @@ ModelImporter:
     400032: polySurface5
     400034: Eingang_links
     400036: Eingang_rechts
+    400038: Eingang_rahmen
+    400040: Eingang_rechts 1
+    400042: polySurface10
+    400044: polySurface12
+    400046: polySurface7
+    400048: Eingang_links1
     2300000: pasted__pCylinder2
     2300002: eingang
     2300004: polySurface5
     2300006: Eingang_links
     2300008: Eingang_rechts
+    2300010: Eingang_rahmen
+    2300012: Eingang_rechts 1
+    2300014: Eingang_links1
     3300000: pasted__pCylinder2
     3300002: eingang
     3300004: polySurface5
     3300006: Eingang_links
     3300008: Eingang_rechts
+    3300010: Eingang_rahmen
+    3300012: Eingang_rechts 1
+    3300014: Eingang_links1
     4300000: pasted__pCylinder2
     4300002: polySurface5
     4300004: eingang
     4300006: Eingang_links
     4300008: Eingang_rechts
+    4300010: Eingang_rahmen
+    4300012: Eingang_links1
   materials:
     importMaterials: 1
     materialName: 0
