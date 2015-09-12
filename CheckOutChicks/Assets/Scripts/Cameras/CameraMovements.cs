@@ -85,6 +85,7 @@ public class CameraMovements : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * Time.deltaTime);
     }
 
+    //TODO: Kommentar entfernen.
     //im GameManager nutzen - GGF Instatiate Player -> Cam -> Rect & next Player...
     //private void ViewPortSelection()
     //{

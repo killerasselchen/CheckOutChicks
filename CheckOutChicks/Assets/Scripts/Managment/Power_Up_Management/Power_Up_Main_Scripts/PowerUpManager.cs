@@ -87,8 +87,10 @@ public class PowerUpManager : MonoBehaviour
 
     private void SpawnPowerUp()
     {
+        //TODO: CurrentMapPowerUps < MaxMapPowerUps
         if (currentMapPowerUps + 1 <= MaxMapPowerUps)
         {
+            //TODO: !(powerUpSpawnTimer > 0)
             if (powerUpSpawnTimer <= 0)
             {
                 nextSpawnPointCheck = true;

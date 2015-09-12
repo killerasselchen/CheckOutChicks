@@ -10,6 +10,7 @@ public class SlipperyWhenWetItem : MonoBehaviour
 
     private float lifeTime;
 
+    //TODO: private Felder immer klein schreiben.
     [SerializeField]
     private float TempSliperyFactor;
 
@@ -33,6 +34,8 @@ public class SlipperyWhenWetItem : MonoBehaviour
         //Rigidbody temp = other.GetComponent<Rigidbody>();
 
         //if (temp == null) return;
+        //HACK: Funktioniert mit momentanem System nicht!
+        //TODO: Besser: other.GetComponent<Player>()
         if (other.tag == "P_1" || other.tag == "P_2" || other.tag == "P_3" || other.tag == "P_4")
         {
             if (other.GetComponent<Player>() != constructedPlayer)
@@ -45,6 +48,8 @@ public class SlipperyWhenWetItem : MonoBehaviour
 
     public void OnTriggerExit(Collider other)
     {
+        //HACK: Funktioniert mit momentanem System nicht!
+        //TODO: Besser: other.GetComponent<Player>()
         if (other.tag == "P_1" || other.tag == "P_2" || other.tag == "P_3" || other.tag == "P_4")
         {
             other.GetComponent<Move>().SliperyFactor = 1;
@@ -60,8 +65,26 @@ public class SlipperyWhenWetItem : MonoBehaviour
         if (other.GetComponentInParent<Player>() != constructedPlayer)
         {
             //hier weiter machen -- kann ja eh nicht const player sein
+            //HACK: Diese Abfrage ist unnötig.
             if (other.GetComponentInParent<Player>() != constructedPlayer)
             {
+                //UNDONE: MyPoints -= 15 == MyPoints = MyPoints - 15.
+                // MyPoints = value macht hier aber:
+                // MyPoints = MyPoints + (MyPoints - 15) * 2
+                // Was am Ende
+                // MyPoints = MyPoints * 3 - 30
+                // ergibt.
+                //TODO: Ändern von MyPoints -= 15 zu MyPoints = -15 ODER Player.AddPoints(-15)
+                //Player.AddPoints wäre dann:
+                /*
+                public void AddPoints(int points)
+                {
+                    if (onPointBoost)
+                        myPoints += points * 2;
+                    else
+                        myPoints += points;
+                }
+                */
                 constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
             }
         }
@@ -79,6 +102,7 @@ public class SlipperyWhenWetItem : MonoBehaviour
 
     private void LifeTimeCheck()
     {
+        //TODO: Schöner wäre vmtl. if (lifeTime > 0) {} else {}
         if (lifeTime >= 0)
             lifeTime -= 1 * Time.deltaTime;
         else if (lifeTime <= 0)

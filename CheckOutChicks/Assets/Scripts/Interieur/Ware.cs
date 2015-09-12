@@ -26,6 +26,23 @@ public class Ware : MonoBehaviour
             //}
             foreach (var Player in Physics.SphereCastAll(origin, sphereCastRadius, Vector3.zero, sphereCastRadius, 14))
             {
+                //UNDONE: MyPoints -= 15 == MyPoints = MyPoints - 15.
+                // MyPoints = value macht hier aber:
+                // MyPoints = MyPoints + (MyPoints - 15) * 2
+                // Was am Ende
+                // MyPoints = MyPoints * 3 - 30
+                // ergibt.
+                //TODO: Ändern von MyPoints -= 15 zu MyPoints = -15 ODER Player.AddPoints(-15)
+                //Player.AddPoints wäre dann:
+                /*
+                public void AddPoints(int points)
+                {
+                    if (onPointBoost)
+                        myPoints += points * 2;
+                    else
+                        myPoints += points;
+                }
+                */
                 //Physics.SphereCastAll(origin, sphereCastRadius, Vector3.zero, sphereCastRadius, 14);
                 Player.collider.gameObject.GetComponent<Player>().MyPoints -= 15;
                 Debug.Log("loser");
