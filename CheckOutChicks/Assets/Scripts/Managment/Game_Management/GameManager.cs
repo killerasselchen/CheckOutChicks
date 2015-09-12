@@ -12,6 +12,10 @@ public enum PlayMode { Single = 1, Two = 2, Three = 3, Four = 4 }
 
 public class GameManager : MonoBehaviour
 {
+    #region Player Cameras
+
+    public static List<Camera> activeCameras = new List<Camera>();
+
     public static Rect[][] viewports =
     {
         new Rect[] {new Rect (0,0,1,1)},
@@ -21,18 +25,61 @@ public class GameManager : MonoBehaviour
     };
 
     [SerializeField]
-    private Sprite startMenuBackground;
-    [SerializeField]
-    private Sprite startMenuBackgroundMarketOne;
-    [SerializeField]
-    private Sprite startMenuBackgroundMarketTwo;
+    private Camera playerCameraPrefab;
+
+    private void SetLayerRecursive(GameObject gameObject, int layer)
+    {
+        gameObject.layer = layer;
+
+        foreach (Transform child in gameObject.transform)
+        {
+            SetLayerRecursive(child.gameObject, layer);
+        }
+    }
+
+    #endregion Player Cameras
+
+    #region Market Cameras
 
     private Camera[] cameras;
 
-    private bool paused = true;
+    [SerializeField]
+    private Sprite startMenuBackground;
+
+    private Camera supermarketOneFirstCam;
 
     [SerializeField]
-    private Camera playerCameraPrefab;
+    private Camera supermarketOneFirstCamPrefab;
+
+    private Camera supermarketOneSecCam;
+
+    [SerializeField]
+    private Camera supermarketOneSecCamPrefab;
+
+    private Camera supermarketTwoFirstCam;
+
+    [SerializeField]
+    private Camera supermarketTwoFirstCamPrefab;
+
+    private Camera supermarketTwoSecCam;
+
+    [SerializeField]
+    private Camera supermarketTwoSecCamPrefab;
+
+    private void LoadMarketSecuireCams()
+    {
+        supermarketOneFirstCam = Instantiate(supermarketOneFirstCamPrefab, supermarketOneFirstCamPrefab.transform.position, supermarketOneFirstCamPrefab.transform.rotation) as Camera;
+
+        supermarketTwoFirstCam = Instantiate(supermarketTwoFirstCamPrefab, supermarketTwoFirstCamPrefab.transform.position, supermarketTwoFirstCamPrefab.transform.rotation) as Camera;
+    }
+
+    #endregion Market Cameras
+
+    #region Player
+
+    public static List<GameObject> activePlayers = new List<GameObject>();
+
+    private GameObject lastPlayerSpawnPoint;
 
     [SerializeField]
     private Player playerPrefab;
@@ -40,58 +87,92 @@ public class GameManager : MonoBehaviour
     private Player[] players;
 
     [SerializeField]
+    private List<GameObject> playerSpawnPoints = new List<GameObject>();
+
+    [SerializeField]
     private Canvas playerUIPrefab;
 
     private Canvas[] playerUIs;
 
-    [SerializeField]
-    private PowerUpManager powerUpManager;
-
-    [SerializeField]
-    private ShoppingManager shoppingManager;
-
-    private bool supermarketOneIsActive;
-
-    private bool supermarketTwoIsActive;
-
-    //TODO: Need to implement it
-    public void ExitGame()
+    private void FindPlayerSpawnPoints()
     {
-        //if Sure .... than go
-        Application.CancelQuit();
-        Debug.Log("exit");
+        playerSpawnPoints.Clear();
+
+        GameObject[] temp = GameObject.FindGameObjectsWithTag("Player_Spawn_Point");
+
+        for (int i = 0; i < temp.Length; i++)
+        {
+            playerSpawnPoints.Add(temp[i]);
+        }
     }
+
+    private Vector3 SelectRandomPlayerSpawnPoint()
+    {
+        if (lastPlayerSpawnPoint != null)
+            playerSpawnPoints.Remove(lastPlayerSpawnPoint);
+
+        int temp = Random.Range(0, playerSpawnPoints.Count);
+        lastPlayerSpawnPoint = playerSpawnPoints[temp];
+        Vector3 tempVector = lastPlayerSpawnPoint.transform.position;
+        return tempVector;
+    }
+
+    #endregion Player
+
+    #region Markets
+
+    [SerializeField]
+    private GameObject MarketOne;
+
+    private bool marketOneIsActive;
+
+    [SerializeField]
+    private GameObject MarketTwo;
+
+    private bool marketTwoIsActive;
 
     public void SelectMarketOne()
     {
-        supermarketOne.SetActive(true);
-        supermarketTwoMainCam.gameObject.SetActive(false);
-        supermarketTwo.SetActive(false);
-        supermarketOneMainCamPrefab.gameObject.SetActive(true);
-        mainUI.GetComponent<Canvas>().worldCamera = supermarketOneMainCam;
-        startMenuBackground = startMenuBackgroundMarketOne;
+        MarketOne.SetActive(true);
+        supermarketTwoFirstCam.gameObject.SetActive(false);
+        MarketTwo.SetActive(false);
+        supermarketOneFirstCamPrefab.gameObject.SetActive(true);
+        mainUI.GetComponent<Canvas>().worldCamera = supermarketOneFirstCam;
 
-        supermarketOneIsActive = true;
-        supermarketTwoIsActive = false;
+        marketOneIsActive = true;
+        marketTwoIsActive = false;
     }
 
     public void SelectMarketTwo()
     {
         //TODO: MainOne doesnt go out. And startSprite do not change
-        supermarketTwo.SetActive(true);
-        supermarketOneMainCamPrefab.gameObject.SetActive(false);
-        supermarketOne.SetActive(false);
-        supermarketTwoMainCam.gameObject.SetActive(true);
-        mainUI.GetComponent<Canvas>().worldCamera = supermarketTwoMainCam;
-        startMenuBackground = startMenuBackgroundMarketTwo;
+        MarketTwo.SetActive(true);
+        supermarketOneFirstCamPrefab.gameObject.SetActive(false);
+        MarketOne.SetActive(false);
+        supermarketTwoFirstCam.gameObject.SetActive(true);
+        mainUI.GetComponent<Canvas>().worldCamera = supermarketTwoFirstCam;
 
-        supermarketTwoIsActive = true;
-        supermarketOneIsActive = false;
+        marketTwoIsActive = true;
+        marketOneIsActive = false;
     }
+
+    #endregion Markets
+
+    private bool paused = true;
+
+    [SerializeField]
+    private PowerUpManager powerUpManager;
+
+    private PlayMode selectedPlayMode;
+
+    [SerializeField]
+    private ShoppingManager shoppingManager;
 
     public void SetPlayMode(PlayMode playMode)
     {
         FindPlayerSpawnPoints();
+        //TODO: Erstellen des Scripts PowerUpManager bei Spielstart und dann die Methode bei Awake ausführen.
+        this.gameObject.GetComponent<PowerUpManager>().FindPowerUpSpawnPoints();
 
         playerUIs = new Canvas[(int)playMode];
         cameras = new Camera[(int)playMode];
@@ -137,6 +218,66 @@ public class GameManager : MonoBehaviour
         selectedPlayMode = PlayMode.Three;
     }
 
+    public void SetToTwoPlayer()
+    {
+        selectedPlayMode = PlayMode.Two;
+    }
+
+    public void StartGame()
+    {
+        SetPlayMode(selectedPlayMode);
+        // Time.timeScale = 1;
+    }
+
+    private void Awake()
+    {
+        //Time.timeScale = 0;
+        LoadMarketSecuireCams();
+        SelectMarketOne();
+    }
+
+    #region Menu GameObjects
+
+    //TODO:
+    //private void PrepairMainMenu()
+    //{
+    //    //GameObject MainMenu = Instantiate(mainUI) as GameObject;
+    //    //GameObject PlayMenu = Instantiate(playMenu) as GameObject;
+    //    //GameObject OptionMenu = Instantiate(optionMenu) as GameObject;
+    //    //GameObject CreditsMenu = Instantiate(creditsMenu) as GameObject;
+    //    //GameObject QuitMenu = Instantiate(quitMenu) as GameObject;
+    //}
+
+    //[SerializeField]
+    //private GameObject creditsMenu;
+
+    //[SerializeField]
+    //private GameObject levelMenu;
+
+    [SerializeField]
+    private GameObject mainUI;
+
+    //[SerializeField]
+    //private GameObject optionMenu;
+
+    //[SerializeField]
+    //private GameObject playerMenu;
+
+    //[SerializeField]
+    //private GameObject quitMenu;
+
+    #endregion Menu GameObjects
+
+    #region Other Funktions
+
+    //TODO: Need to implement it
+    //public void ExitGame()
+    //{
+    //    //if Sure .... than go
+    //    Application.CancelQuit();
+    //    Debug.Log("exit");
+    //}
+
     //TODO:
     //private void Pause()
     //{
@@ -155,144 +296,6 @@ public class GameManager : MonoBehaviour
     //        mainCamera.SetActive(false);
     //    }
     //}
-    public void SetToTwoPlayer()
-    {
-        selectedPlayMode = PlayMode.Two;
-    }
-
-    public void StartGame()
-    {
-        SetPlayMode(selectedPlayMode);
-       // Time.timeScale = 1;
-    }
-
-    private void Awake()
-    {
-        //Time.timeScale = 0;
-        PreLoadSupermarkets();
-        this.gameObject.GetComponent<PowerUpManager>().FindPowerUpSpawnPoints();
-        //FindCameras();
-        SelectMarketOne();
-    }
-
-    private void FindPlayerSpawnPoints()
-    {
-        playerSpawnPoints.Clear();
-
-        GameObject[] temp = GameObject.FindGameObjectsWithTag("Player_Spawn_Point");
-
-        for (int i = 0; i < temp.Length; i++)
-        {
-            playerSpawnPoints.Add(temp[i]);
-        }
-    }
-
-    private void PreLoadSupermarkets()
-    {
-        supermarketOne = Instantiate(supermarketOnePrefab) as GameObject;
-        supermarketOneMainCam = Instantiate(supermarketOneMainCamPrefab,supermarketOneMainCamPrefab.transform.position, supermarketOneMainCamPrefab.transform.rotation) as Camera;
-
-        supermarketTwo = Instantiate(supermarketTwoPrefab) as GameObject;
-        supermarketTwoMainCam = Instantiate(supermarketTwoMainCamPrefab) as Camera;
-    }
-
-    //private void PrepairMainMenu()
-    //{
-    //    //GameObject MainMenu = Instantiate(mainUI) as GameObject;
-    //    //GameObject PlayMenu = Instantiate(playMenu) as GameObject;
-    //    //GameObject OptionMenu = Instantiate(optionMenu) as GameObject;
-    //    //GameObject CreditsMenu = Instantiate(creditsMenu) as GameObject;
-    //    //GameObject QuitMenu = Instantiate(quitMenu) as GameObject;
-    //}
-    private Vector3 SelectRandomPlayerSpawnPoint()
-    {
-        if (lastPlayerSpawnPoint != null)
-            playerSpawnPoints.Remove(lastPlayerSpawnPoint);
-
-        int temp = Random.Range(0, playerSpawnPoints.Count);
-        lastPlayerSpawnPoint = playerSpawnPoints[temp];
-        Vector3 tempVector = lastPlayerSpawnPoint.transform.position;
-        return tempVector;
-    }
-
-    private void SetLayerRecursive(GameObject gameObject, int layer)
-    {
-        gameObject.layer = layer;
-
-        foreach (Transform child in gameObject.transform)
-        {
-            SetLayerRecursive(child.gameObject, layer);
-        }
-    }
-
-    #region InGame GameObjects
-
-    public static List<Camera> activeCameras = new List<Camera>();
-
-    public static List<GameObject> activePlayers = new List<GameObject>();
-
-    #endregion InGame GameObjects
-
-    #region Menu GameObjects
-
-    [SerializeField]
-    private GameObject creditsMenu;
-
-    [SerializeField]
-    private GameObject levelMenu;
-
-    [SerializeField]
-    private GameObject mainUI;
-
-    [SerializeField]
-    private GameObject optionMenu;
-
-    [SerializeField]
-    private GameObject playerMenu;
-
-    [SerializeField]
-    private GameObject quitMenu;
-
-    #endregion Menu GameObjects
-
-    #region Market GameObjects
-
-    private GameObject lastPlayerSpawnPoint;
-
-    [SerializeField]
-    private List<GameObject> playerSpawnPoints = new List<GameObject>();
-
-    private PlayMode selectedPlayMode;
-
-    private GameObject supermarketOne;
-
-    private Camera supermarketOneMainCam;
-
-    [SerializeField]
-    private Camera supermarketOneMainCamPrefab;
-
-    [SerializeField]
-    private GameObject supermarketOnePrefab;
-
-    private GameObject supermarketTwo;
-
-    private Camera supermarketTwoMainCam;
-
-    [SerializeField]
-    private Camera supermarketTwoMainCamPrefab;
-
-    [SerializeField]
-    private GameObject supermarketTwoPrefab;
-
-    #endregion Market GameObjects
-
-    ////Challenges. Derzeit noch NiceToHave
-    //höhste Geschwindigkeit
-    //meisten Einkäufe
-    //längste Fahrtstrecke
-    //meisten PowerUps
-
-    #region Player Cameras
 
     //private void ActivatePlayerCameras()
     //{
@@ -321,27 +324,11 @@ public class GameManager : MonoBehaviour
     //        supermarketTwoMainCam.gameObject.SetActive(true);
     //}
 
-    //private void CreatePlayerCamera(Camera PlayerCamPrefab, Vector3 PlayerPosition)
-    //{
-    //    Camera PlayerCamera = Instantiate(PlayerCamPrefab, PlayerPosition, Quaternion.identity) as Camera;
-    //    activeCameras.Add(PlayerCamera);
-    //}
+    ////Challenges. Derzeit noch NiceToHave
+    //höhste Geschwindigkeit(script gibt es schon, aber einbindung sieht mist aus, könnte aber ohne einblendung für ein Achivment genutzt werden)
+    //TODO: meisten Einkäufe(Liste wird beim Einkauf geführt, aber noch nicht weiterverwendet) Zumindest die Punkte müssen ausgewertet werden
+    //längste Fahrtstrecke
+    //meisten PowerUps
 
-    #endregion Player Cameras
-
-    //private void PlayMenu()
-    //{
-    //}
-
-    //private void OptionMenu()
-    //{
-    //}
-
-    //private void CreditMenu()
-    //{
-    //}
-
-    //private void ExitMenu()
-    //{
-    //}
+    #endregion Other Funktions
 }
