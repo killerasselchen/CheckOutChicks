@@ -11,12 +11,11 @@ public class ShoppingManager : MonoBehaviour
     private List<GameObject> products;
     private List<GameObject> productsBackUp;
     private List<GameObject> activeProducts;
-    public static int currentItems = 0;
+    private int currentItems = 0;
     private int maxItems = 2;
     private int nextItem;
     private float spawnTimer = 1;
 
-    // Point System
     private float maxPoints;
 
     public delegate void ItemEvent(Item item);
@@ -24,11 +23,9 @@ public class ShoppingManager : MonoBehaviour
     public ItemEvent OnCreateItem;
     public ItemEvent OnDeactivateItem;
 
-    private void Awake()
+    private void OnEnable()
     {
         maxPoints = 30;
-        //bonusTime = 10;
-        //minPoints = maxPoints / (bonusTime + 1);
         FindAvailableProducts();
     }
 
