@@ -46,31 +46,33 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Sprite startMenuBackground;
 
-    private Camera supermarketOneFirstCam;
+    private Camera marketOneFirstCam;
 
     [SerializeField]
-    private Camera supermarketOneFirstCamPrefab;
+    private Camera marketOneFirstCamPrefab;
 
-    private Camera supermarketOneSecCam;
-
-    [SerializeField]
-    private Camera supermarketOneSecCamPrefab;
-
-    private Camera supermarketTwoFirstCam;
+    private Camera marketOneSecCam;
 
     [SerializeField]
-    private Camera supermarketTwoFirstCamPrefab;
+    private Camera marketOneSecCamPrefab;
 
-    private Camera supermarketTwoSecCam;
+    private Camera marketTwoFirstCam;
 
     [SerializeField]
-    private Camera supermarketTwoSecCamPrefab;
+    private Camera marketTwoFirstCamPrefab;
+
+    private Camera marketTwoSecCam;
+
+    [SerializeField]
+    private Camera marketTwoSecCamPrefab;
 
     private void LoadMarketSecuireCams()
     {
-        supermarketOneFirstCam = Instantiate(supermarketOneFirstCamPrefab, supermarketOneFirstCamPrefab.transform.position, supermarketOneFirstCamPrefab.transform.rotation) as Camera;
+        marketOneFirstCam = Instantiate(marketOneFirstCamPrefab, marketOneFirstCamPrefab.transform.position, marketOneFirstCamPrefab.transform.rotation) as Camera;
+        marketOneSecCam = Instantiate(marketOneSecCamPrefab, marketOneSecCamPrefab.transform.position, marketOneSecCamPrefab.transform.rotation) as Camera;
 
-        supermarketTwoFirstCam = Instantiate(supermarketTwoFirstCamPrefab, supermarketTwoFirstCamPrefab.transform.position, supermarketTwoFirstCamPrefab.transform.rotation) as Camera;
+        marketTwoFirstCam = Instantiate(marketTwoFirstCamPrefab, marketTwoFirstCamPrefab.transform.position, marketTwoFirstCamPrefab.transform.rotation) as Camera;
+        marketOneSecCam = Instantiate(marketTwoSecCamPrefab, marketTwoSecCamPrefab.transform.position, marketTwoSecCamPrefab.transform.rotation) as Camera;
     }
 
     #endregion Market Cameras
@@ -133,11 +135,16 @@ public class GameManager : MonoBehaviour
 
     public void SelectMarketOne()
     {
+        MarketTwo.SetActive(true);
         MarketOne.SetActive(true);
-        supermarketTwoFirstCam.gameObject.SetActive(false);
-        MarketTwo.SetActive(false);
-        supermarketOneFirstCamPrefab.gameObject.SetActive(true);
-        mainUI.GetComponent<Canvas>().worldCamera = supermarketOneFirstCam;
+
+        marketTwoFirstCam.gameObject.SetActive(false);
+        marketTwoSecCam.gameObject.SetActive(false);
+
+        marketOneFirstCam.gameObject.SetActive(true);
+        marketOneSecCam.gameObject.SetActive(true);
+
+        //mainUI.GetComponent<Canvas>().worldCamera = marketOneFirstCam;
 
         marketOneIsActive = true;
         marketTwoIsActive = false;
@@ -145,12 +152,14 @@ public class GameManager : MonoBehaviour
 
     public void SelectMarketTwo()
     {
+        MarketOne.SetActive(false);
+        MarketTwo.SetActive(true);
         //TODO: MainOne doesnt go out. And startSprite do not change
         MarketTwo.SetActive(true);
-        supermarketOneFirstCamPrefab.gameObject.SetActive(false);
+        marketOneFirstCam.gameObject.SetActive(false);
         MarketOne.SetActive(false);
-        supermarketTwoFirstCam.gameObject.SetActive(true);
-        mainUI.GetComponent<Canvas>().worldCamera = supermarketTwoFirstCam;
+        marketTwoFirstCam.gameObject.SetActive(true);
+        mainUI.GetComponent<Canvas>().worldCamera = marketTwoFirstCam;
 
         marketTwoIsActive = true;
         marketOneIsActive = false;
