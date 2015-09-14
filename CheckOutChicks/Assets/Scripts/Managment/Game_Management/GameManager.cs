@@ -3,6 +3,7 @@
 //Project: CheckOut Chicks
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,34 @@ public enum PlayMode { Single = 1, Two = 2, Three = 3, Four = 4 }
 
 public class GameManager : MonoBehaviour
 {
+    #region Menu UI
+
+    public Menu InitialMenu;
+    public Menu CurrentMenu;
+
+    public TMenu OpenMenu<TMenu>(TMenu view) where TMenu : Menu
+    {
+        if (CurrentMenu)
+            Destroy(CurrentMenu.gameObject);
+        TMenu instance = Instantiate(view);
+        instance.GameManager = this;
+        CurrentMenu = instance;
+        return instance;
+    }
+
+    public void CloseMenu()
+    {
+        if (CurrentMenu)
+            Destroy(CurrentMenu.gameObject);
+    }
+
+    private void Start()
+    {
+        OpenMenu(InitialMenu);
+    }
+
+    #endregion Menu UI
+
     #region Player Cameras
 
     public static List<Camera> activeCameras = new List<Camera>();
@@ -72,7 +101,7 @@ public class GameManager : MonoBehaviour
         marketOneSecCam = Instantiate(marketOneSecCamPrefab, marketOneSecCamPrefab.transform.position, marketOneSecCamPrefab.transform.rotation) as Camera;
 
         marketTwoFirstCam = Instantiate(marketTwoFirstCamPrefab, marketTwoFirstCamPrefab.transform.position, marketTwoFirstCamPrefab.transform.rotation) as Camera;
-        marketOneSecCam = Instantiate(marketTwoSecCamPrefab, marketTwoSecCamPrefab.transform.position, marketTwoSecCamPrefab.transform.rotation) as Camera;
+        marketTwoSecCam = Instantiate(marketTwoSecCamPrefab, marketTwoSecCamPrefab.transform.position, marketTwoSecCamPrefab.transform.rotation) as Camera;
     }
 
     #endregion Market Cameras
@@ -135,7 +164,7 @@ public class GameManager : MonoBehaviour
 
     public void SelectMarketOne()
     {
-        MarketTwo.SetActive(true);
+        MarketTwo.SetActive(false);
         MarketOne.SetActive(true);
 
         marketTwoFirstCam.gameObject.SetActive(false);
@@ -154,12 +183,14 @@ public class GameManager : MonoBehaviour
     {
         MarketOne.SetActive(false);
         MarketTwo.SetActive(true);
-        //TODO: MainOne doesnt go out. And startSprite do not change
-        MarketTwo.SetActive(true);
+
         marketOneFirstCam.gameObject.SetActive(false);
-        MarketOne.SetActive(false);
+        marketOneSecCam.gameObject.SetActive(false);
+
         marketTwoFirstCam.gameObject.SetActive(true);
-        mainUI.GetComponent<Canvas>().worldCamera = marketTwoFirstCam;
+        marketTwoSecCam.gameObject.SetActive(true);
+
+        //mainUI.GetComponent<Canvas>().worldCamera = marketTwoFirstCam;
 
         marketTwoIsActive = true;
         marketOneIsActive = false;
@@ -263,8 +294,8 @@ public class GameManager : MonoBehaviour
     //[SerializeField]
     //private GameObject levelMenu;
 
-    [SerializeField]
-    private GameObject mainUI;
+    //[SerializeField]
+    //private GameObject mainUI;
 
     //[SerializeField]
     //private GameObject optionMenu;
