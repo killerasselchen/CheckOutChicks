@@ -7,17 +7,20 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+    private float speed = 20;
     private float timeBoni = 25;
+
+    //For Changes over the GameManagment to an spezial event/time.
+    public float Speed
+    {
+        get { return speed; }
+        set { speed = value; }
+    }
 
     public float TimeBoni
     {
         get { return timeBoni; }
         set { timeBoni = value; }
-    }
-
-    private void Update()
-    {
-        LifeTimer();
     }
 
     private void LifeTimer()
@@ -26,5 +29,16 @@ public class Item : MonoBehaviour
             TimeBoni -= 1.0f * Time.deltaTime;
         else
             TimeBoni = 0;
+    }
+
+    private void Spin()
+    {
+        this.transform.Rotate(0, speed * Time.deltaTime, 0);
+    }
+
+    private void Update()
+    {
+        LifeTimer();
+        Spin();
     }
 }
