@@ -63,9 +63,9 @@ public class Player : MonoBehaviour
         set
         {
             if (onPointBoost)
-                myPoints += value + 5;
+                myPoints = value + value;
             else
-                myPoints += value;
+                myPoints = value;
         }
     }
 

@@ -43,7 +43,7 @@ public class StickyPuddleItem : MonoBehaviour
     {
         Rigidbody temp = other.GetComponent<Rigidbody>();
 
-        if (temp == null) return;
+        if (temp == null && other.tag != "Player") return;
         if (other.GetComponent<Player>() != constructedPlayer)
         {
             if (trapLevelOne <= trapLevelTwo)

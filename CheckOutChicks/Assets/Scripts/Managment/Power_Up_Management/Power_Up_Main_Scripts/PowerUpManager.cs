@@ -7,8 +7,11 @@ using UnityEngine;
 
 public class PowerUpManager : MonoBehaviour
 {
-    public static PowerUp[] availablePowerUps;
-    //public static string[] availablePowerUpsList;
+    private static PowerUp[] availablePowerUps;
+
+    //TODO Wollte die Liste noch nutzen für die Auswertung.
+    private static string[] availablePowerUpsList;
+
     private int currentMapPowerUps;
     private int lastPowerUp;
     private int maxMapPowerUps = 2;
@@ -46,10 +49,9 @@ public class PowerUpManager : MonoBehaviour
         get { return powerUpIcons; }
     }
 
-    private void OnEnable()
+    public void Awake()
     {
-        //FindPowerUpSpawnPoints();
-        SetAvailablePowerUps();
+        powerUpSpawnTimer = 2;
     }
 
     public void FindPowerUpSpawnPoints()
@@ -64,25 +66,31 @@ public class PowerUpManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        //FindPowerUpSpawnPoints();
+        SetAvailablePowerUps();
+    }
+
     private void SetAvailablePowerUps()
     {
         availablePowerUps = new PowerUp[5];
-        //availablePowerUpsList = new string[5];
+        availablePowerUpsList = new string[5];
 
         availablePowerUps[0] = new StickyPuddle();
-        //availablePowerUpsList[0] = "Sticky_Puddle";
+        availablePowerUpsList[0] = "Sticky_Puddle";
 
         availablePowerUps[1] = new ConfuseOther();
-        //availablePowerUpsList[1] = "Confuse_Other";
+        availablePowerUpsList[1] = "Confuse_Other";
 
         availablePowerUps[2] = new TurboBoost();
-        //availablePowerUpsList[2] = "Turbo";
+        availablePowerUpsList[2] = "Turbo";
 
         availablePowerUps[3] = new SlipperyWhenWet();
-        //availablePowerUpsList[3] = "Slippery_When_Wet";
+        availablePowerUpsList[3] = "Slippery_When_Wet";
 
         availablePowerUps[4] = new PointBoost();
-        //availablePowerUpsList[4] = "Point_Boost";
+        availablePowerUpsList[4] = "Point_Boost";
     }
 
     private void SpawnPowerUp()
@@ -109,7 +117,7 @@ public class PowerUpManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         SpawnPowerUp();
     }
