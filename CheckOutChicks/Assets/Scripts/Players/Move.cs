@@ -11,6 +11,8 @@ public class Move : MonoBehaviour
     public bool IsConfuse = false;
     public bool OnSlipperyWet = false;
     public bool OnTurbo = false;
+    [SerializeField]
+    private Animator animator;
 
     #region Movement
 
@@ -197,6 +199,7 @@ public class Move : MonoBehaviour
 
         Direction = new Vector3(sideStepForceInput * sideStepPower * sideStepMultiplier, 0, (forwardForceInput * acceleration) * accelerationMultiplier);
         Velocity = Direction.magnitude;
+        animator.SetFloat("Forward", Velocity);
         Direction.Normalize();
         Direction = Vector3.Slerp(OldDirection, Direction, SliperyFactor);
 

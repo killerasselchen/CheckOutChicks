@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OptionMenu : MonoBehaviour {
+public class Option : Menu {
 
 	// Use this for initialization
 	void Start () {
