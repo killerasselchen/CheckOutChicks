@@ -11,19 +11,20 @@ public class Move : MonoBehaviour
     public bool IsConfuse = false;
     public bool OnSlipperyWet = false;
     public bool OnTurbo = false;
+
     [SerializeField]
     private Animator animator;
 
     #region Movement
+
+    [SerializeField]
+    public string playerTag;
 
     private float acceleration = 23.0f;
 
     private float accelerationMultiplier = 1.0f;
 
     private float forwardForceInput;
-
-    [SerializeField]
-    public string playerTag;
 
     [SerializeField]
     private new Rigidbody rigidbody;
@@ -75,6 +76,7 @@ public class Move : MonoBehaviour
 
     //->Timer needs Props for MenuChanges
     private float confuseTimer;
+
     private float confuseTimerOriginal = 5.0f;
     private float slipperyWhenWetTimer;
     private float slipperyWhenWetTimerOriginal = 7.0f;

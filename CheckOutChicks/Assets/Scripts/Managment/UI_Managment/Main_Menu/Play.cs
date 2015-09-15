@@ -1,37 +1,40 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class Play : Menu
+﻿public class Play : Menu
 {
-    public MainMenu MainMenu;
     public LevelMenu LevelMenu;
+    public MainMenu MainMenu;
 
-    public void SetToSinglePlayer()
+    public void BackToMainMenu()
     {
-        GameManager.SetToSinglePlayer();
+        GameManager.inMainMenu = true;
+        GameManager.SetRectsOfMarketCams();
+        GameManager.OpenMenu(MainMenu);
+    }
+
+    public void SetToFourPlayer()
+    {
+        GameManager.SetRectsOfMarketCams();
+        GameManager.SetToFourPlayer();
         LevelMenu instance = (LevelMenu)GameManager.OpenMenu(LevelMenu);
     }
 
-    public void SetToTwoPlayer()
+    public void SetToSinglePlayer()
     {
-        GameManager.SetToTwoPlayer();
+        GameManager.SetRectsOfMarketCams();
+        GameManager.SetToSinglePlayer();
         LevelMenu instance = (LevelMenu)GameManager.OpenMenu(LevelMenu);
     }
 
     public void SetToThreePlayer()
     {
+        GameManager.SetRectsOfMarketCams();
         GameManager.SetToThreePlayer();
         LevelMenu instance = (LevelMenu)GameManager.OpenMenu(LevelMenu);
     }
 
-    public void SetToFourPlayer()
+    public void SetToTwoPlayer()
     {
-        GameManager.SetToFourPlayer();
+        GameManager.SetRectsOfMarketCams();
+        GameManager.SetToTwoPlayer();
         LevelMenu instance = (LevelMenu)GameManager.OpenMenu(LevelMenu);
-    }
-
-    public void BackToMainMenu()
-    {
-        GameManager.OpenMenu(MainMenu);
     }
 }

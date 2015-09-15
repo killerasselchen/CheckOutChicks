@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     public Vector3 Velocity;
 
     private List<string> myPurchases = new List<string>();
+
     [SerializeField]
     private float myPoints;
 
@@ -35,9 +36,7 @@ public class Player : MonoBehaviour
     private bool onPointBoost = false;
 
     private string playerTag;
-
     
-
     public PowerUpManager power_Up_Manager;
 
     [SerializeField]
@@ -64,7 +63,7 @@ public class Player : MonoBehaviour
         set
         {
             if (onPointBoost)
-                myPoints += value * 2;
+                myPoints += value + 5;
             else
                 myPoints += value;
         }

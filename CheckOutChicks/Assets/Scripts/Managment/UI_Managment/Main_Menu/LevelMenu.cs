@@ -1,9 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class LevelMenu : Menu
+﻿public class LevelMenu : Menu
 {
     public Play PlayMenu;
+
+    public void BackToPlayersMenu()
+    {
+        Play instance = (Play)GameManager.OpenMenu(PlayMenu);
+    }
 
     public void StartGameInMarketOne()
     {
@@ -16,10 +18,4 @@ public class LevelMenu : Menu
         GameManager.SelectMarketTwo();
         GameManager.StartGame();
     }
-
-    public void BackToPlayersMenu()
-    {
-        Play instance = (Play)GameManager.OpenMenu(PlayMenu);
-    }
-	
 }

@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class ShoppingManager : MonoBehaviour
 {
+    [SerializeField]
     private List<GameObject> products;
     private List<GameObject> productsBackUp;
     private List<GameObject> activeProducts;

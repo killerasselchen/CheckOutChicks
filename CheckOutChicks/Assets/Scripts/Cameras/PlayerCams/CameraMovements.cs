@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class CameraMovements : MonoBehaviour
 {
-    private float smooth = 3f;
+    private float smooth = 6f;
 
     public Transform player_Position;
 

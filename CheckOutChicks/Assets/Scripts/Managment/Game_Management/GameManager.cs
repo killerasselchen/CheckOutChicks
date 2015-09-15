@@ -70,6 +70,8 @@ public class GameManager : MonoBehaviour
 
     #region Market Cameras
 
+    public bool inMainMenu = true;
+
     private Camera[] cameras;
 
     [SerializeField]
@@ -94,6 +96,67 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private Camera marketTwoSecCamPrefab;
+
+    //um den zugriff für das Pause Menü und seinen Button "ToMainMenu" zu ermöglichen
+    public void ActivateMarketCams()
+    {
+        if(marketOneIsActive)
+        {
+            marketOneFirstCam.gameObject.SetActive(true);
+            marketOneSecCam.gameObject.SetActive(true);
+        }
+
+        else if(marketTwoIsActive)
+        {
+            marketTwoFirstCam.gameObject.SetActive(true);
+            marketTwoSecCam.gameObject.SetActive(true);
+        }
+    }
+
+    private void DeactivateMarketCams()
+    {
+        if (marketOneIsActive)
+        {
+            marketOneFirstCam.gameObject.SetActive(false);
+            marketOneSecCam.gameObject.SetActive(false);
+        }
+
+        else if (marketTwoIsActive)
+        {
+            marketTwoFirstCam.gameObject.SetActive(false);
+            marketTwoSecCam.gameObject.SetActive(false);
+        }
+    }
+
+    public void SetRectsOfMarketCams()
+    {
+        if(marketOneIsActive)
+        {
+            if(inMainMenu)
+            {
+                marketOneFirstCam.rect = new Rect(0, 0.5f, 0.4f, 0.4f);
+                marketOneSecCam.rect = new Rect(0, 0.1f, 0.4f, 0.4f);
+            }
+            else
+            {
+                marketOneFirstCam.rect = new Rect(0.1f, 0.55f, 0.4f, 0.4f);
+                marketOneSecCam.rect = new Rect(0.5f, 0.55f, 0.4f, 0.4f);
+            }
+        }
+        else if(marketTwoIsActive)
+        {
+            if (inMainMenu)
+            {
+                marketTwoFirstCam.rect = new Rect(0, 0.5f, 0.4f, 0.4f);
+                marketTwoSecCam.rect = new Rect(0, 0.1f, 0.4f, 0.4f);
+            }
+            else
+            {
+                marketTwoFirstCam.rect = new Rect(0.1f, 0.55f, 0.4f, 0.4f);
+                marketTwoSecCam.rect = new Rect(0.5f, 0.55f, 0.4f, 0.4f);
+            }
+        }
+    }
 
     private void LoadMarketSecuireCams()
     {
@@ -155,11 +218,13 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject MarketOne;
 
+    [SerializeField]
     private bool marketOneIsActive;
 
     [SerializeField]
     private GameObject MarketTwo;
-
+   
+    [SerializeField]
     private bool marketTwoIsActive;
 
     public void SelectMarketOne()
@@ -265,13 +330,15 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        CloseMenu();
+        DeactivateMarketCams();
         SetPlayMode(selectedPlayMode);
-        // Time.timeScale = 1;
+        Time.timeScale = 1;
     }
 
     private void Awake()
     {
-        //Time.timeScale = 0;
+        Time.timeScale = 0;
         LoadMarketSecuireCams();
         SelectMarketOne();
     }

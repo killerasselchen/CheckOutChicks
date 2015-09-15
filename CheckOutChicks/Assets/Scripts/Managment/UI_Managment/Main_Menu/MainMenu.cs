@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class MainMenu : Menu
 {
     public Credits CreditsMenu;
-    public Play PlayMenu;
     public Exit ExitMenu;
-    public Option OptionMenux;
     public Manuals ManualsMenu;
-    
+    public Option OptionMenux;
+    public Play PlayMenu;
+
+    public void Close()
+    {
+        Application.Quit();
+    }
 
     public void OpenCredits()
     {
         Credits instance = (Credits)GameManager.OpenMenu(CreditsMenu);
     }
 
-    public void OpenPlayersMenu()
+    public void OpenExitMenu()
     {
-        Play instance = (Play)GameManager.OpenMenu(PlayMenu);
+        Exit instance = (Exit)GameManager.OpenMenu(ExitMenu);
     }
 
     public void OpenManualsMenu()
@@ -30,14 +33,9 @@ public class MainMenu : Menu
         Option instance = (Option)GameManager.OpenMenu(OptionMenux);
     }
 
-    public void OpenExitMenu()
+    public void OpenPlayersMenu()
     {
-        Exit instance = (Exit)GameManager.OpenMenu(ExitMenu);
+        GameManager.inMainMenu = false;
+        Play instance = (Play)GameManager.OpenMenu(PlayMenu);
     }
-
-    public void Close()
-    {
-        Application.Quit();
-    }
-	
 }
