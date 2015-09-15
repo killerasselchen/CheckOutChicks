@@ -5,7 +5,7 @@ public class MainMenu : Menu
 {
     public Credits CreditsMenu;
     public Play PlayMenu;
-    public ExitMenu ExitMenu;
+    public Exit ExitMenu;
     public Option OptionMenux;
     public Manuals ManualsMenu;
     
@@ -28,6 +28,11 @@ public class MainMenu : Menu
     public void OpenOptionMenu()
     {
         Option instance = (Option)GameManager.OpenMenu(OptionMenux);
+    }
+
+    public void OpenExitMenu()
+    {
+        Exit instance = (Exit)GameManager.OpenMenu(ExitMenu);
     }
 
     public void Close()

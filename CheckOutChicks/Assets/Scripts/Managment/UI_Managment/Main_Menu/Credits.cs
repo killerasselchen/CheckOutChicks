@@ -4,7 +4,6 @@ using System.Collections;
 public class Credits : Menu
 {
     public MainMenu MainMenu;
-
     
     public void BackToMainMenu()
     {
