@@ -3,7 +3,6 @@
 //Project: CheckOut Chicks
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,8 +14,24 @@ public class GameManager : MonoBehaviour
 {
     #region Menu UI
 
-    public Menu InitialMenu;
     public Menu CurrentMenu;
+    public Menu InitialMenu;
+    public PauseMenu pauseMenu;
+
+    public void CheckInput()
+    {
+        if (Input.GetButtonDown("Pause"))
+        {
+            Time.timeScale = 0;
+            PauseMenu instance = (PauseMenu)OpenMenu(pauseMenu);
+        }
+    }
+
+    public void CloseMenu()
+    {
+        if (CurrentMenu)
+            Destroy(CurrentMenu.gameObject);
+    }
 
     public TMenu OpenMenu<TMenu>(TMenu view) where TMenu : Menu
     {
@@ -26,17 +41,6 @@ public class GameManager : MonoBehaviour
         instance.GameManager = this;
         CurrentMenu = instance;
         return instance;
-    }
-
-    public void CloseMenu()
-    {
-        if (CurrentMenu)
-            Destroy(CurrentMenu.gameObject);
-    }
-
-    private void Start()
-    {
-        OpenMenu(InitialMenu);
     }
 
     #endregion Menu UI
@@ -74,9 +78,6 @@ public class GameManager : MonoBehaviour
 
     private Camera[] cameras;
 
-    [SerializeField]
-    private Sprite startMenuBackground;
-
     private Camera marketOneFirstCam;
 
     [SerializeField]
@@ -97,42 +98,29 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Camera marketTwoSecCamPrefab;
 
+    [SerializeField]
+    private Sprite startMenuBackground;
+
     //um den zugriff für das Pause Menü und seinen Button "ToMainMenu" zu ermöglichen
     public void ActivateMarketCams()
     {
-        if(marketOneIsActive)
+        if (marketOneIsActive)
         {
             marketOneFirstCam.gameObject.SetActive(true);
             marketOneSecCam.gameObject.SetActive(true);
         }
-
-        else if(marketTwoIsActive)
+        else if (marketTwoIsActive)
         {
             marketTwoFirstCam.gameObject.SetActive(true);
             marketTwoSecCam.gameObject.SetActive(true);
         }
     }
 
-    private void DeactivateMarketCams()
+    public void SetRectsOfMarketCams()
     {
         if (marketOneIsActive)
         {
-            marketOneFirstCam.gameObject.SetActive(false);
-            marketOneSecCam.gameObject.SetActive(false);
-        }
-
-        else if (marketTwoIsActive)
-        {
-            marketTwoFirstCam.gameObject.SetActive(false);
-            marketTwoSecCam.gameObject.SetActive(false);
-        }
-    }
-
-    public void SetRectsOfMarketCams()
-    {
-        if(marketOneIsActive)
-        {
-            if(inMainMenu)
+            if (inMainMenu)
             {
                 marketOneFirstCam.rect = new Rect(0, 0.5f, 0.4f, 0.4f);
                 marketOneSecCam.rect = new Rect(0, 0.1f, 0.4f, 0.4f);
@@ -143,7 +131,7 @@ public class GameManager : MonoBehaviour
                 marketOneSecCam.rect = new Rect(0.5f, 0.55f, 0.4f, 0.4f);
             }
         }
-        else if(marketTwoIsActive)
+        else if (marketTwoIsActive)
         {
             if (inMainMenu)
             {
@@ -155,6 +143,20 @@ public class GameManager : MonoBehaviour
                 marketTwoFirstCam.rect = new Rect(0.1f, 0.55f, 0.4f, 0.4f);
                 marketTwoSecCam.rect = new Rect(0.5f, 0.55f, 0.4f, 0.4f);
             }
+        }
+    }
+
+    private void DeactivateMarketCams()
+    {
+        if (marketOneIsActive)
+        {
+            marketOneFirstCam.gameObject.SetActive(false);
+            marketOneSecCam.gameObject.SetActive(false);
+        }
+        else if (marketTwoIsActive)
+        {
+            marketTwoFirstCam.gameObject.SetActive(false);
+            marketTwoSecCam.gameObject.SetActive(false);
         }
     }
 
@@ -170,12 +172,13 @@ public class GameManager : MonoBehaviour
     #endregion Market Cameras
 
     #region Player
-    [SerializeField]
-    private Player[] playerPrefabs;
 
     public static List<GameObject> activePlayers = new List<GameObject>();
 
     private GameObject lastPlayerSpawnPoint;
+
+    [SerializeField]
+    private Player[] playerPrefabs;
 
     //private Player[] players;
 
@@ -222,7 +225,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject MarketTwo;
-   
+
     [SerializeField]
     private bool marketTwoIsActive;
 
@@ -236,8 +239,6 @@ public class GameManager : MonoBehaviour
 
         marketOneFirstCam.gameObject.SetActive(true);
         marketOneSecCam.gameObject.SetActive(true);
-
-        //mainUI.GetComponent<Canvas>().worldCamera = marketOneFirstCam;
 
         marketOneIsActive = true;
         marketTwoIsActive = false;
@@ -253,8 +254,6 @@ public class GameManager : MonoBehaviour
 
         marketTwoFirstCam.gameObject.SetActive(true);
         marketTwoSecCam.gameObject.SetActive(true);
-
-        //mainUI.GetComponent<Canvas>().worldCamera = marketTwoFirstCam;
 
         marketTwoIsActive = true;
         marketOneIsActive = false;
@@ -337,6 +336,11 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public void Update()
+    {
+        CheckInput();
+    }
+
     private void Awake()
     {
         Time.timeScale = 0;
@@ -344,93 +348,14 @@ public class GameManager : MonoBehaviour
         SelectMarketOne();
     }
 
-    #region Menu GameObjects
+    private void Start()
+    {
+        OpenMenu(InitialMenu);
+    }
 
-    //TODO:
-    //private void PrepairMainMenu()
-    //{
-    //    //GameObject MainMenu = Instantiate(mainUI) as GameObject;
-    //    //GameObject PlayMenu = Instantiate(playMenu) as GameObject;
-    //    //GameObject OptionMenu = Instantiate(optionMenu) as GameObject;
-    //    //GameObject CreditsMenu = Instantiate(creditsMenu) as GameObject;
-    //    //GameObject QuitMenu = Instantiate(quitMenu) as GameObject;
-    //}
 
-    //[SerializeField]
-    //private GameObject creditsMenu;
-
-    //[SerializeField]
-    //private GameObject levelMenu;
-
-    //[SerializeField]
-    //private GameObject mainUI;
-
-    //[SerializeField]
-    //private GameObject optionMenu;
-
-    //[SerializeField]
-    //private GameObject playerMenu;
-
-    //[SerializeField]
-    //private GameObject quitMenu;
-
-    #endregion Menu GameObjects
 
     #region Other Funktions
-
-    //TODO: Need to implement it
-    //public void ExitGame()
-    //{
-    //    //if Sure .... than go
-    //    Application.CancelQuit();
-    //    Debug.Log("exit");
-    //}
-
-    //TODO:
-    //private void Pause()
-    //{
-    //    if (!paused)
-    //    {
-    //        paused = true;
-    //        Time.timeScale = 0;
-    //        DeActivateCameras();
-    //        mainCamera.SetActive(true);
-    //    }
-    //    else if (paused)
-    //    {
-    //        paused = false;
-    //        Time.timeScale = 1;
-    //        ActivateCameras();
-    //        mainCamera.SetActive(false);
-    //    }
-    //}
-
-    //private void ActivatePlayerCameras()
-    //{
-    //    //Kurze Version für später wenn ich nur die Cams habe die auch nötig sind. Dazu fehlt mit die zuweisung der UI.canvas.renderCam und die UI.OnClick zuweisungen über Code
-    //    foreach (var camera in activeCameras)
-    //    {
-    //        camera.gameObject.SetActive(true);
-    //    }
-    //    supermarketOneMainCam.gameObject.SetActive(false);
-    //    supermarketTwoMainCam.gameObject.SetActive(false);
-
-    //    //SetViewPorts();
-
-    //}
-
-    //private void DeactivatePlayerCameras()
-    //{
-    //    foreach (var camera in activeCameras)
-    //    {
-    //        camera.gameObject.SetActive(false);
-    //    }
-
-    //    if (supermarketOneIsActive)
-    //        supermarketOneMainCam.gameObject.SetActive(true);
-    //    else if (supermarketTwoIsActive)
-    //        supermarketTwoMainCam.gameObject.SetActive(true);
-    //}
 
     ////Challenges. Derzeit noch NiceToHave
     //höhste Geschwindigkeit(script gibt es schon, aber einbindung sieht mist aus, könnte aber ohne einblendung für ein Achivment genutzt werden)

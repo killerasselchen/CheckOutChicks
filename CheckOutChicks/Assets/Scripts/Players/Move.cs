@@ -199,7 +199,6 @@ public class Move : MonoBehaviour
         Direction = new Vector3(sideStepForceInput * sideStepPower * sideStepMultiplier, 0, (forwardForceInput * acceleration) * accelerationMultiplier);
         Velocity = Direction.magnitude;
         animator.SetFloat("Forward", forwardForceInput);
-        Debug.Log("vel Mag: " + forwardForceInput);
         Direction.Normalize();
         Direction = Vector3.Slerp(OldDirection, Direction, SliperyFactor);
 

@@ -1,6 +1,7 @@
 ﻿public class LevelMenu : Menu
 {
     public Play PlayMenu;
+    public InGame inGame;
 
     public void BackToPlayersMenu()
     {
