@@ -29,14 +29,12 @@ public class SlipperyWhenWetItem : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        //Temp noch ersetzen durch abfrage des Tag??
-        //Rigidbody temp = other.GetComponent<Rigidbody>();
+        Rigidbody temp = other.GetComponent<Rigidbody>();
 
-        //if (temp == null) return;
-        if (other.tag == "P_1" || other.tag == "P_2" || other.tag == "P_3" || other.tag == "P_4")
+        if (temp == null || other.gameObject.layer != 14) return;
         {
             if (other.GetComponent<Player>() != constructedPlayer)
-                constructedPlayer.MyPoints += 20.0f;
+                constructedPlayer.AddPoints(20);
 
             other.GetComponent<Move>().SliperyFactor = TempSliperyFactor;
             collider.Add(other);
@@ -45,7 +43,9 @@ public class SlipperyWhenWetItem : MonoBehaviour
 
     public void OnTriggerExit(Collider other)
     {
-        if (other.tag == "P_1" || other.tag == "P_2" || other.tag == "P_3" || other.tag == "P_4")
+        Rigidbody temp = other.GetComponent<Rigidbody>();
+
+        if (temp == null || other.gameObject.layer != 14) return;
         {
             other.GetComponent<Move>().SliperyFactor = 1;
             collider.Remove(other);
@@ -56,14 +56,10 @@ public class SlipperyWhenWetItem : MonoBehaviour
     {
         Rigidbody temp = other.GetComponent<Rigidbody>();
 
-        if (temp == null) return;
-        if (other.GetComponentInParent<Player>() != constructedPlayer)
+        if (temp == null || other.gameObject.layer != 14) return;
+        if (other.GetComponent<Player>() != constructedPlayer)
         {
-            //hier weiter machen -- kann ja eh nicht const player sein
-            if (other.GetComponentInParent<Player>() != constructedPlayer)
-            {
-                constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
-            }
+            constructedPlayer.AddPoints(10 * Time.deltaTime);
         }
     }
 
@@ -85,7 +81,6 @@ public class SlipperyWhenWetItem : MonoBehaviour
             Destroy(this.gameObject);
     }
 
-    // Update is called once per frame
     private void Update()
     {
         LifeTimeCheck();

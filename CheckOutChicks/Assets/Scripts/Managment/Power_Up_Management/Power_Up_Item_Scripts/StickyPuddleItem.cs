@@ -10,10 +10,9 @@ public class StickyPuddleItem : MonoBehaviour
     private Player constructedPlayer = new Player();
     private float lifeTime;
 
-    //When Someone else drive into the StickyPuddle, the constructedPlayer became Points per Sec. The TrapLevels are Timeborders in Sec. and increase the Points per Sec.
-    private float trapLevelOne = 0;
+    private float trapBorderOne = 0;
 
-    private float trapLevelTwo = 2;
+    private float trapBorderTwo = 2;
 
     public Player ConstructedPlayer
     {
@@ -43,17 +42,17 @@ public class StickyPuddleItem : MonoBehaviour
     {
         Rigidbody temp = other.GetComponent<Rigidbody>();
 
-        if (temp == null && other.tag != "Player") return;
+        if (temp == null || other.gameObject.layer != 14) return;
         if (other.GetComponent<Player>() != constructedPlayer)
         {
-            if (trapLevelOne <= trapLevelTwo)
+            if (trapBorderOne <= trapBorderTwo)
             {
-                constructedPlayer.MyPoints += 10.0f * Time.deltaTime;
-                trapLevelOne += 1.0f * Time.deltaTime;
+                constructedPlayer.AddPoints(10 * Time.deltaTime);
+                trapBorderOne += 1.0f * Time.deltaTime;
             }
-            else if (trapLevelOne >= trapLevelTwo)
+            else if (trapBorderOne >= trapBorderTwo)
             {
-                constructedPlayer.MyPoints += 20.0f * Time.deltaTime;
+                constructedPlayer.AddPoints(20 * Time.deltaTime);
             }
         }
         //ggf noch Lerp von der Eintrittsgeschwindigkeit

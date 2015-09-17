@@ -170,15 +170,14 @@ public class GameManager : MonoBehaviour
     #endregion Market Cameras
 
     #region Player
+    [SerializeField]
+    private Player[] playerPrefabs;
 
     public static List<GameObject> activePlayers = new List<GameObject>();
 
     private GameObject lastPlayerSpawnPoint;
 
-    [SerializeField]
-    private Player playerPrefab;
-
-    private Player[] players;
+    //private Player[] players;
 
     [SerializeField]
     private List<GameObject> playerSpawnPoints = new List<GameObject>();
@@ -281,18 +280,19 @@ public class GameManager : MonoBehaviour
 
         playerUIs = new Canvas[(int)playMode];
         cameras = new Camera[(int)playMode];
-        players = new Player[(int)playMode];
+        //players = new Player[(int)playMode];
 
         for (int i = 0; i < (int)playMode; i++)
         {
-            Player player = Instantiate(playerPrefab);
+            Player player = Instantiate(playerPrefabs[i]);
             player.transform.position = SelectRandomPlayerSpawnPoint();
-            player.gameObject.tag = "Player_" + ((PlayerName)i).ToString();
+            //player.gameObject.tag = "Player_" + ((PlayerName)i).ToString();
             player.GetComponent<Move>().playerTag = player.tag;
             player.shopping_Manager = shoppingManager;
             player.power_Up_Manager = powerUpManager;
             Camera playerCamera = Instantiate(playerCameraPrefab);
             SetLayerRecursive(playerCamera.gameObject, i + 9);
+            playerCamera.cullingMask += 1 << (i + 9);
             playerCamera.rect = viewports[(int)playMode - 1][i];
             CameraMovements cameraMovment = playerCamera.GetComponent<CameraMovements>();
             cameraMovment.player_Position = player.transform;
@@ -332,6 +332,7 @@ public class GameManager : MonoBehaviour
     {
         CloseMenu();
         DeactivateMarketCams();
+        shoppingManager.Initialize();
         SetPlayMode(selectedPlayMode);
         Time.timeScale = 1;
     }

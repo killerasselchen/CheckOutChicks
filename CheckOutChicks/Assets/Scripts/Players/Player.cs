@@ -13,8 +13,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public Transform cameraTarget;
     public Transform cameraPosition;
+    public Transform cameraTarget;
 
     #region Timer
 
@@ -22,51 +22,41 @@ public class Player : MonoBehaviour
     private float pointBoosterTimerOriganal = 10.0f;
 
     #endregion Timer
-    public Vector3 Velocity;
 
-    private List<string> myPurchases = new List<string>();
+    public PowerUpManager power_Up_Manager;
+    public ShoppingManager shopping_Manager;
+    public Text ui_Points;
+    public PowerUpUI ui_Power_Up;
+    public Vector3 Velocity;
 
     [SerializeField]
     private float myPoints;
 
     private PowerUp[] myPowerUps = new PowerUp[2];
 
+    private List<string> myPurchases = new List<string>();
+
     private PowerUp nextPowerUp;
 
     private bool onPointBoost = false;
 
     private string playerTag;
-    
-    public PowerUpManager power_Up_Manager;
 
     [SerializeField]
     private Rigidbody RB;
-
-    public ShoppingManager shopping_Manager;
 
     [SerializeField]
     private GameObject sticky_Puddle_Prefab;
 
     private int tempItem;
 
-    public Text ui_Points;
-
-    public PowerUpUI ui_Power_Up;
-
     [SerializeField]
     private GameObject wet_Floor_Prefab;
 
     public float MyPoints
     {
-        //TODO: Doesnt Work. PointBoost kicks Point in Infinity in few Sek
         get { return myPoints; }
-        set
-        {
-            if (onPointBoost)
-                myPoints = value + value;
-            else
-                myPoints = value;
-        }
+        set { myPoints = value; }
     }
 
     public bool OnPointBoost
@@ -79,17 +69,23 @@ public class Player : MonoBehaviour
     {
         get { return sticky_Puddle_Prefab; }
     }
+
     public GameObject Wet_Floor_Prefab
     {
         get { return wet_Floor_Prefab; }
     }
+
+    public void AddPoints(float points)
+    {
+        if (onPointBoost)
+            myPoints += points * 2;
+        else
+            myPoints += points;
+    }
+
     private void Awake()
     {
         playerTag = gameObject.tag;
-        //ui_Power_Up = GameObject.Find("UI_Player_" + playerTag.Split('_','(')[1]).GetComponent<PowerUpUI>();
-        //ui_Points = GameObject.Find("Points_Player_" + playerTag.Split('_','(')[1]).GetComponent<TextMesh>();
-        //shopping_Manager = GameObject.Find("GameManager").GetComponent<ShoppingManager>();
-        //power_Up_Manager = GameObject.Find("GameManager").GetComponent<PowerUpManager>();
     }
 
     private void FixedUpdate()
@@ -116,8 +112,7 @@ public class Player : MonoBehaviour
         {
             myPurchases.Add(other.gameObject.name);
             SetPointsForItems(other.gameObject.GetComponent<Item>());
-            other.gameObject.SetActive(false);
-            shopping_Manager.Products.Remove(other.gameObject);
+            shopping_Manager.EnqueueItem(other.gameObject);
         }
     }
 

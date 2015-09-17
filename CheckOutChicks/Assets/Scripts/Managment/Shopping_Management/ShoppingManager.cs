@@ -8,44 +8,51 @@ using UnityEngine;
 
 public class ShoppingManager : MonoBehaviour
 {
-    [SerializeField]
-    private List<GameObject> products;
-    private List<GameObject> productsBackUp;
-    private List<GameObject> activeProducts;
     private int currentItems = 0;
-    private int maxItems = 2;
-    private int nextItem;
-    private float spawnTimer = 1;
+
+    private int maxItems;
 
     private float maxPoints;
 
-    public delegate void ItemEvent(Item item);
+    private int nextItem;
 
-    public ItemEvent OnCreateItem;
-    public ItemEvent OnDeactivateItem;
+    [SerializeField]
 
-    private void OnEnable()
+    private GameObject[] products;
+
+    private float spawnTimer;
+
+    private Queue<int> queue;
+
+    public void Initialize()
     {
-        maxPoints = 30;
-        FindAvailableProducts();
+        queue.Clear();
+        products = GameObject.FindGameObjectsWithTag("Product");
+        int[] indices = new int[products.Length];
+
+        for (int i = 0; i < products.Length; i++)
+        {
+            indices[i] = i;
+        }
+        for (int i = 0; i < products.Length; i++)
+        {
+            int temp = indices[i];
+            int swap = Random.Range(0, products.Length);
+            indices[i] = indices[swap];
+            indices[swap] = temp;
+        }
+        for (int i = 0; i < products.Length; i++)
+        {
+            queue.Enqueue(indices[i]);
+            products[indices[i]].SetActive(false);
+        }
     }
 
-    private void Update()
+    public void EnqueueItem(GameObject item)
     {
-        SearchActivProducts();
-        SpawnNextItem();
-    }
-
-    public List<GameObject> Products
-    {
-        get { return products; }
-        set { products = value; }
-    }
-
-    public List<GameObject> ActiveProducts
-    {
-        get { return activeProducts; }
-        set { activeProducts = value; }
+        currentItems--;
+        queue.Enqueue(Random.Range(0, products.Length));
+        item.SetActive(false);
     }
 
     public int MaxItems
@@ -54,52 +61,32 @@ public class ShoppingManager : MonoBehaviour
         set { maxItems = value; }
     }
 
-    private void FindAvailableProducts()
+    public void Awake()
     {
-        products = new List<GameObject>();
-        productsBackUp = new List<GameObject>();
-
-        GameObject[] temp = GameObject.FindGameObjectsWithTag("Product");
-        for (int i = 0; i < temp.Length; i++)
-        {
-            products.Add(temp[i]);
-            productsBackUp.Add(temp[i]);
-        }
-
-        DeactivateItems();
-    }
-
-    private void DeactivateItems()
-    {
-        foreach (var product in products)
-        {
-            product.SetActive(false);
-        }
+        queue = new Queue<int>();
+        spawnTimer = 1;
+        maxItems = 1;
+        maxPoints = 30;
     }
 
     private void SpawnNextItem()
     {
-        if (currentItems < maxItems && products.Count > 0)
-        {
-            if (spawnTimer <= 0)
-            {
-                nextItem = UnityEngine.Random.Range(0, products.Count);
-                products[nextItem].SetActive(true);
-                products[nextItem].GetComponent<Item>().TimeBoni = maxPoints;
-                //currentItems++;
-                spawnTimer = UnityEngine.Random.Range(0, 2);
-            }
+        if (queue.Count == 0 || currentItems >= maxItems) return;
 
-            spawnTimer -= 1.0f * Time.deltaTime;
-        }
-        else
+        if (spawnTimer <= 0)
         {
-            products = new List<GameObject>(productsBackUp);
+            currentItems++;
+            nextItem = queue.Dequeue();
+            products[nextItem].SetActive(true);
+            products[nextItem].GetComponent<Item>().TimeBoni = maxPoints;
+            spawnTimer = UnityEngine.Random.Range(1, 3);
         }
+
+        spawnTimer -= 1.0f * Time.fixedDeltaTime;
     }
 
-    private void SearchActivProducts()
+    private void FixedUpdate()
     {
-        currentItems = GameObject.FindGameObjectsWithTag("Product").Length;
+        SpawnNextItem();
     }
 }

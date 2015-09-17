@@ -115,8 +115,6 @@ public class Move : MonoBehaviour
         {
             this.rigidbody.mass -= TurboMassBoni;
             shield.SetActive(true);
-            //Für einen anderen Lösungsansatz gedacht
-            //this.gameObject.layer = 13;
             OnTurbo = true;
         }
 
@@ -125,11 +123,9 @@ public class Move : MonoBehaviour
 
     private void CheckOnPowerUpEffects()
     {
-        //evtl. Scripte instanzieren auf die jeweiligen Player
         if (IsConfuse)
             Confuse();
-
-        if (OnTurbo)
+        else if (OnTurbo)
             Turbo();
     }
 
@@ -187,6 +183,7 @@ public class Move : MonoBehaviour
 
     private void FixedUpdate()
     {
+        CheckOnPowerUpEffects();
         Movement();
     }
 
@@ -201,17 +198,12 @@ public class Move : MonoBehaviour
 
         Direction = new Vector3(sideStepForceInput * sideStepPower * sideStepMultiplier, 0, (forwardForceInput * acceleration) * accelerationMultiplier);
         Velocity = Direction.magnitude;
-        animator.SetFloat("Forward", Velocity);
+        animator.SetFloat("Forward", forwardForceInput);
+        Debug.Log("vel Mag: " + forwardForceInput);
         Direction.Normalize();
         Direction = Vector3.Slerp(OldDirection, Direction, SliperyFactor);
 
-        //When i drive Backward i need a invert Input
         rigidbody.transform.Rotate(0, rotate * steerPower * steerMultiplier, 0);
         rigidbody.AddRelativeForce(Direction);
-    }
-
-    private void Update()
-    {
-        CheckOnPowerUpEffects();
     }
 }
