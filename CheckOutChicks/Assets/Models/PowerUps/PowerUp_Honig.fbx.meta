@@ -6,10 +6,20 @@ ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Honigpfuetze
+    100004: Honigtopf
     400000: //RootNode
+    400002: Honigpfuetze
+    400004: Honigtopf
     2300000: //RootNode
+    2300002: Honigpfuetze
+    2300004: Honigtopf
     3300000: //RootNode
+    3300002: Honigpfuetze
+    3300004: Honigtopf
     4300000: "Honigpf\xFCtze"
+    4300002: Honigpfuetze
+    4300004: Honigtopf
   materials:
     importMaterials: 1
     materialName: 0
