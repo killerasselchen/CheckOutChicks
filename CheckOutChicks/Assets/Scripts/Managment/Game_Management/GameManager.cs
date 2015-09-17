@@ -102,19 +102,19 @@ public class GameManager : MonoBehaviour
     private Sprite startMenuBackground;
 
     //um den zugriff für das Pause Menü und seinen Button "ToMainMenu" zu ermöglichen
-    public void ActivateMarketCams()
-    {
-        if (marketOneIsActive)
-        {
-            marketOneFirstCam.gameObject.SetActive(true);
-            marketOneSecCam.gameObject.SetActive(true);
-        }
-        else if (marketTwoIsActive)
-        {
-            marketTwoFirstCam.gameObject.SetActive(true);
-            marketTwoSecCam.gameObject.SetActive(true);
-        }
-    }
+    //public void ActivateMarketCams()
+    //{
+    //    if (marketOneIsActive)
+    //    {
+    //        marketOneFirstCam.gameObject.SetActive(true);
+    //        marketOneSecCam.gameObject.SetActive(true);
+    //    }
+    //    else if (marketTwoIsActive)
+    //    {
+    //        marketTwoFirstCam.gameObject.SetActive(true);
+    //        marketTwoSecCam.gameObject.SetActive(true);
+    //    }
+    //}
 
     public void SetRectsOfMarketCams()
     {
@@ -274,18 +274,15 @@ public class GameManager : MonoBehaviour
     public void SetPlayMode(PlayMode playMode)
     {
         FindPlayerSpawnPoints();
-        //TODO: Erstellen des Scripts PowerUpManager bei Spielstart und dann die Methode bei Awake ausführen.
         this.gameObject.GetComponent<PowerUpManager>().FindPowerUpSpawnPoints();
 
         playerUIs = new Canvas[(int)playMode];
         cameras = new Camera[(int)playMode];
-        //players = new Player[(int)playMode];
 
         for (int i = 0; i < (int)playMode; i++)
         {
             Player player = Instantiate(playerPrefabs[i]);
             player.transform.position = SelectRandomPlayerSpawnPoint();
-            //player.gameObject.tag = "Player_" + ((PlayerName)i).ToString();
             player.GetComponent<Move>().playerTag = player.tag;
             player.shopping_Manager = shoppingManager;
             player.power_Up_Manager = powerUpManager;
@@ -352,16 +349,4 @@ public class GameManager : MonoBehaviour
     {
         OpenMenu(InitialMenu);
     }
-
-
-
-    #region Other Funktions
-
-    ////Challenges. Derzeit noch NiceToHave
-    //höhste Geschwindigkeit(script gibt es schon, aber einbindung sieht mist aus, könnte aber ohne einblendung für ein Achivment genutzt werden)
-    //TODO: meisten Einkäufe(Liste wird beim Einkauf geführt, aber noch nicht weiterverwendet) Zumindest die Punkte müssen ausgewertet werden
-    //längste Fahrtstrecke
-    //meisten PowerUps
-
-    #endregion Other Funktions
 }

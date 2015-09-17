@@ -10,12 +10,12 @@ public class Item : MonoBehaviour
     private float speed = 20;
     private float timeBoni = 25;
 
-    //For Changes over the GameManagment to an spezial event/time.
-    public float Speed
-    {
-        get { return speed; }
-        set { speed = value; }
-    }
+    ////For Changes over the GameManagment to an spezial event/time. For next Update
+    //public float Speed
+    //{
+    //    get { return speed; }
+    //    set { speed = value; }
+    //}
 
     public float TimeBoni
     {

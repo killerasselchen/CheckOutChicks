@@ -3,10 +3,6 @@
 //Project: CheckOut Chicks
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
-//Sublime Text
-//str + K + D = Format Document
-//
-
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -94,7 +90,7 @@ public class Player : MonoBehaviour
             UsePowerUp();
         else if (onPointBoost)
             PointBoost();
-        ui_Points.text = MyPoints.ToString("0");
+        ui_Points.text = "Points " + MyPoints.ToString("0");
         Velocity = RB.velocity;
     }
 

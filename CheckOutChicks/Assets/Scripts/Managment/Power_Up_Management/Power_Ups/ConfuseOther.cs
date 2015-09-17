@@ -11,8 +11,6 @@ internal class ConfuseOther : PowerUp
         {
             if (GameManager.activePlayers[i] != player.gameObject)
             {
-                //GameManager.activePlayers[i].AddComponent<Confuse_Me_Script>();
-                //Confuse script zerstört sich selbst und wirkt auf den Player
                 GameManager.activePlayers[i].GetComponent<Move>().IsConfuse = true;
                 GameManager.activePlayers[i].GetComponent<Move>().SideStepPower = -1;
                 GameManager.activePlayers[i].GetComponent<Move>().SteerMultiplier = -1;
