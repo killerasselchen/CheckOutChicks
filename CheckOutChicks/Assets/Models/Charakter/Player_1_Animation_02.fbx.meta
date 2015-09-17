@@ -94,7 +94,107 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Pelvis_jnt
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Hand_L_jnt2
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Hand_L_jnt2/Hand_L_jnt3
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Hand_L_jnt2/Hand_L_jnt3/Hand_L_jnt4
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Thumb_L_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Thumb_L_jnt1/joint2
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Thumb_L_jnt1/joint2/joint3
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Hand_R_jnt2
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Hand_R_jnt2/Hand_R_jnt3
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Hand_R_jnt2/Hand_R_jnt3/Hand_R_jnt4
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Thumb_R_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Thumb_R_jnt1/joint2
+          1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Thumb_R_jnt1/joint2
+          1/joint4
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Neck_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Neck_jnt1/Throat_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Neck_jnt1/Throat_jnt1/Head_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Leg_L_jnt
+        weight: 1
+      - path: Pelvis_jnt/Leg_L_jnt/Leg_L_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Leg_L_jnt/Leg_L_jnt1/Foot_L_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Leg_L_jnt/Leg_L_jnt1/Foot_L_jnt1/Foot_L_jnt2
+        weight: 1
+      - path: Pelvis_jnt/Leg_L_jnt/Leg_L_jnt1/Foot_L_jnt1/Foot_L_jnt2/Foot_L_jnt3
+        weight: 1
+      - path: Pelvis_jnt/Leg_R_jnt
+        weight: 1
+      - path: Pelvis_jnt/Leg_R_jnt/Leg_R_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Leg_R_jnt/Leg_R_jnt1/Foot_R_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Leg_R_jnt/Leg_R_jnt1/Foot_R_jnt1/Foot_R_jnt2
+        weight: 1
+      - path: Pelvis_jnt/Leg_R_jnt/Leg_R_jnt1/Foot_R_jnt1/Foot_R_jnt2/Foot_R_jnt3
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
