@@ -32,7 +32,7 @@ public class Move : MonoBehaviour
     private float rotate;
     private float sideStepForceInput;
     private float sideStepMultiplier = 1.0f;
-    private float sideStepPower = 12.0f;
+    private float sideStepPower = 14.0f;
 
     [SerializeField]
     private float sliperyFactor = 1;
@@ -76,10 +76,7 @@ public class Move : MonoBehaviour
 
     //->Timer needs Props for MenuChanges
     private float confuseTimer;
-
-    private float confuseTimerOriginal = 5.0f;
-    private float slipperyWhenWetTimer;
-    private float slipperyWhenWetTimerOriginal = 7.0f;
+    private float confuseTimerOriginal = 8.0f;
     private float turboTimer;
     private float turboTimerOriginal = 10.0f;
 
@@ -92,8 +89,6 @@ public class Move : MonoBehaviour
 
     private float stickyMassBoni;
     private float turboMassBoni = 0.3f;
-
-    //private PowerUpUI ui_Power_Up;
 
     private float wagonExtraMass = 0;
 
@@ -153,9 +148,6 @@ public class Move : MonoBehaviour
         if (turboTimer <= 0)
         {
             shield.SetActive(false);
-
-            //Für einen anderen Lösungsansatz gedacht
-            //this.gameObject.layer = 14;
             OnTurbo = false;
             turboTimer = turboTimerOriginal;
             this.rigidbody.mass += TurboMassBoni;
@@ -168,9 +160,6 @@ public class Move : MonoBehaviour
 
     private void Awake()
     {
-        //reinziehen
-        //playerTag = gameObject.tag;
-        //ui_Power_Up = GameObject.Find("UI_" + playerTag).GetComponent<PowerUpUI>();
         TimerSettings();
     }
 

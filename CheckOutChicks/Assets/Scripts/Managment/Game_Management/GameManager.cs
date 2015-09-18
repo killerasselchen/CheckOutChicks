@@ -12,15 +12,27 @@ public enum PlayMode { Single = 1, Two = 2, Three = 3, Four = 4 }
 
 public class GameManager : MonoBehaviour
 {
+    #region Music
+
+    [SerializeField]
+    private GameObject inGameMusic;
+
+    [SerializeField]
+    private GameObject menuMusic;
+
+    #endregion Music
+
     #region Menu UI
 
     public Menu CurrentMenu;
+    public EndMenu endMenu;
     public Menu InitialMenu;
     public PauseMenu pauseMenu;
+    private Player winner;
 
     public void CheckInput()
     {
-        if (Input.GetButtonDown("Pause"))
+        if (Input.GetButton("Pause"))
         {
             Time.timeScale = 0;
             PauseMenu instance = (PauseMenu)OpenMenu(pauseMenu);
@@ -31,6 +43,8 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentMenu)
             Destroy(CurrentMenu.gameObject);
+        menuMusic.SetActive(false);
+        inGameMusic.SetActive(true);
     }
 
     public TMenu OpenMenu<TMenu>(TMenu view) where TMenu : Menu
@@ -40,7 +54,23 @@ public class GameManager : MonoBehaviour
         TMenu instance = Instantiate(view);
         instance.GameManager = this;
         CurrentMenu = instance;
+        inGameMusic.SetActive(false);
+        menuMusic.SetActive(true);
         return instance;
+    }
+
+    public void SetWinner()
+    {
+        float winnerPoints = 1;
+
+        foreach (var player in activePlayers)
+        {
+            if (player.gameObject.GetComponent<Player>().MyPoints >= winnerPoints)
+            {
+                winnerPoints = player.gameObject.GetComponent<Player>().MyPoints;
+                winner = player.gameObject.GetComponent<Player>();
+            }
+        }
     }
 
     #endregion Menu UI
@@ -174,21 +204,41 @@ public class GameManager : MonoBehaviour
     #region Player
 
     public static List<GameObject> activePlayers = new List<GameObject>();
+    public static List<Canvas> activePlayerUis = new List<Canvas>();
 
     private GameObject lastPlayerSpawnPoint;
 
     [SerializeField]
     private Player[] playerPrefabs;
 
-    //private Player[] players;
-
     [SerializeField]
     private List<GameObject> playerSpawnPoints = new List<GameObject>();
 
+    //private Player[] players;
     [SerializeField]
     private Canvas playerUIPrefab;
 
     private Canvas[] playerUIs;
+
+    public void SetToFourPlayer()
+    {
+        selectedPlayMode = PlayMode.Four;
+    }
+
+    public void SetToSinglePlayer()
+    {
+        selectedPlayMode = PlayMode.Single;
+    }
+
+    public void SetToThreePlayer()
+    {
+        selectedPlayMode = PlayMode.Three;
+    }
+
+    public void SetToTwoPlayer()
+    {
+        selectedPlayMode = PlayMode.Two;
+    }
 
     private void FindPlayerSpawnPoints()
     {
@@ -261,7 +311,8 @@ public class GameManager : MonoBehaviour
 
     #endregion Markets
 
-    private bool paused = true;
+    [SerializeField]
+    public static float gameTimer;
 
     [SerializeField]
     private PowerUpManager powerUpManager;
@@ -270,6 +321,18 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private ShoppingManager shoppingManager;
+
+    public void FixedUpdate()
+    {
+        CheckInput();
+        if (gameTimer >= 0)
+            gameTimer -= 1 * Time.deltaTime;
+        else if (gameTimer <= 0)
+        {
+            SetWinner();
+            OpenMenu(endMenu);
+        }
+    }
 
     public void SetPlayMode(PlayMode playMode)
     {
@@ -287,6 +350,7 @@ public class GameManager : MonoBehaviour
             player.shopping_Manager = shoppingManager;
             player.power_Up_Manager = powerUpManager;
             Camera playerCamera = Instantiate(playerCameraPrefab);
+            activeCameras.Add(playerCamera);
             SetLayerRecursive(playerCamera.gameObject, i + 9);
             playerCamera.cullingMask += 1 << (i + 9);
             playerCamera.rect = viewports[(int)playMode - 1][i];
@@ -295,33 +359,13 @@ public class GameManager : MonoBehaviour
             cameraMovment.camOrigin = player.cameraPosition;
             cameraMovment.camTarget = player.cameraTarget;
             Canvas playerUI = Instantiate(playerUIPrefab);
+            activePlayerUis.Add(playerUI);
             SetLayerRecursive(playerUI.gameObject, i + 9);
             playerUI.worldCamera = playerCamera;
             player.ui_Power_Up = playerUI.GetComponent<PowerUpUI>();
             player.ui_Points = player.ui_Power_Up.PointsText;
-
             activePlayers.Add(player.gameObject);
         }
-    }
-
-    public void SetToFourPlayer()
-    {
-        selectedPlayMode = PlayMode.Four;
-    }
-
-    public void SetToSinglePlayer()
-    {
-        selectedPlayMode = PlayMode.Single;
-    }
-
-    public void SetToThreePlayer()
-    {
-        selectedPlayMode = PlayMode.Three;
-    }
-
-    public void SetToTwoPlayer()
-    {
-        selectedPlayMode = PlayMode.Two;
     }
 
     public void StartGame()
@@ -330,12 +374,8 @@ public class GameManager : MonoBehaviour
         DeactivateMarketCams();
         shoppingManager.Initialize();
         SetPlayMode(selectedPlayMode);
+        gameTimer = 60;
         Time.timeScale = 1;
-    }
-
-    public void Update()
-    {
-        CheckInput();
     }
 
     private void Awake()

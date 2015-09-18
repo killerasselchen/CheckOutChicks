@@ -9,13 +9,22 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField]
+    private AudioClip colaSound;
+    [SerializeField]
+    private AudioClip chipsSound;
+    [SerializeField]
+    private AudioClip crashSound;
+
+    public TextMesh winnerText;
+
     public Transform cameraPosition;
     public Transform cameraTarget;
 
     #region Timer
 
-    private float pointBoosterTimer;
-    private float pointBoosterTimerOriganal = 10.0f;
+    public float pointBoosterTimer;
+    public float pointBoosterTimerOriganal = 15.0f;
 
     #endregion Timer
 
@@ -90,7 +99,7 @@ public class Player : MonoBehaviour
             UsePowerUp();
         else if (onPointBoost)
             PointBoost();
-        ui_Points.text = "Points " + MyPoints.ToString("0");
+        ui_Points.text = "Points " + MyPoints.ToString("0") + System.Environment.NewLine + "Timer " + GameManager.gameTimer.ToString("0");
         Velocity = RB.velocity;
     }
 
@@ -131,9 +140,7 @@ public class Player : MonoBehaviour
 
     private void SetPointsForItems(Item currentItem)
     {
-        //Points for every Item
         MyPoints += 25;
-        //Extra Points for fast collecting after spawn
         MyPoints += currentItem.TimeBoni;
     }
 
