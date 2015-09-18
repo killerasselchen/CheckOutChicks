@@ -7,7 +7,10 @@ using UnityEngine;
 
 public class StickyPuddleItem : MonoBehaviour
 {
-    private Player constructedPlayer = new Player();
+    [SerializeField]
+    private GameObject parent;
+
+    private Player constructedPlayer = new Player(); 
     private float lifeTime;
 
     private float trapBorderOne = 0;
@@ -27,6 +30,7 @@ public class StickyPuddleItem : MonoBehaviour
 
     private void Awake()
     {
+        //constructedPlayer = new Player();
         lifeTime = 8;
     }
 
@@ -35,7 +39,7 @@ public class StickyPuddleItem : MonoBehaviour
         if (lifeTime >= 0)
             lifeTime -= 1 * Time.deltaTime;
         else if (lifeTime <= 0)
-            Destroy(this.gameObject);
+            Destroy(parent);
     }
 
     private void OnTriggerStay(Collider other)
@@ -55,12 +59,10 @@ public class StickyPuddleItem : MonoBehaviour
                 constructedPlayer.AddPoints(20 * Time.deltaTime);
             }
         }
-        //ggf noch Lerp von der Eintrittsgeschwindigkeit
         temp.velocity = Vector3.ClampMagnitude(temp.velocity, 3);
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
         LifeTimeCheck();
     }

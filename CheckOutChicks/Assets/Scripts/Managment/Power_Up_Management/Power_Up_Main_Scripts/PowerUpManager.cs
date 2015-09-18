@@ -9,7 +9,7 @@ public class PowerUpManager : MonoBehaviour
 {
     private static PowerUp[] availablePowerUps;
 
-    //TODO Wollte die Liste noch nutzen für die Auswertung.
+    //TODO For next Update. I need for listing the collected Items of every Player.
     private static string[] availablePowerUpsList;
 
     private int currentMapPowerUps;

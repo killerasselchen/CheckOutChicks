@@ -17,12 +17,33 @@ public class ShoppingManager : MonoBehaviour
     private int nextItem;
 
     [SerializeField]
-
     private GameObject[] products;
+
+    private Queue<int> queue;
 
     private float spawnTimer;
 
-    private Queue<int> queue;
+    public int MaxItems
+    {
+        get { return maxItems; }
+        set { maxItems = value; }
+    }
+
+    public void Awake()
+    {
+        queue = new Queue<int>();
+        spawnTimer = 1;
+        maxItems = 1;
+        maxPoints = 30;
+    }
+
+    public void EnqueueItem(GameObject item)
+    {
+        currentItems--;
+        Arrow.target.Equals(null);
+        queue.Enqueue(Random.Range(0, products.Length));
+        item.SetActive(false);
+    }
 
     public void Initialize()
     {
@@ -48,25 +69,9 @@ public class ShoppingManager : MonoBehaviour
         }
     }
 
-    public void EnqueueItem(GameObject item)
+    private void FixedUpdate()
     {
-        currentItems--;
-        queue.Enqueue(Random.Range(0, products.Length));
-        item.SetActive(false);
-    }
-
-    public int MaxItems
-    {
-        get { return maxItems; }
-        set { maxItems = value; }
-    }
-
-    public void Awake()
-    {
-        queue = new Queue<int>();
-        spawnTimer = 1;
-        maxItems = 1;
-        maxPoints = 30;
+        SpawnNextItem();
     }
 
     private void SpawnNextItem()
@@ -78,15 +83,11 @@ public class ShoppingManager : MonoBehaviour
             currentItems++;
             nextItem = queue.Dequeue();
             products[nextItem].SetActive(true);
+            Arrow.target = products[nextItem].transform.position;
             products[nextItem].GetComponent<Item>().TimeBoni = maxPoints;
             spawnTimer = UnityEngine.Random.Range(1, 3);
         }
 
         spawnTimer -= 1.0f * Time.fixedDeltaTime;
-    }
-
-    private void FixedUpdate()
-    {
-        SpawnNextItem();
     }
 }

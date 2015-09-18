@@ -7,26 +7,15 @@ using UnityEngine;
 
 public class CameraMovements : MonoBehaviour
 {
-    private float smooth = 6f;
-
-    public Transform player_Position;
-
     public Transform camOrigin;
-    private string cam_Origin_Tag;
     public Transform camTarget;
-
+    public Transform player_Position;
+    private string cam_Origin_Tag;
     private string cam_Tag;
-
     private Vector3 relCameraPos;
     private float relCameraPosMag;
+    private float smooth = 6f;
     private Vector3 tempPos;
-
-    private void Start()
-    {
-        transform.position = camOrigin.position;
-        relCameraPos = transform.position - player_Position.position;
-        relCameraPosMag = relCameraPos.magnitude - 1.0f;
-    }
 
     private void FixedUpdate()
     {
@@ -52,6 +41,20 @@ public class CameraMovements : MonoBehaviour
         LookAtPlayer();
     }
 
+    private void LookAtPlayer()
+    {
+        Vector3 relPlayerPosition = camTarget.position - transform.position;
+        Quaternion lookAtRotation = Quaternion.LookRotation(relPlayerPosition, Vector3.up);
+        transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * Time.deltaTime);
+    }
+
+    private void Start()
+    {
+        transform.position = camOrigin.position;
+        relCameraPos = transform.position - player_Position.position;
+        relCameraPosMag = relCameraPos.magnitude - 1.0f;
+    }
+
     private bool ViewingPosCheck(Vector3 checkPoint)
     {
         RaycastHit hit;
@@ -66,12 +69,5 @@ public class CameraMovements : MonoBehaviour
 
         tempPos = checkPoint;
         return true;
-    }
-
-    private void LookAtPlayer()
-    {
-        Vector3 relPlayerPosition = camTarget.position - transform.position;
-        Quaternion lookAtRotation = Quaternion.LookRotation(relPlayerPosition, Vector3.up);
-        transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * Time.deltaTime);
     }
 }

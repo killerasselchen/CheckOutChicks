@@ -1,26 +1,22 @@
-﻿//using UnityEngine;
-//using System.Collections;
-//using System.Collections.Generic;
+﻿//Coder: Timo Fabricius
+//Contact: Timo.Fabricius@gmx.de
+//Project: CheckOut Chicks
+//GPD414 at SAE Hamburg 04/2014-10/2015
 
-//public class Arrow : MonoBehaviour 
-//{
-//    private Vector3 target;
+using UnityEngine;
 
-//    // Update is called once per frame
-//    void Update () 
-//    {
-//        this.transform.LookAt(target, Vector3.up);
-//    }
+public class Arrow : Menu
+{
+    public static Vector3 target;
 
-//    public void PointToTarget(Item newItem)
-//    {
-//        newItem.OnItemDeactivation += Deactivate;
-//        target = newItem.transform.position;
-//    }
-
-//    private void Deactivate(Item item)
-//    {
-//        item.OnItemDeactivation -= Deactivate;
-//        this.gameObject.SetActive(false);
-//    }
-//}
+    private void FixedUpdate()
+    {
+        if (target == null)
+            this.gameObject.GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);
+        else
+        {
+            this.gameObject.GetComponentInChildren<MeshRenderer>().gameObject.SetActive(true);
+            this.transform.LookAt(target, Vector3.up);
+        }
+    }
+}

@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿//Coder: Timo Fabricius
+//Contact: Timo.Fabricius@gmx.de
+//Project: CheckOut Chicks
+//GPD414 at SAE Hamburg 04/2014-10/2015
+
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SlipperyWhenWetItem : MonoBehaviour
