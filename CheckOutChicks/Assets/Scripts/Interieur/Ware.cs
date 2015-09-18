@@ -14,7 +14,6 @@ public class Ware : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.LogFormat("Colliding with {0}", collision.gameObject.tag);
         if (collision.gameObject.tag == "Floor")
         {
             Debug.Log("onFloor");
