@@ -8,7 +8,7 @@ public class PointBoost : PowerUp
     public override void Use(Player player)
     {
         player.OnPointBoost = true;
-        player.pointBoosterTimer = player.pointBoosterTimerOriganal;
+        player.PointBoosterTimer = player.PointBoosterTimerOriganal;
         player.AddPoints(35);
     }
 }

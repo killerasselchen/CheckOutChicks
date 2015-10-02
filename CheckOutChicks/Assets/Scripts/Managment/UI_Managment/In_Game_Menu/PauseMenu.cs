@@ -9,11 +9,12 @@ using UnityEngine.UI;
 
 public class PauseMenu : Menu
 {
-    public MainMenu mainMenu;
-    public Button startButton;
+    public MainMenu MainMenu;
+    public Button StartButton;
+
     public void Start()
     {
-        startButton.Select();
+        StartButton.Select();
     }
 
     public void Awake()
@@ -36,8 +37,7 @@ public class PauseMenu : Menu
     {
         if (Input.GetButtonDown("Pause"))
         {
-            Time.timeScale = 1;
-            this.GameManager.CloseMenu();
+            ContinueGame();
         }
     }
 }

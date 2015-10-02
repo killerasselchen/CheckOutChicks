@@ -11,6 +11,7 @@ public class AccidentCheck : MonoBehaviour
     {
         if (other.tag == "Player_Body")
         {
+            Debug.Log("hit player");
             this.gameObject.GetComponentInParent<Player>().AddPoints(25);
             other.gameObject.GetComponentInParent<Player>().AddPoints(-15);
         }

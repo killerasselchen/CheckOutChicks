@@ -12,6 +12,8 @@ public class Exit : Menu
     public Button startButton;
 
     public MainMenu MainMenu;
+    public UglyPotatoesOutroMenu UglyPotatoesOutroMenu;
+
     public void Start()
     {
         startButton.Select();
@@ -23,6 +25,6 @@ public class Exit : Menu
 
     public void ExitGame()
     {
-        Application.Quit();
+        UglyPotatoesOutroMenu instance = (UglyPotatoesOutroMenu)GameManager.OpenMenu(UglyPotatoesOutroMenu);
     }
 }

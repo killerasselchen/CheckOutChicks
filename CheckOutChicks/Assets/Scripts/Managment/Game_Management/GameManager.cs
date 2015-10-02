@@ -25,9 +25,9 @@ public class GameManager : MonoBehaviour
     #region Menu UI
 
     public Menu CurrentMenu;
-    public EndMenu endMenu;
+    public EndMenu EndMenu;
     public Menu InitialMenu;
-    public PauseMenu pauseMenu;
+    public PauseMenu PauseMenu;
     private Player winner;
 
     public void CheckInput()
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetButton("Pause"))
         {
             Time.timeScale = 0;
-            PauseMenu instance = (PauseMenu)OpenMenu(pauseMenu);
+            PauseMenu instance = (PauseMenu)OpenMenu(PauseMenu);
         }
     }
 
@@ -61,16 +61,21 @@ public class GameManager : MonoBehaviour
 
     public void SetWinner()
     {
-        float winnerPoints = 1;
+        float winnerPoints = 0;
 
         foreach (var player in activePlayers)
         {
+
             if (player.gameObject.GetComponent<Player>().MyPoints >= winnerPoints)
             {
                 winnerPoints = player.gameObject.GetComponent<Player>().MyPoints;
                 winner = player.gameObject.GetComponent<Player>();
+                Debug.Log("winner: " + winner.name);
+                Debug.Log("winner points: " + winnerPoints);
+
             }
         }
+        winner.MakeMeToWinner();
     }
 
     #endregion Menu UI
@@ -322,15 +327,21 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private ShoppingManager shoppingManager;
 
-    public void FixedUpdate()
+    public void Update()
     {
         CheckInput();
+    }
+    
+    public void FixedUpdate()
+    {
+
         if (gameTimer >= 0)
             gameTimer -= 1 * Time.deltaTime;
         else if (gameTimer <= 0)
         {
             SetWinner();
-            OpenMenu(endMenu);
+            OpenMenu(EndMenu);
+            Time.timeScale = 0;
         }
     }
 
@@ -347,8 +358,8 @@ public class GameManager : MonoBehaviour
             Player player = Instantiate(playerPrefabs[i]);
             player.transform.position = SelectRandomPlayerSpawnPoint();
             player.GetComponent<Move>().playerTag = player.tag;
-            player.shopping_Manager = shoppingManager;
-            player.power_Up_Manager = powerUpManager;
+            player.Shopping_Manager = shoppingManager;
+            player.Power_Up_Manager = powerUpManager;
             Camera playerCamera = Instantiate(playerCameraPrefab);
             activeCameras.Add(playerCamera);
             SetLayerRecursive(playerCamera.gameObject, i + 9);
@@ -356,14 +367,14 @@ public class GameManager : MonoBehaviour
             playerCamera.rect = viewports[(int)playMode - 1][i];
             CameraMovements cameraMovment = playerCamera.GetComponent<CameraMovements>();
             cameraMovment.player_Position = player.transform;
-            cameraMovment.camOrigin = player.cameraPosition;
-            cameraMovment.camTarget = player.cameraTarget;
+            cameraMovment.camOrigin = player.CameraPosition;
+            cameraMovment.camTarget = player.CameraTarget;
             Canvas playerUI = Instantiate(playerUIPrefab);
             activePlayerUis.Add(playerUI);
             SetLayerRecursive(playerUI.gameObject, i + 9);
             playerUI.worldCamera = playerCamera;
-            player.ui_Power_Up = playerUI.GetComponent<PowerUpUI>();
-            player.ui_Points = player.ui_Power_Up.PointsText;
+            player.Ui_Power_Up = playerUI.GetComponent<PowerUpUI>();
+            player.Ui_Points = player.Ui_Power_Up.PointsText;
             activePlayers.Add(player.gameObject);
         }
     }
@@ -371,16 +382,18 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         CloseMenu();
+        activePlayers.Clear();
+        activeCameras.Clear();
+        activePlayerUis.Clear();
         DeactivateMarketCams();
         shoppingManager.Initialize();
         SetPlayMode(selectedPlayMode);
-        gameTimer = 60;
+        gameTimer = 300;
         Time.timeScale = 1;
     }
 
     private void Awake()
     {
-        Time.timeScale = 0;
         LoadMarketSecuireCams();
         SelectMarketOne();
     }

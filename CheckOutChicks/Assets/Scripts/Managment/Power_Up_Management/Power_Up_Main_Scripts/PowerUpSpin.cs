@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PowerUpSpin : MonoBehaviour
 {
-    private float speed = 20;
+    private float speed = 35;
 
     //For Changes over the GameManagment to an spezial event/time.
     public float Speed

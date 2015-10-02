@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    private float speed = 20;
+    private float speed = 35;
     private float timeBoni = 25;
 
     ////For Changes over the GameManagment to an spezial event/time. For next Update

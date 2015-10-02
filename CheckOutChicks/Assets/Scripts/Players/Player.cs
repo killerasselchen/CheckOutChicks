@@ -9,30 +9,37 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private AudioClip colaSound;
+    public Transform CameraPosition;
+
+    public Transform CameraTarget;
+
+    public PowerUpManager Power_Up_Manager;
+
+    public ShoppingManager Shopping_Manager;
+
+    public Text Ui_Points;
+
+    public PowerUpUI Ui_Power_Up;
+
+    public Vector3 Velocity;
+
+    public TextMesh WinnerText;
+
     [SerializeField]
     private AudioClip chipsSound;
+
+    [SerializeField]
+    private AudioClip colaSound;
+
     [SerializeField]
     private AudioClip crashSound;
 
-    public TextMesh winnerText;
-
-    public Transform cameraPosition;
-    public Transform cameraTarget;
-
     #region Timer
 
-    public float pointBoosterTimer;
-    public float pointBoosterTimerOriganal = 15.0f;
+    public float PointBoosterTimer;
+    public float PointBoosterTimerOriganal = 15.0f;
 
     #endregion Timer
-
-    public PowerUpManager power_Up_Manager;
-    public ShoppingManager shopping_Manager;
-    public Text ui_Points;
-    public PowerUpUI ui_Power_Up;
-    public Vector3 Velocity;
 
     [SerializeField]
     private float myPoints;
@@ -99,7 +106,7 @@ public class Player : MonoBehaviour
             UsePowerUp();
         else if (onPointBoost)
             PointBoost();
-        ui_Points.text = "Points " + MyPoints.ToString("0") + System.Environment.NewLine + "Timer " + GameManager.gameTimer.ToString("0");
+        Ui_Points.text = "Points " + MyPoints.ToString("0") + System.Environment.NewLine + "Timer " + GameManager.gameTimer.ToString("0");
         Velocity = RB.velocity;
     }
 
@@ -110,32 +117,37 @@ public class Player : MonoBehaviour
             SetNextPowerUp();
             SetPowerUp(nextPowerUp);
             other.gameObject.SetActive(false);
-            power_Up_Manager.CurrentMapPowerUps--;
+            Power_Up_Manager.CurrentMapPowerUps--;
         }
 
-        if (other.tag == "Product")
+        else if (other.tag == "Product")
         {
             myPurchases.Add(other.gameObject.name);
             SetPointsForItems(other.gameObject.GetComponent<Item>());
-            shopping_Manager.EnqueueItem(other.gameObject);
+            Shopping_Manager.EnqueueItem(other.gameObject);
+        }
+
+        else if(other.tag == "Interieur")
+        {
+            AddPoints(-15);
         }
     }
 
     private void PointBoost()
     {
-        if (pointBoosterTimer <= 0)
+        if (PointBoosterTimer <= 0)
         {
             onPointBoost = false;
-            pointBoosterTimer = pointBoosterTimerOriganal;
+            PointBoosterTimer = PointBoosterTimerOriganal;
         }
 
-        pointBoosterTimer -= 1.0f * Time.deltaTime;
+        PointBoosterTimer -= 1.0f * Time.deltaTime;
     }
 
     private void SetNextPowerUp()
     {
-        tempItem = Random.Range(0, power_Up_Manager.AvailablePowerUp.Length);
-        nextPowerUp = power_Up_Manager.AvailablePowerUp[tempItem];
+        tempItem = Random.Range(0, Power_Up_Manager.AvailablePowerUp.Length);
+        nextPowerUp = Power_Up_Manager.AvailablePowerUp[tempItem];
     }
 
     private void SetPointsForItems(Item currentItem)
@@ -150,7 +162,7 @@ public class Player : MonoBehaviour
         {
             if (myPowerUps[i] == null)
             {
-                ui_Power_Up.SetImage(i, power_Up_Manager.PowerUpIcons[tempItem]);
+                Ui_Power_Up.SetImage(i, Power_Up_Manager.PowerUpIcons[tempItem]);
                 myPowerUps[i] = powerUp;
                 return;
             }
@@ -165,7 +177,7 @@ public class Player : MonoBehaviour
             {
                 myPowerUps[0].Use(this);
                 myPowerUps[0] = null;
-                ui_Power_Up.ClearImage(0);
+                Ui_Power_Up.ClearImage(0);
             }
         }
         if (Input.GetButtonDown("Fire_Right_" + playerTag))
@@ -174,8 +186,13 @@ public class Player : MonoBehaviour
             {
                 myPowerUps[1].Use(this);
                 myPowerUps[1] = null;
-                ui_Power_Up.ClearImage(1);
+                Ui_Power_Up.ClearImage(1);
             }
         }
+    }
+
+    public void MakeMeToWinner()
+    {
+        WinnerText.text = "Winner";
     }
 }
