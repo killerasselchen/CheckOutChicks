@@ -75,7 +75,7 @@ public class SlipperyWhenWetItem : MonoBehaviour
 
     private void Awake()
     {
-        lifeTime = 8;
+        lifeTime = 9;
     }
 
     private void LifeTimeCheck()

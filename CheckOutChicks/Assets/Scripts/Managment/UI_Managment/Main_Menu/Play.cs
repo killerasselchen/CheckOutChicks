@@ -3,11 +3,18 @@
 //Project: CheckOut Chicks
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
+using UnityEngine.UI;
+
 public class Play : Menu
 {
+    public Button startButton;
+
     public LevelMenu LevelMenu;
     public MainMenu MainMenu;
-
+    public void Start()
+    {
+        startButton.Select();
+    }
     public void BackToMainMenu()
     {
         GameManager.inMainMenu = true;

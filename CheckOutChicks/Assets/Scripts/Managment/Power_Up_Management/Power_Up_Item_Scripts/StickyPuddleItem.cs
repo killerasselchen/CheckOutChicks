@@ -31,7 +31,7 @@ public class StickyPuddleItem : MonoBehaviour
     private void Awake()
     {
         //constructedPlayer = new Player();
-        lifeTime = 8;
+        lifeTime = 9;
     }
 
     private void LifeTimeCheck()

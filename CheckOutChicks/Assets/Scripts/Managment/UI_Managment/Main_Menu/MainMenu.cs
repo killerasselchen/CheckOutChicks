@@ -4,6 +4,7 @@
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : Menu
 {
@@ -12,6 +13,8 @@ public class MainMenu : Menu
     public Manuals ManualsMenu;
     public Option OptionMenux;
     public Play PlayMenu;
+    public Button startButton;
+    public StoryMenu StoryMenu;
 
     public void Close()
     {
@@ -42,5 +45,15 @@ public class MainMenu : Menu
     {
         GameManager.inMainMenu = false;
         Play instance = (Play)GameManager.OpenMenu(PlayMenu);
+    }
+
+    public void OpenStoryMenu()
+    {
+        StoryMenu instance = (StoryMenu)GameManager.OpenMenu(StoryMenu);
+    }
+
+    public void Start()
+    {
+        startButton.Select();
     }
 }

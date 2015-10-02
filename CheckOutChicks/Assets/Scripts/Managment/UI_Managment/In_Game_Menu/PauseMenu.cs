@@ -4,10 +4,18 @@
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class PauseMenu : Menu
 {
-    public MainMenu mainMenu;
+    public MainMenu MainMenu;
+    public Button StartButton;
+
+    public void Start()
+    {
+        StartButton.Select();
+    }
 
     public void Awake()
     {
@@ -22,15 +30,14 @@ public class PauseMenu : Menu
 
     public void OpenMainMenu()
     {
-        MainMenu instance = (MainMenu)GameManager.OpenMenu(mainMenu);
+        Application.LoadLevel(Application.loadedLevelName);
     }
 
     public void Update()
     {
         if (Input.GetButtonDown("Pause"))
         {
-            Time.timeScale = 1;
-            this.GameManager.CloseMenu();
+            ContinueGame();
         }
     }
 }
