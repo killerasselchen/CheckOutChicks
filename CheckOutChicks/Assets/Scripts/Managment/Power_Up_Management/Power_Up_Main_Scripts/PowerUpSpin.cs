@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PowerUpSpin : MonoBehaviour
 {
-    private float speed = 35;
+    private float speed = 50;
 
     //For Changes over the GameManagment to an spezial event/time.
     public float Speed
@@ -18,7 +18,7 @@ public class PowerUpSpin : MonoBehaviour
 
     private void Spin()
     {
-        this.transform.Rotate(0, speed * Time.deltaTime, 0);
+        this.transform.Rotate(0, speed * Time.unscaledDeltaTime, 0);
     }
 
     private void Update()

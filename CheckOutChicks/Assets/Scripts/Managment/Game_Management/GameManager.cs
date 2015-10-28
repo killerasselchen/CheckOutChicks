@@ -317,7 +317,10 @@ public class GameManager : MonoBehaviour
     #endregion Markets
 
     [SerializeField]
-    public static float gameTimer;
+    private float gameTimer;
+
+    [SerializeField]
+    private GameObject gameTimerImage;
 
     [SerializeField]
     private PowerUpManager powerUpManager;
@@ -376,6 +379,23 @@ public class GameManager : MonoBehaviour
             player.Ui_Power_Up = playerUI.GetComponent<PowerUpUI>();
             player.Ui_Points = player.Ui_Power_Up.PointsText;
             activePlayers.Add(player.gameObject);
+        }
+
+        if (activePlayers.Count == 1)
+        {
+            gameTimerImage.SetActive(true);
+            gameTimerImage.transform.position = new Vector3(50, Display.main.systemHeight - 75);
+        }
+
+        else if(activePlayers.Count == 2)
+        {
+            gameTimerImage.SetActive(true);
+            gameTimerImage.transform.position = new Vector3(50, Display.main.systemHeight * 0.5f);
+        }
+        else
+        {
+            gameTimerImage.SetActive(true);
+            gameTimerImage.transform.position = new Vector3(Display.main.systemWidth * 0.5f, Display.main.systemHeight * 0.5f);
         }
     }
 

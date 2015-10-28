@@ -18,7 +18,7 @@ public class UglyPotatoesIntroMenu : Menu
 
     void Update()
     {
-        if (timer <= 0)
+        if (timer <= 0 || Input.anyKeyDown)
             SwitchToNextScreen();
 
         timer -= 1;

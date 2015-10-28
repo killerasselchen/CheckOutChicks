@@ -84,6 +84,7 @@ public class ShoppingManager : MonoBehaviour
             nextItem = queue.Dequeue();
             products[nextItem].SetActive(true);
             Arrow.target = products[nextItem].transform.position;
+            MainUIElements.currentItem = products[nextItem];
             products[nextItem].GetComponent<Item>().TimeBoni = maxPoints;
             spawnTimer = UnityEngine.Random.Range(1, 3);
         }

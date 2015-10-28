@@ -7,7 +7,11 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    private float speed = 35;
+    private float spinSpeed = 50;
+    [SerializeField]
+    private float hoppingRange = 0;
+    private float startHeight;
+    private bool goUp = true;
     private float timeBoni = 25;
 
     ////For Changes over the GameManagment to an spezial event/time. For next Update
@@ -16,6 +20,11 @@ public class Item : MonoBehaviour
     //    get { return speed; }
     //    set { speed = value; }
     //}
+
+    private void Awake()
+    {
+        startHeight = transform.position.y;
+    }
 
     public float TimeBoni
     {
@@ -31,14 +40,34 @@ public class Item : MonoBehaviour
             TimeBoni = 0;
     }
 
+    private void Hopping()
+    {
+        
+        if (hoppingRange <= 0.35f && goUp == true)
+        {
+            hoppingRange += 0.5f * Time.unscaledDeltaTime;
+            if (hoppingRange >= 0.35f)
+                goUp = false;
+        }
+        else if (hoppingRange >= -0.5f && goUp == false)
+        {
+            hoppingRange -= 0.5f * Time.unscaledDeltaTime;
+            if (hoppingRange <= -0.5f)
+                goUp = true;
+        }
+
+        transform.position = new Vector3(transform.position.x, startHeight + hoppingRange, transform.position.z);
+    }
+
     private void Spin()
     {
-        this.transform.Rotate(0, speed * Time.deltaTime, 0);
+        this.transform.Rotate(0, spinSpeed * Time.unscaledDeltaTime, 0);
     }
 
     private void Update()
     {
         LifeTimer();
         Spin();
+        Hopping();
     }
 }

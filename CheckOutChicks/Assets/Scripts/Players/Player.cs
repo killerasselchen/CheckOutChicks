@@ -106,7 +106,7 @@ public class Player : MonoBehaviour
             UsePowerUp();
         else if (onPointBoost)
             PointBoost();
-        Ui_Points.text = "Points " + MyPoints.ToString("0") + System.Environment.NewLine + "Timer " + GameManager.gameTimer.ToString("0");
+        Ui_Points.text = MyPoints.ToString("0");
         Velocity = RB.velocity;
     }
 
@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
 
         else if(other.tag == "Interieur")
         {
-            AddPoints(-15);
+            AddPoints(-5);
         }
     }
 

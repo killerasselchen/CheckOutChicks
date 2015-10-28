@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SpinTheCams : MonoBehaviour
 {
-    private float speed = 0.5f;
+    private float speed = 20f;
 
     //For Changes over the GameManagment to an spezial event/time.
     public float Speed
@@ -14,7 +14,7 @@ public class SpinTheCams : MonoBehaviour
 
     private void Spin()
     {
-        this.transform.Rotate(0, speed, 0);
+        this.transform.Rotate(0, speed * Time.unscaledDeltaTime, 0);
     }
 
     private void Update()

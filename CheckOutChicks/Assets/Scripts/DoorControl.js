@@ -1,6 +1,7 @@
 ﻿#pragma strict
 //Build by Christoph
 //Adjusted by Sharon
+//Edit by Timo Fabricius on 28.10.2015
 
 var doorObject : GameObject;
 private var doorAnimator : Animator;
@@ -15,19 +16,19 @@ function Update () {
 
 function OnTriggerEnter( other : Collider)
 {
-	if(other.gameObject.tag == "Player_One")
+    if(other.gameObject.tag == "Player_One" || other.gameObject.tag == "Wagon")
 	{
 		doorAnimator.SetBool("infrontOfDoor", true);
 	}
-	if(other.gameObject.tag == "Player_Two")
+    if(other.gameObject.tag == "Player_Two" || other.gameObject.tag == "Wagon")
 	{
 		doorAnimator.SetBool("infrontOfDoor", true);
 	}
-	if(other.gameObject.tag == "Player_Three")
+    if(other.gameObject.tag == "Player_Three" || other.gameObject.tag == "Wagon")
 	{
 		doorAnimator.SetBool("infrontOfDoor", true);
 	}
-	if(other.gameObject.tag == "Player_Four")
+    if(other.gameObject.tag == "Player_Four" || other.gameObject.tag == "Wagon")
 	{
 		doorAnimator.SetBool("infrontOfDoor", true);
 	}
@@ -35,19 +36,19 @@ function OnTriggerEnter( other : Collider)
 
 function OnTriggerExit( other : Collider)
 {
-	if(other.gameObject.tag == "Player_One")
+    if(other.gameObject.tag == "Player_One" || other.gameObject.tag == "Wagon")
 	{
 		doorAnimator.SetBool("infrontOfDoor", false);
 	}
-	if(other.gameObject.tag == "Player_Two")
+    if(other.gameObject.tag == "Player_Two" || other.gameObject.tag == "Wagon")
 	{
 		doorAnimator.SetBool("infrontOfDoor", false);
 	}
-	if(other.gameObject.tag == "Player_Three")
+    if(other.gameObject.tag == "Player_Three" || other.gameObject.tag == "Wagon")
 	{
 		doorAnimator.SetBool("infrontOfDoor", false);
 	}
-	if(other.gameObject.tag == "Player_Four")
+    if(other.gameObject.tag == "Player_Four" || other.gameObject.tag == "Wagon")
 	{
 		doorAnimator.SetBool("infrontOfDoor", false);
 	}
