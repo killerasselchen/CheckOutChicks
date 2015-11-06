@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum PlayerName { One, Two, Three, Four }
 
@@ -65,14 +66,12 @@ public class GameManager : MonoBehaviour
 
         foreach (var player in activePlayers)
         {
-
             if (player.gameObject.GetComponent<Player>().MyPoints >= winnerPoints)
             {
                 winnerPoints = player.gameObject.GetComponent<Player>().MyPoints;
                 winner = player.gameObject.GetComponent<Player>();
                 Debug.Log("winner: " + winner.name);
                 Debug.Log("winner points: " + winnerPoints);
-
             }
         }
         winner.MakeMeToWinner();
@@ -316,11 +315,36 @@ public class GameManager : MonoBehaviour
 
     #endregion Markets
 
+    #region GameTimer
+
     [SerializeField]
     private float gameTimer;
 
     [SerializeField]
     private GameObject gameTimerImage;
+
+    [SerializeField]
+    private Text minutes;
+
+    [SerializeField]
+    private Text seconds;
+
+    private void GameTimer()
+    {
+        if (gameTimer >= 0)
+            gameTimer -= 1 * Time.deltaTime;
+        else if (gameTimer <= 0)
+        {
+            SetWinner();
+            OpenMenu(EndMenu);
+            Time.timeScale = 0;
+        }
+
+        minutes.text = Mathf.Floor(gameTimer / 60).ToString("00") + ":";
+        seconds.text = Mathf.Floor(gameTimer % 60).ToString("00");
+    }
+
+    #endregion GameTimer
 
     [SerializeField]
     private PowerUpManager powerUpManager;
@@ -330,22 +354,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private ShoppingManager shoppingManager;
 
-    public void Update()
-    {
-        CheckInput();
-    }
-    
     public void FixedUpdate()
     {
-
-        if (gameTimer >= 0)
-            gameTimer -= 1 * Time.deltaTime;
-        else if (gameTimer <= 0)
-        {
-            SetWinner();
-            OpenMenu(EndMenu);
-            Time.timeScale = 0;
-        }
+        GameTimer();
     }
 
     public void SetPlayMode(PlayMode playMode)
@@ -381,22 +392,7 @@ public class GameManager : MonoBehaviour
             activePlayers.Add(player.gameObject);
         }
 
-        if (activePlayers.Count == 1)
-        {
-            gameTimerImage.SetActive(true);
-            gameTimerImage.transform.position = new Vector3(50, Display.main.systemHeight - 75);
-        }
-
-        else if(activePlayers.Count == 2)
-        {
-            gameTimerImage.SetActive(true);
-            gameTimerImage.transform.position = new Vector3(50, Display.main.systemHeight * 0.5f);
-        }
-        else
-        {
-            gameTimerImage.SetActive(true);
-            gameTimerImage.transform.position = new Vector3(Display.main.systemWidth * 0.5f, Display.main.systemHeight * 0.5f);
-        }
+        PlaceGameTimer();
     }
 
     public void StartGame()
@@ -408,8 +404,13 @@ public class GameManager : MonoBehaviour
         DeactivateMarketCams();
         shoppingManager.Initialize();
         SetPlayMode(selectedPlayMode);
-        gameTimer = 300;
+        gameTimer = 30;
         Time.timeScale = 1;
+    }
+
+    public void Update()
+    {
+        CheckInput();
     }
 
     private void Awake()
@@ -418,8 +419,30 @@ public class GameManager : MonoBehaviour
         SelectMarketOne();
     }
 
+    private void PlaceGameTimer()
+    {
+        gameTimerImage.SetActive(true);
+
+        if (activePlayers.Count == 1)
+        {
+            gameTimerImage.SetActive(true);
+            gameTimerImage.transform.position = new Vector3(50, Screen.height - 75);
+        }
+        else if (activePlayers.Count == 2)
+        {
+            gameTimerImage.SetActive(true);
+            gameTimerImage.transform.position = new Vector3(50, Screen.height * 0.5f);
+        }
+        else
+        {
+            gameTimerImage.SetActive(true);
+            gameTimerImage.transform.position = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f);
+        }
+    }
+
     private void Start()
     {
+        gameTimerImage.SetActive(true);
         OpenMenu(InitialMenu);
     }
 }

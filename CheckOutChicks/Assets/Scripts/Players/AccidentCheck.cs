@@ -15,8 +15,6 @@ public class AccidentCheck : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        shoppingCardLittleCrashSound.Play();
-
         if (other.tag == "Player_Body")
         {
             Debug.Log("hit player");

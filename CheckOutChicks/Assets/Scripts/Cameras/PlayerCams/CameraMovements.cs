@@ -14,7 +14,7 @@ public class CameraMovements : MonoBehaviour
     private string cam_Tag;
     private Vector3 relCameraPos;
     private float relCameraPosMag;
-    private float smooth = 6f;
+    private float smooth = 10f;
     private Vector3 tempPos;
 
     private void FixedUpdate()
@@ -24,10 +24,10 @@ public class CameraMovements : MonoBehaviour
         Vector3[] checkPoints = new Vector3[6];
 
         checkPoints[0] = standardPos;
-        checkPoints[1] = Vector3.Lerp(standardPos, nearestPos, 0.2f);
-        checkPoints[2] = Vector3.Lerp(standardPos, nearestPos, 0.4f);
-        checkPoints[3] = Vector3.Lerp(standardPos, nearestPos, 0.6f);
-        checkPoints[4] = Vector3.Lerp(standardPos, nearestPos, 0.8f);
+        checkPoints[1] = Vector3.Lerp(standardPos, nearestPos, 0.1f);
+        checkPoints[2] = Vector3.Lerp(standardPos, nearestPos, 0.2f);
+        checkPoints[3] = Vector3.Lerp(standardPos, nearestPos, 0.3f);
+        checkPoints[4] = Vector3.Lerp(standardPos, nearestPos, 0.4f);
         checkPoints[5] = nearestPos;
 
         for (int i = 0; i < checkPoints.Length; i++)
@@ -51,20 +51,17 @@ public class CameraMovements : MonoBehaviour
     private void Start()
     {
         transform.position = camOrigin.position;
-        relCameraPos = transform.position - player_Position.position;
-        relCameraPosMag = relCameraPos.magnitude - 1.0f;
+        relCameraPos = transform.position - camTarget.position;
+        relCameraPosMag = relCameraPos.magnitude;
     }
 
     private bool ViewingPosCheck(Vector3 checkPoint)
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(checkPoint, camTarget.position - checkPoint, out hit, relCameraPosMag))
+        if (Physics.Raycast(camTarget.position, checkPoint - camTarget.position, out hit, relCameraPosMag))
         {
-            if (hit.transform != camTarget)
-            {
-                return false;
-            }
+            return false;
         }
 
         tempPos = checkPoint;
