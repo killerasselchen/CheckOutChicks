@@ -14,7 +14,7 @@ function Update () {
 
 }
 
-function OnTriggerEnter( other : Collider)
+function OnTriggerStay( other : Collider)
 {
     if(other.gameObject.tag == "Player_One" || other.gameObject.tag == "Wagon")
 	{
@@ -31,7 +31,7 @@ function OnTriggerEnter( other : Collider)
     if(other.gameObject.tag == "Player_Four" || other.gameObject.tag == "Wagon")
 	{
 		doorAnimator.SetBool("infrontOfDoor", true);
-	}
+    }
 }
 
 function OnTriggerExit( other : Collider)

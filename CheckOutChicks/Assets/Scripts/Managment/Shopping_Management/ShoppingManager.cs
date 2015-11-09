@@ -32,7 +32,7 @@ public class ShoppingManager : MonoBehaviour
     public void Awake()
     {
         queue = new Queue<int>();
-        spawnTimer = 0.2f;
+        spawnTimer = 0;
         maxItems = 1;
         maxPoints = 30;
     }

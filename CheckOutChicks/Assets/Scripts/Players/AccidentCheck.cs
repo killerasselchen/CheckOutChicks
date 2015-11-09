@@ -7,17 +7,16 @@ using UnityEngine;
 
 public class AccidentCheck : MonoBehaviour
 {
-    [SerializeField]
-    private AudioSource shoppingCardLittleCrashSound;
+    //[SerializeField]
+    //private AudioSource shoppingCardLittleCrashSound;
 
-    [SerializeField]
-    private AudioSource shoppingCardHeavyCrashSound;
+    //[SerializeField]
+    //private AudioSource shoppingCardHeavyCrashSound;
 
     public void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player_Body")
         {
-            Debug.Log("hit player");
             this.gameObject.GetComponentInParent<Player>().AddPoints(25);
             other.gameObject.GetComponentInParent<Player>().AddPoints(-15);
         }
