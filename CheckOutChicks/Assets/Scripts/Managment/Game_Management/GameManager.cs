@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("winner points: " + winnerPoints);
             }
         }
-        winner.MakeMeToWinner();
+        //winner.MakeMeToWinner();
     }
 
     #endregion Menu UI

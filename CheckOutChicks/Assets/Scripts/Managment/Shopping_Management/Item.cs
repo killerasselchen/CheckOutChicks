@@ -40,25 +40,6 @@ public class Item : MonoBehaviour
             TimeBoni = 0;
     }
 
-    //private void Hopping()
-    //{
-        
-    //    if (hoppingRange <= 0.35f && goUp == true)
-    //    {
-    //        hoppingRange += 0.5f * Time.unscaledDeltaTime;
-    //        if (hoppingRange >= 0.35f)
-    //            goUp = false;
-    //    }
-    //    else if (hoppingRange >= -0.5f && goUp == false)
-    //    {
-    //        hoppingRange -= 0.5f * Time.unscaledDeltaTime;
-    //        if (hoppingRange <= -0.5f)
-    //            goUp = true;
-    //    }
-
-    //    transform.position = new Vector3(transform.position.x, startHeight + hoppingRange, transform.position.z);
-    //}
-
     private void Spin()
     {
         this.transform.Rotate(0, spinSpeed * Time.unscaledDeltaTime, 0);
@@ -68,6 +49,5 @@ public class Item : MonoBehaviour
     {
         LifeTimer();
         Spin();
-        //Hopping();
     }
 }

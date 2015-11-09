@@ -34,6 +34,21 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip crashSound;
 
+    [SerializeField]
+    private AudioSource collectedPowerUp;
+
+    [SerializeField]
+    private AudioSource cantCollectedPowerUp;
+
+    [SerializeField]
+    private AudioSource collectedItem;
+
+    [SerializeField]
+    private AudioSource usePowerUp;
+
+    [SerializeField]
+    private AudioSource haveNoPowerUpToUse;
+
     #region Timer
 
     public float PointBoosterTimer;
@@ -122,6 +137,7 @@ public class Player : MonoBehaviour
 
         else if (other.tag == "Product")
         {
+            collectedItem.Play();
             myPurchases.Add(other.gameObject.name);
             SetPointsForItems(other.gameObject.GetComponent<Item>());
             Shopping_Manager.EnqueueItem(other.gameObject);
@@ -162,9 +178,14 @@ public class Player : MonoBehaviour
         {
             if (myPowerUps[i] == null)
             {
+                collectedPowerUp.Play();
                 Ui_Power_Up.SetImage(i, Power_Up_Manager.PowerUpIcons[tempItem]);
                 myPowerUps[i] = powerUp;
                 return;
+            }
+            else
+            {
+                cantCollectedPowerUp.Play();
             }
         }
     }
@@ -175,18 +196,28 @@ public class Player : MonoBehaviour
         {
             if (myPowerUps[0] != null)
             {
+                usePowerUp.Play();
                 myPowerUps[0].Use(this);
                 myPowerUps[0] = null;
                 Ui_Power_Up.ClearImage(0);
+            }
+            else
+            {
+                haveNoPowerUpToUse.Play();
             }
         }
         if (Input.GetButtonDown("Fire_Right_" + playerTag))
         {
             if (myPowerUps[1] != null)
             {
+                usePowerUp.Play();
                 myPowerUps[1].Use(this);
                 myPowerUps[1] = null;
                 Ui_Power_Up.ClearImage(1);
+            }
+            else
+            {
+                haveNoPowerUpToUse.Play();
             }
         }
     }
