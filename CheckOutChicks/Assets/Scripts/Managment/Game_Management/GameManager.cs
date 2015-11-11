@@ -404,7 +404,7 @@ public class GameManager : MonoBehaviour
         DeactivateMarketCams();
         shoppingManager.Initialize();
         SetPlayMode(selectedPlayMode);
-        gameTimer = 30;
+        gameTimer = 180;
         Time.timeScale = 1;
     }
 
