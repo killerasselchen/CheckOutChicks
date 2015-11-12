@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class StickyPuddleItem : MonoBehaviour
 {
+    //[SerializeField]
+    //private AudioClip honeyGlasFalling;
+
     [SerializeField]
     private GameObject parent;
 
@@ -31,7 +34,7 @@ public class StickyPuddleItem : MonoBehaviour
     private void Awake()
     {
         //constructedPlayer = new Player();
-        lifeTime = 9;
+        lifeTime = 12;
     }
 
     private void LifeTimeCheck()

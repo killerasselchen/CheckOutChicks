@@ -16,11 +16,6 @@ public class MainMenu : Menu
     public Button startButton;
     public StoryMenu StoryMenu;
 
-    public void Close()
-    {
-        Application.Quit();
-    }
-
     public void OpenCredits()
     {
         Credits instance = (Credits)GameManager.OpenMenu(CreditsMenu);
@@ -55,5 +50,11 @@ public class MainMenu : Menu
     public void Start()
     {
         startButton.Select();
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton2))
+            OpenExitMenu();
     }
 }

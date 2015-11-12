@@ -6,18 +6,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class Exit : Menu
 {
-    public Button startButton;
-
     public MainMenu MainMenu;
+    public Button startButton;
     public UglyPotatoesOutroMenu UglyPotatoesOutroMenu;
 
-    public void Start()
-    {
-        startButton.Select();
-    }
     public void BackToMainMenu()
     {
         GameManager.OpenMenu(MainMenu);
@@ -26,5 +20,16 @@ public class Exit : Menu
     public void ExitGame()
     {
         UglyPotatoesOutroMenu instance = (UglyPotatoesOutroMenu)GameManager.OpenMenu(UglyPotatoesOutroMenu);
+    }
+
+    public void Start()
+    {
+        startButton.Select();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton2))
+            BackToMainMenu();
     }
 }

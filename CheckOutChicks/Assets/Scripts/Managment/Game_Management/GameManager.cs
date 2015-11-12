@@ -30,10 +30,11 @@ public class GameManager : MonoBehaviour
     public Menu InitialMenu;
     public PauseMenu PauseMenu;
     private Player winner;
+    private bool inGame;
 
     public void CheckInput()
     {
-        if (Input.GetButton("Pause"))
+        if (Input.GetButton("Pause") && inGame)
         {
             Time.timeScale = 0;
             PauseMenu instance = (PauseMenu)OpenMenu(PauseMenu);
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
         if (CurrentMenu)
             Destroy(CurrentMenu.gameObject);
         menuMusic.SetActive(false);
+        inGame = true;
         inGameMusic.SetActive(true);
     }
 
@@ -56,6 +58,7 @@ public class GameManager : MonoBehaviour
         instance.GameManager = this;
         CurrentMenu = instance;
         inGameMusic.SetActive(false);
+        inGame = false;
         menuMusic.SetActive(true);
         return instance;
     }
@@ -319,6 +322,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private float gameTimer;
+    private float defaultGameTimer;
 
     [SerializeField]
     private GameObject gameTimerImage;
@@ -404,7 +408,7 @@ public class GameManager : MonoBehaviour
         DeactivateMarketCams();
         shoppingManager.Initialize();
         SetPlayMode(selectedPlayMode);
-        gameTimer = 180;
+        gameTimer = defaultGameTimer;
         Time.timeScale = 1;
     }
 
@@ -415,6 +419,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        defaultGameTimer = 180;
+        inGame = false;
         LoadMarketSecuireCams();
         SelectMarketOne();
     }
@@ -445,4 +451,17 @@ public class GameManager : MonoBehaviour
         gameTimerImage.SetActive(true);
         OpenMenu(InitialMenu);
     }
+
+    //public void RestartMainMenu()
+    //{
+    //    CloseMenu();
+    //    activePlayers.Clear();
+    //    activeCameras.Clear();
+    //    activePlayerUis.Clear();
+    //    DeactivateMarketCams();
+    //    Time.timeScale = 0;
+    //    shoppingManager.ReactivateItems();
+    //    LoadMarketSecuireCams();
+    //    SelectMarketOne();
+    //}
 }

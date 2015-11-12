@@ -11,15 +11,15 @@ public class LeaveMenu : Menu
 
     void Awake()
     {
-        timer = 80;
+        timer = 1;
     }
 
     void Update()
     {
-        if (timer <= 0)
+        if (timer <= 0 || Input.anyKeyDown)
             Application.Quit();
 
-        timer -= 1;
+        timer -= 1 * Time.deltaTime; ;
     }
 }
 

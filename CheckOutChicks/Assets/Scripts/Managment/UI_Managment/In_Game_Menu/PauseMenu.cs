@@ -12,6 +12,9 @@ public class PauseMenu : Menu
     public MainMenu MainMenu;
     public Button StartButton;
 
+    //[SerializeField]
+    //private GameManager gameManager;
+
     public void Start()
     {
         StartButton.Select();
@@ -30,6 +33,7 @@ public class PauseMenu : Menu
 
     public void OpenMainMenu()
     {
+        //gameManager.RestartMainMenu();
         Application.LoadLevel(Application.loadedLevelName);
     }
 

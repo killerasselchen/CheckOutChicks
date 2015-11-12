@@ -24,6 +24,7 @@ public class PowerUpManager : MonoBehaviour
     private Sprite[] powerUpIcons;
 
     private GameObject[] powerUpSpawnPoints;
+
     private float powerUpSpawnTimer;
 
     public PowerUp[] AvailablePowerUp

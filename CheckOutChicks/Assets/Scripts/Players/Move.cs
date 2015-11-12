@@ -179,6 +179,7 @@ public class Move : MonoBehaviour
     private void Movement()
     {
         CheckInput();
+
         if (OnTurbo)
             Turbo();
 

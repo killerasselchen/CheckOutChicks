@@ -26,35 +26,25 @@ public class Player : MonoBehaviour
     public TextMesh WinnerText;
 
     [SerializeField]
+    private AudioSource cantCollectedPowerUp;
+
+    [SerializeField]
     private AudioClip chipsSound;
 
     [SerializeField]
     private AudioClip colaSound;
 
     [SerializeField]
-    private AudioClip crashSound;
+    private AudioSource collectedItem;
 
     [SerializeField]
     private AudioSource collectedPowerUp;
 
     [SerializeField]
-    private AudioSource cantCollectedPowerUp;
-
-    [SerializeField]
-    private AudioSource collectedItem;
-
-    [SerializeField]
-    private AudioSource usePowerUp;
+    private AudioClip crashSound;
 
     [SerializeField]
     private AudioSource haveNoPowerUpToUse;
-
-    #region Timer
-
-    public float PointBoosterTimer;
-    public float PointBoosterTimerOriganal = 15.0f;
-
-    #endregion Timer
 
     [SerializeField]
     private float myPoints;
@@ -76,6 +66,16 @@ public class Player : MonoBehaviour
     private GameObject sticky_Puddle_Prefab;
 
     private int tempItem;
+
+    [SerializeField]
+    private AudioSource usePowerUp;
+
+    #region Timer
+
+    public float PointBoosterTimer;
+    public float PointBoosterTimerOriganal = 15.0f;
+
+    #endregion Timer
 
     [SerializeField]
     private GameObject wet_Floor_Prefab;
@@ -110,6 +110,11 @@ public class Player : MonoBehaviour
             myPoints += points;
     }
 
+    public void MakeMeToWinner()
+    {
+        WinnerText.text = "Winner";
+    }
+
     private void Awake()
     {
         playerTag = gameObject.tag;
@@ -134,7 +139,6 @@ public class Player : MonoBehaviour
             other.gameObject.SetActive(false);
             Power_Up_Manager.CurrentMapPowerUps--;
         }
-
         else if (other.tag == "Product")
         {
             collectedItem.Play();
@@ -142,8 +146,7 @@ public class Player : MonoBehaviour
             SetPointsForItems(other.gameObject.GetComponent<Item>());
             Shopping_Manager.EnqueueItem(other.gameObject);
         }
-
-        else if(other.tag == "Interieur")
+        else if (other.tag == "Interieur")
         {
             AddPoints(-5);
         }
@@ -196,9 +199,10 @@ public class Player : MonoBehaviour
         {
             if (myPowerUps[0] != null)
             {
-                usePowerUp.Play();
+                Debug.Log("fire one");
                 myPowerUps[0].Use(this);
                 myPowerUps[0] = null;
+                //usePowerUp.Play();
                 Ui_Power_Up.ClearImage(0);
             }
             else
@@ -210,9 +214,10 @@ public class Player : MonoBehaviour
         {
             if (myPowerUps[1] != null)
             {
-                usePowerUp.Play();
+                Debug.Log("fire one");
                 myPowerUps[1].Use(this);
                 myPowerUps[1] = null;
+                //usePowerUp.Play();
                 Ui_Power_Up.ClearImage(1);
             }
             else
@@ -220,10 +225,5 @@ public class Player : MonoBehaviour
                 haveNoPowerUpToUse.Play();
             }
         }
-    }
-
-    public void MakeMeToWinner()
-    {
-        WinnerText.text = "Winner";
     }
 }

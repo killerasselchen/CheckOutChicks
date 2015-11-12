@@ -10,25 +10,23 @@ public class EndMenu : Menu
 {
     public Button StartMenu;
 
-    public void Awake()
-    {
-        //Time.timeScale = 0;
-    }
+    //[SerializeField]
+    //private GameManager gameManager;
+
     public void Start()
     {
         StartMenu.Select();
     }
 
-    public void OpenMainMenu()
+    public void Update()
     {
-        Application.LoadLevel(Application.loadedLevelName);
+        if (Input.anyKeyDown)
+            BackToMainMenu();
     }
 
-    private void Update()
+    public void BackToMainMenu()
     {
-        if (Input.GetButtonDown("Pause"))
-        {
-            Application.LoadLevel(Application.loadedLevelName);
-        }
+        //gameManager.RestartMainMenu();
+        Application.LoadLevel(Application.loadedLevelName);
     }
 }

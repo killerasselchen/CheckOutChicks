@@ -18,6 +18,7 @@ public class ShoppingManager : MonoBehaviour
 
     [SerializeField]
     private GameObject[] products;
+    private GameObject[] defaultProducts;
 
     private Queue<int> queue;
 
@@ -49,6 +50,8 @@ public class ShoppingManager : MonoBehaviour
     {
         queue.Clear();
         products = GameObject.FindGameObjectsWithTag("Product");
+        defaultProducts = products;
+
         int[] indices = new int[products.Length];
 
         for (int i = 0; i < products.Length; i++)
@@ -90,5 +93,13 @@ public class ShoppingManager : MonoBehaviour
         }
 
         spawnTimer -= 1.0f * Time.fixedDeltaTime;
+    }
+
+    public void ReactivateItems()
+    {
+        for (int i = 0; i < defaultProducts.Length; i++)
+        {
+            defaultProducts[i].gameObject.SetActive(true);
+        }
     }
 }

@@ -13,7 +13,7 @@ public class CheckOutChicksMenu : Menu
 
     void Awake()
     {
-        timer = 80;
+        timer = 2;
     }
 
     void Update()
@@ -21,7 +21,7 @@ public class CheckOutChicksMenu : Menu
         if (timer <= 0 || Input.anyKeyDown)
             SwitchToNextScreen();
 
-        timer -= 1;
+        timer -= 1 * Time.unscaledDeltaTime;
     }
 
     private void SwitchToNextScreen()

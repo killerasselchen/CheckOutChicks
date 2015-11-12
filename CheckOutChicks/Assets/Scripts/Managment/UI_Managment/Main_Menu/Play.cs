@@ -3,18 +3,15 @@
 //Project: CheckOut Chicks
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Play : Menu
 {
-    public Button startButton;
-
     public LevelMenu LevelMenu;
     public MainMenu MainMenu;
-    public void Start()
-    {
-        startButton.Select();
-    }
+    public Button startButton;
+
     public void BackToMainMenu()
     {
         GameManager.inMainMenu = true;
@@ -48,5 +45,16 @@ public class Play : Menu
         GameManager.SetRectsOfMarketCams();
         GameManager.SetToTwoPlayer();
         LevelMenu instance = (LevelMenu)GameManager.OpenMenu(LevelMenu);
+    }
+
+    public void Start()
+    {
+        startButton.Select();
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton2))
+            BackToMainMenu();
     }
 }

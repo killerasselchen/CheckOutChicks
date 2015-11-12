@@ -14,15 +14,15 @@ public class SAEMenu : Menu
 
     void Awake()
     {
-        timer = 80;
+        timer = 3;
     }
 	
 	void Update () 
     {
-        timer -= 1;
-
         if (timer <= 0 || Input.anyKeyDown)
             SwitchToNextScreen();
+
+        timer -= 1 * Time.unscaledDeltaTime;
 	}
 
     private void SwitchToNextScreen()

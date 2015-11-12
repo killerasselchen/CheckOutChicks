@@ -3,14 +3,22 @@
 //Project: CheckOut Chicks
 //GPD414 at SAE Hamburg 04/2014-10/2015
 
+using UnityEngine;
 using UnityEngine.UI;
-
 
 public class Credits : Menu
 {
     public Button startButton;
 
     public MainMenu MainMenu;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton2))
+        {
+            BackToMainMenu();
+        }
+    }
 
     public void BackToMainMenu()
     {
