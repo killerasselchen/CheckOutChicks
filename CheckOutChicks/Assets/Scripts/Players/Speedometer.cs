@@ -11,13 +11,6 @@ public class Speedometer : MonoBehaviour
 {
     private Vector3 lastPosition;
     private float speed;
-    private int playerNr;
-
-    public float Speed
-    {
-        get { return speed; }
-        private set { speed = value; }
-    }
 
     private void Tacho()
     {

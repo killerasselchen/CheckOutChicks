@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
     public TextMesh WinnerText;
 
     [SerializeField]
+    private GameObject booomFeedback;
+
+    [SerializeField]
     private AudioSource cantCollectedPowerUp;
 
     [SerializeField]
@@ -39,6 +42,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private AudioSource collectedPowerUp;
+
+    private Transform collisionPoint;
 
     [SerializeField]
     private AudioClip crashSound;
@@ -58,6 +63,9 @@ public class Player : MonoBehaviour
     private bool onPointBoost = false;
 
     private string playerTag;
+
+    [SerializeField]
+    private GameObject powFeedback;
 
     [SerializeField]
     private Rigidbody RB;
@@ -128,6 +136,16 @@ public class Player : MonoBehaviour
             PointBoost();
         Ui_Points.text = MyPoints.ToString("0");
         Velocity = RB.velocity;
+        Tacho();
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Interieur")
+        {
+            if (speed >= 3f)
+                InstantiateBooom(other.contacts[0].point);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -149,6 +167,10 @@ public class Player : MonoBehaviour
         else if (other.tag == "Interieur")
         {
             AddPoints(-5);
+        }
+        else if (other.tag == "Wagon" && speed >= 2f)
+        {
+            InstantiatePow(other.transform.position);
         }
     }
 
@@ -226,4 +248,32 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    #region PlayerFeedback
+
+    private Vector3 lastPosition;
+    private float speed;
+
+    private void InstantiateBooom(Vector3 collisionPoint)
+    {
+        GameObject feedback = Instantiate(booomFeedback, collisionPoint, Quaternion.identity) as GameObject;
+        feedback.GetComponent<Visual_Player_Feedbacks>().MyTarget = this;
+        feedback.GetComponent<Visual_Player_Feedbacks>().FeedbackPosition = collisionPoint;
+    }
+
+    private void InstantiatePow(Vector3 collisionPoint)
+    {
+        GameObject feedback = Instantiate(powFeedback, collisionPoint, Quaternion.identity) as GameObject;
+        feedback.GetComponent<Visual_Player_Feedbacks>().MyTarget = this;
+        feedback.GetComponent<Visual_Player_Feedbacks>().FeedbackPosition = collisionPoint;
+    }
+
+    private void Tacho()
+    {
+        speed = (this.transform.position - lastPosition).magnitude / Time.deltaTime;
+        lastPosition = this.transform.position;
+        Debug.Log("Speed: " + speed);
+    }
+
+    #endregion PlayerFeedback
 }

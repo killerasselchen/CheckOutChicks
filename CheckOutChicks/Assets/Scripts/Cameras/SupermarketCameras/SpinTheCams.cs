@@ -14,7 +14,7 @@ public class SpinTheCams : MonoBehaviour
 
     private void Spin()
     {
-        this.transform.Rotate(0, speed * Time.unscaledDeltaTime, 0);
+        this.transform.Rotate(0, speed * Time.unscaledDeltaTime, 0, Space.World);
     }
 
     private void Update()

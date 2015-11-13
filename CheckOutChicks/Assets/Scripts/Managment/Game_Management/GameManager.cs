@@ -159,8 +159,8 @@ public class GameManager : MonoBehaviour
         {
             if (inMainMenu)
             {
-                marketOneFirstCam.rect = new Rect(0, 0.5f, 0.4f, 0.4f);
-                marketOneSecCam.rect = new Rect(0, 0.1f, 0.4f, 0.4f);
+                marketOneFirstCam.rect = new Rect(0, 0.5f, 0.27f, 0.27f);
+                marketOneSecCam.rect = new Rect(0, 0.15f, 0.27f, 0.27f);
             }
             else
             {
@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 marketTwoFirstCam.rect = new Rect(0.1f, 0.55f, 0.4f, 0.4f);
-                marketTwoSecCam.rect = new Rect(0.5f, 0.55f, 0.4f, 0.4f);
+                marketTwoSecCam.rect = new Rect(0.2f, 0.15f, 0.4f, 0.4f);
             }
         }
     }
