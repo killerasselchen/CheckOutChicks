@@ -1,0 +1,182 @@
+fileFormatVersion: 2
+guid: 443f424979cb4c04abc168907c4c1fa2
+timeCreated: 1439201319
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Eierkarton
+    100002: Eierkarton1
+    100004: Eierkarton10
+    100006: Eierkarton11
+    100008: Eierkarton12
+    100010: Eierkarton13
+    100012: Eierkarton14
+    100014: Eierkarton15
+    100016: Eierkarton16
+    100018: Eierkarton17
+    100020: Eierkarton18
+    100022: Eierkarton19
+    100024: Eierkarton2
+    100026: Eierkarton20
+    100028: Eierkarton21
+    100030: Eierkarton23
+    100032: Eierkarton3
+    100034: Eierkarton4
+    100036: Eierkarton5
+    100038: Eierkarton6
+    100040: Eierkarton7
+    100042: Eierkarton8
+    100044: Eierkarton9
+    100046: //RootNode
+    400000: Eierkarton
+    400002: Eierkarton1
+    400004: Eierkarton10
+    400006: Eierkarton11
+    400008: Eierkarton12
+    400010: Eierkarton13
+    400012: Eierkarton14
+    400014: Eierkarton15
+    400016: Eierkarton16
+    400018: Eierkarton17
+    400020: Eierkarton18
+    400022: Eierkarton19
+    400024: Eierkarton2
+    400026: Eierkarton20
+    400028: Eierkarton21
+    400030: Eierkarton23
+    400032: Eierkarton3
+    400034: Eierkarton4
+    400036: Eierkarton5
+    400038: Eierkarton6
+    400040: Eierkarton7
+    400042: Eierkarton8
+    400044: Eierkarton9
+    400046: //RootNode
+    2300000: Eierkarton
+    2300002: Eierkarton1
+    2300004: Eierkarton10
+    2300006: Eierkarton11
+    2300008: Eierkarton12
+    2300010: Eierkarton13
+    2300012: Eierkarton14
+    2300014: Eierkarton15
+    2300016: Eierkarton16
+    2300018: Eierkarton17
+    2300020: Eierkarton18
+    2300022: Eierkarton19
+    2300024: Eierkarton2
+    2300026: Eierkarton20
+    2300028: Eierkarton21
+    2300030: Eierkarton23
+    2300032: Eierkarton3
+    2300034: Eierkarton4
+    2300036: Eierkarton5
+    2300038: Eierkarton6
+    2300040: Eierkarton7
+    2300042: Eierkarton8
+    2300044: Eierkarton9
+    3300000: Eierkarton
+    3300002: Eierkarton1
+    3300004: Eierkarton10
+    3300006: Eierkarton11
+    3300008: Eierkarton12
+    3300010: Eierkarton13
+    3300012: Eierkarton14
+    3300014: Eierkarton15
+    3300016: Eierkarton16
+    3300018: Eierkarton17
+    3300020: Eierkarton18
+    3300022: Eierkarton19
+    3300024: Eierkarton2
+    3300026: Eierkarton20
+    3300028: Eierkarton21
+    3300030: Eierkarton23
+    3300032: Eierkarton3
+    3300034: Eierkarton4
+    3300036: Eierkarton5
+    3300038: Eierkarton6
+    3300040: Eierkarton7
+    3300042: Eierkarton8
+    3300044: Eierkarton9
+    4300000: Eierkarton
+    4300002: Eierkarton1
+    4300004: Eierkarton2
+    4300006: Eierkarton3
+    4300008: Eierkarton4
+    4300010: Eierkarton5
+    4300012: Eierkarton6
+    4300014: Eierkarton7
+    4300016: Eierkarton8
+    4300018: Eierkarton9
+    4300020: Eierkarton10
+    4300022: Eierkarton11
+    4300024: Eierkarton12
+    4300026: Eierkarton13
+    4300028: Eierkarton14
+    4300030: Eierkarton15
+    4300032: Eierkarton16
+    4300034: Eierkarton17
+    4300036: Eierkarton18
+    4300038: Eierkarton19
+    4300040: Eierkarton20
+    4300042: Eierkarton21
+    4300044: Eierkarton23
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,245 @@
+fileFormatVersion: 2
+guid: 38e749f716e79c44088b960d22ac6ab5
+timeCreated: 1442333492
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Arm_L_jnt
+    100002: Arm_L_jnt1
+    100004: Arm_R_jnt
+    100006: Arm_R_jnt1
+    100008: Character_Chick
+    100010: Chest_jnt1
+    100012: Clavicula_L_jnt
+    100014: Clavicula_R_jnt
+    100016: Foot_L_jnt1
+    100018: Foot_L_jnt2
+    100020: Foot_L_jnt3
+    100022: Foot_R_jnt1
+    100024: Foot_R_jnt2
+    100026: Foot_R_jnt3
+    100028: Hand_L_jnt1
+    100030: Hand_L_jnt2
+    100032: Hand_L_jnt3
+    100034: Hand_L_jnt4
+    100036: Hand_R_jnt1
+    100038: Hand_R_jnt2
+    100040: Hand_R_jnt3
+    100042: Hand_R_jnt4
+    100044: Head_jnt1
+    100046: joint2
+    100048: joint2 1
+    100050: joint3
+    100052: joint4
+    100054: Leg_L_jnt
+    100056: Leg_L_jnt1
+    100058: Leg_R_jnt
+    100060: Leg_R_jnt1
+    100062: Neck_jnt1
+    100064: Pelvis_jnt
+    100066: //RootNode
+    100068: Throat_jnt1
+    100070: Thumb_L_jnt1
+    100072: Thumb_R_jnt1
+    400000: Arm_L_jnt
+    400002: Arm_L_jnt1
+    400004: Arm_R_jnt
+    400006: Arm_R_jnt1
+    400008: Character_Chick
+    400010: Chest_jnt1
+    400012: Clavicula_L_jnt
+    400014: Clavicula_R_jnt
+    400016: Foot_L_jnt1
+    400018: Foot_L_jnt2
+    400020: Foot_L_jnt3
+    400022: Foot_R_jnt1
+    400024: Foot_R_jnt2
+    400026: Foot_R_jnt3
+    400028: Hand_L_jnt1
+    400030: Hand_L_jnt2
+    400032: Hand_L_jnt3
+    400034: Hand_L_jnt4
+    400036: Hand_R_jnt1
+    400038: Hand_R_jnt2
+    400040: Hand_R_jnt3
+    400042: Hand_R_jnt4
+    400044: Head_jnt1
+    400046: joint2
+    400048: joint2 1
+    400050: joint3
+    400052: joint4
+    400054: Leg_L_jnt
+    400056: Leg_L_jnt1
+    400058: Leg_R_jnt
+    400060: Leg_R_jnt1
+    400062: Neck_jnt1
+    400064: Pelvis_jnt
+    400066: //RootNode
+    400068: Throat_jnt1
+    400070: Thumb_L_jnt1
+    400072: Thumb_R_jnt1
+    4300000: Character_Chick
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: Character_Chick
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Character_Chick
+        weight: 1
+      - path: Pelvis_jnt
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Hand_L_jnt2
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Hand_L_jnt2/Hand_L_jnt3
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Hand_L_jnt2/Hand_L_jnt3/Hand_L_jnt4
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Thumb_L_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Thumb_L_jnt1/joint2
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_L_jnt/Arm_L_jnt/Arm_L_jnt1/Hand_L_jnt1/Thumb_L_jnt1/joint2/joint3
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Hand_R_jnt2
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Hand_R_jnt2/Hand_R_jnt3
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Hand_R_jnt2/Hand_R_jnt3/Hand_R_jnt4
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Thumb_R_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Thumb_R_jnt1/joint2
+          1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Clavicula_R_jnt/Arm_R_jnt/Arm_R_jnt1/Hand_R_jnt1/Thumb_R_jnt1/joint2
+          1/joint4
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Neck_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Neck_jnt1/Throat_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Chest_jnt1/Neck_jnt1/Throat_jnt1/Head_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Leg_L_jnt
+        weight: 1
+      - path: Pelvis_jnt/Leg_L_jnt/Leg_L_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Leg_L_jnt/Leg_L_jnt1/Foot_L_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Leg_L_jnt/Leg_L_jnt1/Foot_L_jnt1/Foot_L_jnt2
+        weight: 1
+      - path: Pelvis_jnt/Leg_L_jnt/Leg_L_jnt1/Foot_L_jnt1/Foot_L_jnt2/Foot_L_jnt3
+        weight: 1
+      - path: Pelvis_jnt/Leg_R_jnt
+        weight: 1
+      - path: Pelvis_jnt/Leg_R_jnt/Leg_R_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Leg_R_jnt/Leg_R_jnt1/Foot_R_jnt1
+        weight: 1
+      - path: Pelvis_jnt/Leg_R_jnt/Leg_R_jnt1/Foot_R_jnt1/Foot_R_jnt2
+        weight: 1
+      - path: Pelvis_jnt/Leg_R_jnt/Leg_R_jnt1/Foot_R_jnt1/Foot_R_jnt2/Foot_R_jnt3
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
